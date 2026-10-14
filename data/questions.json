@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ITA-2025-1F-Q01",
+    "ano": 2025,
+    "fase": "1ª Fase",
+    "numero": 1,
+    "materia": "Matemática",
+    "topico": "Números Complexos",
+    "subtopico": "Argand-Gauss, Módulo e Raízes",
+    "dificuldade": "Difícil",
+    "enunciado": "Seja $z = a + 2i$ um número complexo, em que $a \\in \\mathbb{R}$ é positivo. O valor de $a$ para que as representações de $1$, $z$ e $z^2$ no plano de Argand-Gauss formem um triângulo de área $200$ é:",
+    "figura": null,
+    "alternativas": {
+      "A": "$14$",
+      "B": "$15$",
+      "C": "$16$",
+      "D": "$17$",
+      "E": "$18$"
+    },
+    "gabarito": "B",
+    "pulo_do_gato": "Translade os vértices subtraindo 1: os vetores partindo da origem passam a ser $(z - 1)$ e $z(z - 1)$. A área em função do produto vetorial no plano complexo sai em duas linhas!",
+    "resolucao": "Os afixos dos três pontos no plano de Argand-Gauss são $P_1 = 1$, $P_2 = z$ e $P_3 = z^2$.\nPara calcular a área do triângulo, consideramos os vetores a partir de $P_1$:\n$$w_1 = z - 1 = (a - 1) + 2i$$\n$$w_2 = z^2 - 1 = (z - 1)(z + 1)$$\nSabemos que a área de um triângulo formado pelos complexos $0$, $w_1$ e $w_2$ é dada por:\n$$\\text{Área} = \\frac{1}{2} \vert{}\\text{Im}(\\overline{w_1} \\cdot w_2)\vert{} = \\frac{1}{2} \vert{}w_1\vert{}^2 \\cdot \vert{}\\text{Im}(z + 1)\vert{}$$\nComo $\\text{Im}(z + 1) = 2$ e $\vert{}w_1\vert{}^2 = (a - 1)^2 + 2^2 = (a - 1)^2 + 4$, temos:\n$$\\text{Área} = \\frac{1}{2} \\cdot [(a - 1)^2 + 4] \\cdot 2 = (a - 1)^2 + 4$$\nIgualando à área $200$ fornecida no enunciado:\n$$(a - 1)^2 + 4 = 200 \\implies (a - 1)^2 = 196 \\implies a - 1 = 14 \\implies a = 15$$"
+  }
+]

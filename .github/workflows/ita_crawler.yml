@@ -1,0 +1,50 @@
+name: "ITA-Forge: Coletar Provas Oficiais (Python + Actions)"
+
+on:
+  workflow_dispatch:
+    inputs:
+      exam_years:
+        description: "Anos para importar separados por espaço (ex: 2026 2025 2024)"
+        required: true
+        default: "2026 2025"
+      include_languages:
+        description: "Incluir também Inglês e Português? (true/false)"
+        required: false
+        default: "false"
+
+permissions:
+  contents: write
+
+jobs:
+  scrape-ita-exams:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: "pip"
+
+      - name: Instalar PyMuPDF e dependências
+        run: pip install -r requirements.txt
+
+      - name: Baixar e Processar Provas Oficiais do ITA
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          INCLUDE_LANGUAGES: ${{ inputs.include_languages }}
+        run: |
+          for YEAR in ${{ inputs.exam_years }}; do
+            echo "=== Processando ITA $YEAR ==="
+            EXAM_YEAR=$YEAR python scripts/auto_ita_crawler.py
+          done
+
+      - name: Fazer Commit e Push para atualizar o Hub
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/questions.json data/images/
+          git diff --staged --quiet || git commit -m "feat(db): atualiza banco oficial ITA (${{ inputs.exam_years }})"
+          git push
