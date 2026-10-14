@@ -116,17 +116,29 @@ def fix_portuguese_accents_and_reflow(raw: str, is_alternative: bool = False) ->
 
     return re.sub(r"[ \t]{2,}", " ", text).strip()
 
+EXAM_BANCA = os.getenv("EXAM_BANCA", "ITA").strip().upper()
+
 def get_subject(year: int, q_num: int) -> str:
+    if EXAM_BANCA == "IME":
+        if 1 <= q_num <= 15: return "Matemática"
+        if 16 <= q_num <= 30: return "Física"
+        return "Química"
     if year >= 2025:
         if 1 <= q_num <= 12: return "Matemática"
         if 13 <= q_num <= 24: return "Física"
         if 25 <= q_num <= 36: return "Química"
         return "Inglês"
-    else:
+    elif year >= 2023:
         if 1 <= q_num <= 12: return "Física"
         if 13 <= q_num <= 24: return "Português"
         if 25 <= q_num <= 36: return "Inglês"
         if 37 <= q_num <= 48: return "Matemática"
+        return "Química"
+    else:  # ITA 2019 a 2022 (70 questões)
+        if 1 <= q_num <= 15: return "Física"
+        if 16 <= q_num <= 30: return "Português"
+        if 31 <= q_num <= 40: return "Inglês"
+        if 41 <= q_num <= 55: return "Matemática"
         return "Química"
 
 def fetch_pdf(urls: list[str], dest: Path) -> bool:
@@ -149,7 +161,7 @@ def parse_gabarito_pdf(gab_pdf: Path) -> dict[int, str]:
     gab_map = {}
     for num_str, ans in re.findall(r"\b(\d{1,2})\s*[\.\-]?\s*([A-E]|\(\*+\))", text):
         q_num = int(num_str)
-        if 1 <= q_num <= 60 and q_num not in gab_map:
+        if 1 <= q_num <= 75 and q_num not in gab_map:
             gab_map[q_num] = "ANULADA" if "*" in ans else ans
     return gab_map
 
@@ -221,7 +233,7 @@ def extract_clean_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str]
                 min(page.rect.height, union_r.y1 + 8)
             )
             pix = page.get_pixmap(clip=clip, dpi=230)
-            fname = f"ita_{year}_q{q_num:02d}.png"
+            fname = f"{EXAM_BANCA.lower()}_{year}_q{q_num:02d}.png"
             pix.save(str(IMG_DIR / fname))
             q_figures[q_num] = f"data/images/{fname}"
             q_fig_rects.setdefault(q_num, []).append((p_idx, clip))
@@ -335,7 +347,7 @@ def detect_explicit_question_range(base_text: str) -> tuple[int, int] | None:
         m = re.search(pat, base_text, re.IGNORECASE)
         if m:
             start_q, end_q = int(m.group(1)), int(m.group(2))
-            if 1 <= start_q <= end_q <= 60:
+            if 1 <= start_q <= end_q <= 75:
                 return (start_q, end_q)
     return None
 
@@ -394,7 +406,7 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
                         fix_portuguese_accents_and_reflow(alt_text, is_alternative=True)
                     )
 
-        q_id = f"ITA-{year}-1F-Q{q_num:02d}"
+        q_id = f"{EXAM_BANCA}-{year}-1F-Q{q_num:02d}"
         if q_id in VERIFIED_LATEX_OVERRIDES:
             ov = VERIFIED_LATEX_OVERRIDES[q_id]
             if "enunciado" in ov:
@@ -409,7 +421,7 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
             "fase": "1ª Fase",
             "numero": q_num,
             "materia": materia,
-            "topico": f"{materia} - ITA {year}",
+            "topico": f"{materia} - {EXAM_BANCA} {year}",
             "subtopico": "Questão Oficial 1ª Fase",
             "dificuldade": "Difícil",
             "texto_base": None,
@@ -419,7 +431,7 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
             "gabarito": gabarito,
             "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para gerar a resolução passo a passo em LaTeX.",
             "resolucao": (
-                f"Gabarito Oficial ITA {year}: Alternativa {gabarito}."
+                f"Gabarito Oficial {EXAM_BANCA} {year}: Alternativa {gabarito}."
                 if gabarito != "ANULADA"
                 else f"Questão Oficialmente ANULADA pela banca do ITA {year}."
             )
@@ -487,13 +499,14 @@ def main():
 
     by_id = {item["id"]: item for item in existing if isinstance(item, dict) and "id" in item}
 
+    b_low = EXAM_BANCA.lower()
     prova_urls = [
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/ita/{EXAM_YEAR}/1fase/ita{EXAM_YEAR}_1fase_prova.pdf",
-        f"https://curso-objetivo.br/vestibular/resolucao-comentada/ita/{EXAM_YEAR}/1fase/ita{EXAM_YEAR}_1fase_prova.pdf"
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_low}{EXAM_YEAR}_1fase_prova.pdf",
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_low}{EXAM_YEAR}_1fase_prova.pdf"
     ]
     gab_urls = [
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/ita/{EXAM_YEAR}/1fase/ita{EXAM_YEAR}_1fase_gabarito.pdf",
-        f"https://curso-objetivo.br/vestibular/resolucao-comentada/ita/{EXAM_YEAR}/1fase/ita{EXAM_YEAR}_1fase_gabarito.pdf"
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_low}{EXAM_YEAR}_1fase_gabarito.pdf",
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_low}{EXAM_YEAR}_1fase_gabarito.pdf"
     ]
 
     prova_path = DATA_DIR / f"ita_{EXAM_YEAR}_prova.pdf"
