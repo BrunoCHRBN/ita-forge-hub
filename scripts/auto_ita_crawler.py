@@ -134,7 +134,7 @@ def get_subject(year: int, q_num: int) -> str:
         if 25 <= q_num <= 36: return "Inglês"
         if 37 <= q_num <= 48: return "Matemática"
         return "Química"
-    else:  # ITA 2019 a 2022 (70 questões)
+    else:
         if 1 <= q_num <= 15: return "Física"
         if 16 <= q_num <= 30: return "Português"
         if 31 <= q_num <= 40: return "Inglês"
@@ -500,19 +500,25 @@ def main():
     by_id = {item["id"]: item for item in existing if isinstance(item, dict) and "id" in item}
 
     b_low = EXAM_BANCA.lower()
+    b_low = EXAM_BANCA.lower()
+    b_up = EXAM_BANCA.upper()
     prova_urls = [
         f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_low}{EXAM_YEAR}_1fase_prova.pdf",
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_low}{EXAM_YEAR}_1fase_prova.pdf"
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_up}{EXAM_YEAR}_1fase_prova.pdf",
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_low}{EXAM_YEAR}_prova.pdf",
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_up}{EXAM_YEAR}_prova.pdf"
     ]
     gab_urls = [
         f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_low}{EXAM_YEAR}_1fase_gabarito.pdf",
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_low}{EXAM_YEAR}_1fase_gabarito.pdf"
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_up}{EXAM_YEAR}_1fase_gabarito.pdf",
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_low}{EXAM_YEAR}_gabarito.pdf",
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_up}{EXAM_YEAR}_gabarito.pdf"
     ]
 
     prova_path = DATA_DIR / f"ita_{EXAM_YEAR}_prova.pdf"
     gab_path = DATA_DIR / f"ita_{EXAM_YEAR}_gabarito.pdf"
 
-    print(f"=== Extraindo ITA {EXAM_YEAR} (Com Textos de Apoio + Figuras) ===")
+    print(f"=== Extraindo {EXAM_BANCA} {EXAM_YEAR} (Com Textos de Apoio + Figuras) ===")
     if fetch_pdf(prova_urls, prova_path):
         fetch_pdf(gab_urls, gab_path)
         gab_map = parse_gabarito_pdf(gab_path)
