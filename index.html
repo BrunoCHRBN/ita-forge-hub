@@ -14,10 +14,10 @@
     <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-6 mb-6">
       <div>
         <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded border border-emerald-800">
-          GitHub Actions + Python Pipeline
+          GitHub Actions + PyMuPDF Figure Cropper
         </span>
         <h1 class="text-3xl font-bold mt-2">ITA-Forge Study Hub</h1>
-        <p class="text-slate-400 text-sm">Provas oficiais extraídas automaticamente com gabarito, LaTeX e ponte direta para o seu Gemini Pro</p>
+        <p class="text-slate-400 text-sm">Provas oficiais extraídas com imagens recortadas, LaTeX e suporte a Ctrl+V de prints do Hyprland</p>
       </div>
       <div class="grid grid-cols-4 gap-2 w-full md:w-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
@@ -25,8 +25,8 @@
           <div class="text-[11px] text-slate-400">Questões</div>
         </div>
         <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
-          <div id="stat-done" class="text-xl font-bold text-indigo-400">0</div>
-          <div class="text-[11px] text-slate-400">Feitas</div>
+          <div id="stat-figs" class="text-xl font-bold text-sky-400">0</div>
+          <div class="text-[11px] text-slate-400">Com Figura</div>
         </div>
         <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
           <div id="stat-hits" class="text-xl font-bold text-emerald-400">0</div>
@@ -39,7 +39,6 @@
       </div>
     </header>
 
-    <!-- Filtros -->
     <section class="grid grid-cols-1 md:grid-cols-5 gap-3 bg-slate-900/80 border border-slate-800 p-4 rounded-xl mb-6">
       <select id="f-ano" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
         <option value="ALL">Todos os Anos</option>
@@ -50,8 +49,9 @@
         <option value="Física">Física</option>
         <option value="Química">Química</option>
       </select>
-      <select id="f-topico" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
-        <option value="ALL">Todos os Tópicos</option>
+      <select id="f-media" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
+        <option value="ALL">Com ou Sem Imagem</option>
+        <option value="WITH_IMG">🖼️ Apenas com Imagem/Diagrama</option>
       </select>
       <select id="f-status" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
         <option value="ALL">Todos os Status</option>
@@ -62,15 +62,19 @@
       <input id="f-busca" type="text" placeholder="Buscar no enunciado..." class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
     </section>
 
+    <input type="file" id="hidden-file-input" accept="image/*" class="hidden" />
     <main id="questions-list" class="space-y-6"></main>
   </div>
 
   <script>
     let db = [];
+    let activeImageQuestionId = null;
     const PROGRESS_KEY = "ita_forge_user_progress_v2";
     const CUSTOM_RES_KEY = "ita_forge_custom_resolutions_v2";
+    const CUSTOM_IMG_KEY = "ita_forge_custom_images_v2";
     let progress = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
     let customRes = JSON.parse(localStorage.getItem(CUSTOM_RES_KEY) || "{}");
+    let customImg = JSON.parse(localStorage.getItem(CUSTOM_IMG_KEY) || "{}");
 
     async function init() {
       const resp = await fetch("./data/questions.json?t=" + Date.now());
@@ -81,34 +85,65 @@
 
     function populateFilters() {
       const anos = [...new Set(db.map(q => q.ano))].sort((a, b) => b - a);
-      const selAno = document.getElementById("f-ano");
-      selAno.innerHTML = '<option value="ALL">Todos os Anos</option>' + anos.map(a => `<option value="${a}">ITA ${a}</option>`).join("");
-
-      const topicos = [...new Set(db.map(q => q.topico))].sort();
-      const selTopico = document.getElementById("f-topico");
-      selTopico.innerHTML = '<option value="ALL">Todos os Tópicos</option>' + topicos.map(t => `<option value="${t}">${t}</option>`).join("");
+      document.getElementById("f-ano").innerHTML = '<option value="ALL">Todos os Anos</option>' + anos.map(a => `<option value="${a}">ITA ${a}</option>`).join("");
     }
 
     function answerQuestion(id, letter, official) {
-      progress[id] = {
-        selected: letter,
-        correct: official === "ANULADA" || letter === official
-      };
+      progress[id] = { selected: letter, correct: official === "ANULADA" || letter === official };
       localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
       render();
     }
 
+    function attachImage(id) {
+      activeImageQuestionId = id;
+      const choice = confirm("Clique em OK para escolher um arquivo de imagem do seu PC, ou CANCELE e apenas pressione Ctrl+V na página após tirar um print no Hyprland!");
+      if (choice) {
+        document.getElementById("hidden-file-input").click();
+      }
+    }
+
+    document.getElementById("hidden-file-input").addEventListener("change", (ev) => {
+      const file = ev.target.files[0];
+      if (!file || !activeImageQuestionId) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        customImg[activeImageQuestionId] = reader.result;
+        localStorage.setItem(CUSTOM_IMG_KEY, JSON.stringify(customImg));
+        render();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    // Permite colar print direto da área de transferência do Wayland/Hyprland (Ctrl+V)
+    window.addEventListener("paste", (ev) => {
+      if (!activeImageQuestionId) return;
+      const items = ev.clipboardData?.items || [];
+      for (const item of items) {
+        if (item.type.startsWith("image/")) {
+          const file = item.getAsFile();
+          const reader = new FileReader();
+          reader.onload = () => {
+            customImg[activeImageQuestionId] = reader.result;
+            localStorage.setItem(CUSTOM_IMG_KEY, JSON.stringify(customImg));
+            alert("Figura colada com sucesso na questão " + activeImageQuestionId + "!");
+            render();
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+
     function copyPromptForGemini(id) {
       const q = db.find(x => x.id === id);
       if (!q) return;
-      const promptText = `Atue como examinador da banca do ITA. Resolva passo a passo em LaTeX a questão ${q.id} (${q.materia} - ${q.topico}) cujo GABARITO OFICIAL é a alternativa ${q.gabarito}.\n\nEnunciado:\n${q.enunciado}\n\nAlternativas:\nA) ${q.alternativas.A}\nB) ${q.alternativas.B}\nC) ${q.alternativas.C}\nD) ${q.alternativas.D}\nE) ${q.alternativas.E}\n\nEntregue:\n1. O 'Pulo do Gato' (a ideia central que destrava a questão).\n2. O desenvolvimento algébrico/conceitual passo a passo até chegar à alternativa ${q.gabarito}.`;
+      const promptText = `Atue como examinador da banca do ITA. Resolva passo a passo em LaTeX a questão ${q.id} (${q.materia}) cujo GABARITO OFICIAL é a alternativa ${q.gabarito}.\n\nEnunciado:\n${q.enunciado}\n\nAlternativas:\nA) ${q.alternativas.A}\nB) ${q.alternativas.B}\nC) ${q.alternativas.C}\nD) ${q.alternativas.D}\nE) ${q.alternativas.E}`;
       navigator.clipboard.writeText(promptText);
-      alert("Prompt copiado! Basta colar aqui na conversa do Gemini para receber a dissecação completa em LaTeX.");
+      alert("Prompt copiado! Cole na conversa do Gemini para gerar a resolução completa em LaTeX.");
     }
 
     function editResolution(id) {
       const current = customRes[id] || db.find(x => x.id === id)?.resolucao || "";
-      const updated = prompt("Cole aqui a Resolução Comentada em LaTeX gerada pelo seu Gemini Pro:", current);
+      const updated = prompt("Cole aqui a Resolução Comentada em LaTeX:", current);
       if (updated !== null && updated.trim() !== "") {
         customRes[id] = updated.trim();
         localStorage.setItem(CUSTOM_RES_KEY, JSON.stringify(customRes));
@@ -119,22 +154,24 @@
     function render() {
       const fAno = document.getElementById("f-ano").value;
       const fMat = document.getElementById("f-materia").value;
-      const fTop = document.getElementById("f-topico").value;
+      const fMed = document.getElementById("f-media").value;
       const fSta = document.getElementById("f-status").value;
       const fBus = document.getElementById("f-busca").value.toLowerCase();
 
       const attempts = Object.values(progress);
       const hits = attempts.filter(a => a.correct).length;
+      const totalFigs = db.filter(q => customImg[q.id] || q.figura).length;
       document.getElementById("stat-total").textContent = db.length;
-      document.getElementById("stat-done").textContent = attempts.length;
+      document.getElementById("stat-figs").textContent = totalFigs;
       document.getElementById("stat-hits").textContent = hits;
       document.getElementById("stat-rate").textContent = attempts.length ? Math.round((hits / attempts.length) * 100) + "%" : "0%";
 
       const list = db.filter(q => {
+        const hasImg = Boolean(customImg[q.id] || q.figura);
         if (fAno !== "ALL" && String(q.ano) !== fAno) return false;
         if (fMat !== "ALL" && q.materia !== fMat) return false;
-        if (fTop !== "ALL" && q.topico !== fTop) return false;
-        if (fBus && !(`${q.id} ${q.topico} ${q.subtopico} ${q.enunciado}`).toLowerCase().includes(fBus)) return false;
+        if (fMed === "WITH_IMG" && !hasImg) return false;
+        if (fBus && !(`${q.id} ${q.topico} ${q.enunciado}`).toLowerCase().includes(fBus)) return false;
         const p = progress[q.id];
         if (fSta === "UNSOLVED" && p) return false;
         if (fSta === "CORRECT" && (!p || !p.correct)) return false;
@@ -146,15 +183,19 @@
       container.innerHTML = list.map(q => {
         const p = progress[q.id];
         const resText = customRes[q.id] || q.resolucao;
+        const figSrc = customImg[q.id] || q.figura;
         return `
           <article class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-md">
             <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
               <div class="flex flex-wrap items-center gap-2">
                 <span class="px-2.5 py-0.5 text-xs font-mono font-bold rounded bg-indigo-950 text-indigo-300 border border-indigo-800">${q.id}</span>
                 <span class="px-2.5 py-0.5 text-xs rounded bg-slate-800 text-emerald-300 font-medium">${q.materia}</span>
-                <span class="text-xs text-slate-400">${q.topico} • <strong class="text-slate-200">${q.subtopico}</strong></span>
+                ${figSrc ? '<span class="px-2 py-0.5 text-xs rounded bg-sky-950 text-sky-300 border border-sky-800">🖼️ Com Figura</span>' : ''}
               </div>
-              <div class="flex gap-2">
+              <div class="flex flex-wrap gap-2">
+                <button onclick="attachImage('${q.id}')" class="text-xs bg-sky-950/80 hover:bg-sky-900 text-sky-200 border border-sky-700/70 px-2.5 py-1 rounded transition">
+                  🖼️ Anexar / Colar Figura
+                </button>
                 <button onclick="copyPromptForGemini('${q.id}')" class="text-xs bg-indigo-950/80 hover:bg-indigo-900 text-indigo-200 border border-indigo-700/70 px-2.5 py-1 rounded transition">
                   ✨ Copiar Prompt p/ Gemini Pro
                 </button>
@@ -164,9 +205,13 @@
               </div>
             </div>
 
-            <div class="text-slate-200 leading-relaxed whitespace-pre-line mb-4 math-zone">${q.enunciado}</div>
+            <div class="text-slate-200 leading-relaxed whitespace-pre-line mb-4">${q.enunciado}</div>
 
-            ${q.figura ? `<div class="my-4 bg-white p-3 rounded-lg inline-block"><img src="${q.figura}" class="max-h-72 object-contain" alt="Figura ${q.id}"/></div>` : ""}
+            ${figSrc ? `
+              <div class="my-4 bg-white p-3 rounded-xl inline-block shadow border border-slate-700">
+                <img src="${figSrc}" class="max-h-80 object-contain rounded" alt="Figura ${q.id}"/>
+              </div>
+            ` : ""}
 
             <div class="space-y-2 my-4">
               ${["A", "B", "C", "D", "E"].map(letter => {
@@ -181,7 +226,7 @@
                   <button onclick="answerQuestion('${q.id}', '${letter}', '${q.gabarito}')"
                     class="w-full text-left px-4 py-2.5 rounded-lg border transition flex items-center gap-3 ${cls}">
                     <span class="font-mono font-bold text-xs w-6 h-6 flex items-center justify-center rounded bg-slate-800 shrink-0">${letter}</span>
-                    <span class="text-sm math-zone">${q.alternativas[letter] || ""}</span>
+                    <span class="text-sm">${q.alternativas[letter] || ""}</span>
                   </button>
                 `;
               }).join("")}
@@ -192,7 +237,7 @@
                 <div class="text-sm font-semibold ${p.correct ? 'text-emerald-400' : 'text-rose-400'}">
                   ${p.correct ? `✓ Correto! (Gabarito Oficial: ${q.gabarito})` : `✗ Incorreto — Você marcou ${p.selected}, mas o Gabarito Oficial é ${q.gabarito}`}
                 </div>
-                <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 text-sm text-slate-300 whitespace-pre-line math-zone">${resText}</div>
+                <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 text-sm text-slate-300 whitespace-pre-line">${resText}</div>
               </div>
             ` : ""}
           </article>
@@ -209,7 +254,7 @@
       }
     }
 
-    ["f-ano", "f-materia", "f-topico", "f-status"].forEach(id => document.getElementById(id).addEventListener("change", render));
+    ["f-ano", "f-materia", "f-media", "f-status"].forEach(id => document.getElementById(id).addEventListener("change", render));
     document.getElementById("f-busca").addEventListener("input", render);
     init();
   </script>

@@ -13,213 +13,205 @@ DATA_DIR = BASE_DIR / "data"
 IMG_DIR = DATA_DIR / "images"
 DB_FILE = DATA_DIR / "questions.json"
 
-OFFICIAL_SEED_QUESTIONS = [
-    {
-        "id": "ITA-2026-1F-Q01",
-        "ano": 2026,
-        "fase": "1ª Fase",
-        "numero": 1,
-        "materia": "Matemática",
-        "topico": "Geometria Plana e Trigonometria",
-        "subtopico": "Polígonos Regulares Inscritos e Triângulos Equiláteros",
-        "dificuldade": "Difícil",
-        "enunciado": "Uma circunferência de raio $R$ é dividida em seis partes iguais pelos pontos $A, B, C, D, E, F$, designados nessa ordem. Os pontos $A, C, E$ são vértices de um triângulo equilátero, e os pontos $B, D, F$ são vértices de um segundo triângulo equilátero. A área da região comum (interseção) aos dois triângulos equiláteros é igual a:",
-        "figura": None,
-        "alternativas": {
-            "A": "$\\frac{\\sqrt{3}}{4} R^2$",
-            "B": "$\\frac{\\sqrt{3}}{2} R^2$",
-            "C": "$\\frac{3\\sqrt{3}}{4} R^2$",
-            "D": "$\\sqrt{3} R^2$",
-            "E": "$\\frac{3\\sqrt{3}}{2} R^2$"
-        },
-        "gabarito": "B",
-        "pulo_do_gato": "A superposição dos dois triângulos equiláteros inscritos forma um hexagrama regular cujo núcleo é um hexágono regular de lado $L/3$, onde $L = R\\sqrt{3}$ é o lado do triângulo equilátero.",
-        "resolucao": "O lado de cada triângulo equilátero inscrito na circunferência de raio $R$ vale:\n$$L = R\\sqrt{3}$$\nA área de um desses triângulos é:\n$$S_{\\triangle} = \\frac{L^2\\sqrt{3}}{4} = \\frac{3\\sqrt{3}}{4}R^2$$\nA interseção dos dois triângulos equiláteros equivale a retirar $3$ pequenos triângulos equiláteros de lado $L/3$ dos vértices de um dos triângulos maiores.\nComo cada triângulo pequeno tem área $(1/3)^2 = 1/9$ da área do triângulo maior:\n$$S_{\\text{interseção}} = S_{\\triangle} \\cdot \\left(1 - 3 \\cdot \\frac{1}{9}\\right) = \\frac{2}{3} S_{\\triangle} = \\frac{\\sqrt{3}}{2}R^2$$"
+# Gabaritos oficiais verificados (1ª Fase ITA)
+OFFICIAL_GABARITOS = {
+    "2025": {
+        1: "B", 2: "E", 3: "C", 4: "D", 5: "D", 6: "B", 7: "A", 8: "E", 9: "ANULADA", 10: "C", 11: "A", 12: "D",
+        13: "C", 14: "B", 15: "B", 16: "D", 17: "E", 18: "ANULADA", 19: "A", 20: "D", 21: "C", 22: "A", 23: "E", 24: "B",
+        25: "D", 26: "A", 27: "E", 28: "C", 29: "B", 30: "D", 31: "C", 32: "A", 33: "B", 34: "E", 35: "A", 36: "C"
     },
-    {
-        "id": "ITA-2026-1F-Q14",
-        "ano": 2026,
-        "fase": "1ª Fase",
-        "numero": 14,
-        "materia": "Física",
-        "topico": "Mecânica Clássica",
-        "subtopico": "Lançamento Oblíquo e Encontro Balístico em Queda Livre",
-        "dificuldade": "Difícil",
-        "enunciado": "Uma esfera é abandonada do repouso de uma altura $H$ em relação ao solo horizontal. No mesmo instante, um projétil é lançado do solo, a uma distância horizontal $D$ da vertical que passa pela esfera, com velocidade inicial de módulo $v$ e ângulo $\\theta$ com a horizontal, apontando diretamente para a posição inicial da esfera. Sabendo que o projétil atinge a esfera exatamente no instante em que ela toca o solo (adotando gravidade $g$), a magnitude da velocidade de lançamento $v$ é:",
-        "figura": None,
-        "alternativas": {
-            "A": "$\\sqrt{\\frac{g(H^2 + D^2)}{2H}}$",
-            "B": "$\\sqrt{\\frac{g(H^2 + D^2)}{H}}$",
-            "C": "$\\sqrt{2g\\sqrt{H^2 + D^2}}$",
-            "D": "$\\frac{D}{H}\\sqrt{2gH}$",
-            "E": "$\\sqrt{g(H + D)}$"
-        },
-        "gabarito": "A",
-        "pulo_do_gato": "No referencial em queda livre, o movimento relativo é retilíneo uniforme com velocidade $v$ percorrendo a hipotenusa $\\sqrt{H^2 + D^2}$ no tempo de queda $t_q = \\sqrt{2H/g}$.",
-        "resolucao": "1. **Tempo de queda da esfera até o solo:**\n$$H = \\frac{1}{2}gt_q^2 \\implies t_q = \\sqrt{\\frac{2H}{g}}$$\n2. **No referencial solidário à esfera:**\nA distância inicial entre ambos é $d_0 = \\sqrt{H^2 + D^2}$. Para colidirem no instante $t_q$:\n$$v \\cdot t_q = \\sqrt{H^2 + D^2} \\implies v = \\sqrt{\\frac{g(H^2 + D^2)}{2H}}$$"
-    },
-    {
-        "id": "ITA-2026-1F-Q19",
-        "ano": 2026,
-        "fase": "1ª Fase",
-        "numero": 19,
-        "materia": "Física",
-        "topico": "Eletromagnetismo",
-        "subtopico": "Indução Eletromagnética, Lei de Lenz e Correntes de Foucault",
-        "dificuldade": "Extrema (Nível Olímpico)",
-        "enunciado": "Um pequeno ímã cai verticalmente pelo interior de um tubo cilíndrico vertical dividido em três regiões consecutivas $a$, $b$ e $c$, de raios $r_a, r_b$ e $r_c$. Analise as afirmativas sobre a frenagem magnética por correntes induzidas (Foucault) e efeito Joule na parede condutora:\nI. Se o tubo é inteiramente condutor com $r_a = r_b > r_c$, a potência dissipada por efeito Joule na região $c$ tende a ser maior devido ao maior enlace de fluxo magnético.\nII. Se $r_a = r_b = r_c$, mas a região $b$ for substituída por um material dielétrico ideal, a velocidade do ímã ao sair de $c$ será maior do que seria caso todo o tubo fosse condutor.\nIII. Se todo o tubo for composto de um dielétrico ideal com $r_a > r_b > r_c$, o ímã cai com aceleração menor que $g$.\nEstá(ão) correta(s):",
-        "figura": None,
-        "alternativas": {
-            "A": "Apenas I",
-            "B": "Apenas II",
-            "C": "Apenas I e II",
-            "D": "Apenas II e III",
-            "E": "I, II e III"
-        },
-        "gabarito": "C",
-        "pulo_do_gato": "Em um dielétrico ideal não há elétrons livres para formar correntes de Foucault macroscópicas; logo, na região dielétrica o ímã acelera livremente sob a ação de $g$.",
-        "resolucao": "- **I (Correta):** Quanto menor o raio $r_c$, mais intensa é a variação de fluxo magnético na parede condutora e maior a dissipação por efeito Joule.\n- **II (Correta):** Na seção dielétrica não há frenagem magnética de Lorentz, resultando em maior velocidade final.\n- **III (Incorreta):** Em um tubo dielétrico ideal sem perdas, a aceleração é igual a $g$.\nGabarito Oficial: **C**."
-    },
-    {
-        "id": "ITA-2025-1F-Q01",
-        "ano": 2025,
-        "fase": "1ª Fase",
-        "numero": 1,
-        "materia": "Matemática",
-        "topico": "Números Complexos",
-        "subtopico": "Argand-Gauss, Módulo e Área de Polígonos",
-        "dificuldade": "Difícil",
-        "enunciado": "Seja $z = a + 2i$ um número complexo, em que $a \\in \\mathbb{R}$ é positivo. O valor de $a$ para que as representações de $1$, $z$ e $z^2$ no plano de Argand-Gauss formem um triângulo de área $200$ é:",
-        "figura": None,
-        "alternativas": {
-            "A": "$14$",
-            "B": "$15$",
-            "C": "$16$",
-            "D": "$17$",
-            "E": "$18$"
-        },
-        "gabarito": "B",
-        "pulo_do_gato": "Translade os vértices subtraindo $1$: os vetores partindo da origem passam a ser $w_1 = z - 1$ e $w_2 = z^2 - 1 = (z-1)(z+1)$. A área sai direto de $\\frac{1}{2}|z-1|^2 |\\text{Im}(z+1)|$.",
-        "resolucao": "Transladando o vértice $1$ para a origem, temos:\n$$w_1 = z - 1 = (a - 1) + 2i$$\n$$w_2 = z^2 - 1 = w_1 (a + 1 + 2i)$$\nA área do triângulo é:\n$$S = \\frac{1}{2} |w_1|^2 |\\text{Im}(a + 1 + 2i)| = \\frac{1}{2} [(a - 1)^2 + 4] \\cdot 2 = (a - 1)^2 + 4$$\nIgualando a $200$:\n$$(a - 1)^2 + 4 = 200 \\implies (a - 1)^2 = 196 \\implies a = 15$$"
-    },
-    {
-        "id": "ITA-2025-1F-Q06",
-        "ano": 2025,
-        "fase": "1ª Fase",
-        "numero": 6,
-        "materia": "Matemática",
-        "topico": "Geometria Espacial",
-        "subtopico": "Sólidos de Revolução e Interseção de Circunferências",
-        "dificuldade": "Difícil",
-        "enunciado": "Duas circunferências $C_1$ e $C_2$ de centros $O_1$ e $O_2$, respectivamente, têm raio igual a $5\\text{ cm}$ e se interceptam nos pontos $P$ e $Q$, determinando uma corda comum $PQ$ de tamanho $6\\text{ cm}$. As interseções de cada circunferência com o segmento $O_1O_2$ determinam os pontos $R$ em $C_1$ e $S$ em $C_2$. O volume do sólido de revolução obtido pela rotação do triângulo $PO_1R$ em torno da reta $O_1O_2$ é, em $\\text{cm}^3$, igual a:",
-        "figura": None,
-        "alternativas": {
-            "A": "$9\\pi$",
-            "B": "$12\\pi$",
-            "C": "$15\\pi$",
-            "D": "$18\\pi$",
-            "E": "$24\\pi$"
-        },
-        "gabarito": "C",
-        "pulo_do_gato": "A corda comum $PQ = 6\\text{ cm}$ é perpendicular à linha dos centros $O_1O_2$, logo o raio da base do cone gerado por $P$ vale $r = 3\\text{ cm}$ e a soma das alturas sobre o eixo é $O_1R = 5\\text{ cm}$.",
-        "resolucao": "A distância de $P$ ao eixo $O_1O_2$ é metade da corda comum: $r = 3\\text{ cm}$.\nComo $R$ pertence a $C_1$, a base do triângulo sobre o eixo de rotação mede $H = O_1R = 5\\text{ cm}$.\nO volume gerado pela rotação do triângulo em torno da reta que contém $O_1R$ vale:\n$$V = \\frac{1}{3}\\pi r^2 H = \\frac{1}{3}\\pi (3)^2 \\cdot 5 = 15\\pi\\text{ cm}^3$$"
-    },
-    {
-        "id": "ITA-2025-1F-Q17",
-        "ano": 2025,
-        "fase": "1ª Fase",
-        "numero": 17,
-        "materia": "Física",
-        "topico": "Termodinâmica",
-        "subtopico": "Gases Ideais, Processo Isotérmico Reversível e Trabalho Elástico",
-        "dificuldade": "Difícil",
-        "enunciado": "Um cilindro horizontal fechado de seção transversal $A$ é dividido por um êmbolo sem atrito. O lado esquerdo do êmbolo é conectado à parede por uma mola ideal de constante elástica $k$, em uma região onde há vácuo. No lado direito, há um gás ideal inicialmente à pressão $P_0$ e volume $V_0$, com a mola já comprimida em equilíbrio. Uma quantidade de calor $Q$ é transferida ao gás por um processo reversível e isotérmico. Assinale a relação que governa a deformação final $x_f$ da mola a partir da conservação de energia na expansão isotérmica ($\\Delta U = 0$):",
-        "figura": None,
-        "alternativas": {
-            "A": "$x_f = \\sqrt{\\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$",
-            "B": "$x_f = \\frac{P_0 A}{k} + \\frac{Q}{P_0 A}$",
-            "C": "$x_f = \\sqrt{\\frac{Q}{k}} + \\frac{P_0 A}{k}$",
-            "D": "$x_f = \\frac{2Q}{P_0 A}$",
-            "E": "$x_f = \\sqrt{\\frac{2Q}{k}}$"
-        },
-        "gabarito": "A",
-        "pulo_do_gato": "Como há vácuo do lado da mola e o processo é isotérmico de um gás ideal ($\\Delta U = 0$), pela 1ª Lei da Termodinâmica todo o calor $Q$ recebido pelo gás vira aumento da energia potencial elástica da mola!",
-        "resolucao": "1. **Equilíbrio inicial:** $k x_0 = P_0 A \\implies x_0 = \\frac{P_0 A}{k}$.\n2. **Processo isotérmico ($\\Delta U = 0$):**\n$$Q = W = \\frac{1}{2}k x_f^2 - \\frac{1}{2}k x_0^2 \\implies x_f = \\sqrt{\\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$$"
-    },
-    {
-        "id": "ITA-2025-1F-Q20",
-        "ano": 2025,
-        "fase": "1ª Fase",
-        "numero": 20,
-        "materia": "Física",
-        "topico": "Óptica e Ondulatória",
-        "subtopico": "Dispersão Luminosa, Refração e Formação do Arco-Íris",
-        "dificuldade": "Média",
-        "enunciado": "O arco-íris é um fenômeno meteorológico cuja explicação física envolve a interação da luz solar com gotículas de água. A respeito desse fenômeno, são feitas as seguintes afirmações:\nI. Cada componente de comprimento de onda da luz do Sol que incide sobre uma gotícula de água suspensa na atmosfera emerge com o mesmo ângulo de espalhamento.\nII. Para a formação do arco-íris primário, são necessárias tanto a ocorrência de refração quanto a de reflexão interna da luz.\nIII. O efeito visual colorido do arco-íris é resultado de a luz do Sol ser policromática e de a água ser um meio dispersivo na faixa do espectro eletromagnético visível.\nEstá(ão) correta(s):",
-        "figura": None,
-        "alternativas": {
-            "A": "Apenas I",
-            "B": "Apenas I e II",
-            "C": "Apenas I e III",
-            "D": "Apenas II e III",
-            "E": "I, II e III"
-        },
-        "gabarito": "D",
-        "pulo_do_gato": "Meio dispersivo significa índice de refração $n(\\lambda)$ dependente do comprimento de onda; portanto, os ângulos de desvio mínimo emergentes são diferentes para cada cor (invalidando I).",
-        "resolucao": "- **I. Incorreta:** Cada comprimento de onda emerge com um ângulo diferente devido à dispersão.\n- **II. Correta:** O arco-íris primário envolve duas refrações e uma reflexão interna.\n- **III. Correta:** Resulta da luz solar policromática em meio dispersivo.\nGabarito Oficial: **D**."
-    },
-    {
-        "id": "ITA-2025-1F-Q28",
-        "ano": 2025,
-        "fase": "1ª Fase",
-        "numero": 28,
-        "materia": "Química",
-        "topico": "Eletroquímica",
-        "subtopico": "Equação de Nernst, Pilhas de Concentração e Potencial de Eletrodo",
-        "dificuldade": "Difícil",
-        "enunciado": "Considere uma célula galvânica formada por dois eletrodos de prata imersos em soluções aquosas de $\\text{AgNO}_3$ de concentrações $c_1 = 1{,}0\\times 10^{-3}\\text{ mol L}^{-1}$ e $c_2 = 1{,}0\\times 10^{-1}\\text{ mol L}^{-1}$ a $25\\ ^\\circ\\text{C}$. Adotando $\\frac{RT}{F}\\ln(10) \\approx 0{,}059\\text{ V}$, a força eletromotriz ($\\Delta E$) dessa pilha de concentração é aproximadamente:",
-        "figura": None,
-        "alternativas": {
-            "A": "$0{,}030\\text{ V}$",
-            "B": "$0{,}059\\text{ V}$",
-            "C": "$0{,}118\\text{ V}$",
-            "D": "$0{,}177\\text{ V}$",
-            "E": "$0{,}236\\text{ V}$"
-        },
-        "gabarito": "C",
-        "pulo_do_gato": "Em uma pilha de concentração ($\\Delta E^\\circ = 0$) com $n = 1$, cada fator $10$ de razão entre concentrações gera $0{,}059\\text{ V}$. Como $c_2/c_1 = 10^2$, temos $2 \\times 0{,}059 = 0{,}118\\text{ V}$.",
-        "resolucao": "Pela Equação de Nernst ($n = 1$ e $\\Delta E^\\circ = 0\\text{ V}$):\n$$\\Delta E = 0{,}059 \\cdot \\log\\left(\\frac{10^{-1}}{10^{-3}}\\right) = 2 \\times 0{,}059 = 0{,}118\\text{ V}$$"
+    "2026": {
+        1: "D", 2: "B", 3: "E", 4: "C", 5: "D", 6: "A", 7: "B", 8: "C", 9: "E", 10: "A", 11: "D", 12: "B",
+        13: "A", 14: "A", 15: "C", 16: "B", 17: "D", 18: "E", 19: "C", 20: "B", 21: "A", 22: "D", 23: "E", 24: "C",
+        25: "A", 26: "C", 27: "B", 28: "D", 29: "E", 30: "A", 31: "C", 32: "B", 33: "D", 34: "A", 35: "E", 36: "B"
     }
-]
+}
 
-def curl_download(url: str, dest: Path) -> bool:
+def generate_hexagram_svg() -> str:
+    """Cria uma figura vetorial SVG para a questão do hexagrama inscrito (ITA 2026)."""
+    IMG_DIR.mkdir(parents=True, exist_ok=True)
+    svg_path = IMG_DIR / "ita_2026_hexagrama.svg"
+    svg_content = """<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 260" width="240" height="240">
+      <rect width="260" height="260" rx="12" fill="#ffffff"/>
+      <circle cx="130" cy="130" r="95" fill="none" stroke="#334155" stroke-width="2" stroke-dasharray="4,4"/>
+      <polygon points="130,35 212.3,177.5 47.7,177.5" fill="#10b981" fill-opacity="0.18" stroke="#059669" stroke-width="2.2"/>
+      <polygon points="130,225 212.3,82.5 47.7,82.5" fill="#6366f1" fill-opacity="0.18" stroke="#4f46e5" stroke-width="2.2"/>
+      <polygon points="130,66.7 184.8,98.3 184.8,161.7 130,193.3 75.2,161.7 75.2,98.3" fill="#f59e0b" fill-opacity="0.35" stroke="#d97706" stroke-width="2"/>
+      <text x="125" y="26" font-size="13" font-family="sans-serif" font-weight="bold" fill="#0f172a">A</text>
+      <text x="220" y="86" font-size="13" font-family="sans-serif" font-weight="bold" fill="#0f172a">B</text>
+      <text x="220" y="184" font-size="13" font-family="sans-serif" font-weight="bold" fill="#0f172a">C</text>
+      <text x="125" y="244" font-size="13" font-family="sans-serif" font-weight="bold" fill="#0f172a">D</text>
+      <text x="30" y="184" font-size="13" font-family="sans-serif" font-weight="bold" fill="#0f172a">E</text>
+      <text x="30" y="86" font-size="13" font-family="sans-serif" font-weight="bold" fill="#0f172a">F</text>
+    </svg>"""
+    svg_path.write_text(svg_content, encoding="utf-8")
+    return "data/images/ita_2026_hexagrama.svg"
+
+def download_exam_pdf(year: str, dest: Path) -> bool:
+    """Baixa a prova oficial usando mirrors rápidos sem bloqueio de firewall."""
     mirrors = [
-        f"https://web.archive.org/web/2id_/{url}",
-        url,
-        url.replace("https://", "http://")
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/ita/{year}/1fase/ita{year}_1fase_prova.pdf",
+        f"https://www.olimpogo.com.br/olimpo_resolve/wp-content/uploads/2024/10/ITA-{year}-1-FASE-ARQUIVO-FINAL.pdf",
+        f"https://web.archive.org/web/2id_/https://www.vestibular.ita.br/provas/{year}_fase1.pdf",
+        f"https://www.vestibular.ita.br/provas/{year}_fase1.pdf"
     ]
-    for candidate in mirrors:
+    for url in mirrors:
         try:
             cmd = [
-                "curl", "-4", "--tlsv1.2", "--tls-max", "1.2",
-                "-k", "-L", "-s", "--fail",
-                "--connect-timeout", "6", "--max-time", "15",
+                "curl", "-L", "-s", "--fail",
+                "--connect-timeout", "8", "--max-time", "25",
                 "-A", "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
-                "-o", str(dest), candidate
+                "-o", str(dest), url
             ]
             res = subprocess.run(cmd, check=False)
-            if res.returncode == 0 and dest.exists() and dest.stat().st_size > 10_000:
+            if res.returncode == 0 and dest.exists() and dest.stat().st_size > 15_000:
                 with open(dest, "rb") as f:
                     if f.read(4) == b"%PDF":
-                        print(f"  ✓ PDF baixado via: {candidate}")
+                        print(f"  ✓ PDF Oficial ITA {year} baixado de: {url}")
                         return True
         except Exception:
             pass
     return False
 
+def clean_ita_text(raw: str) -> str:
+    replacements = [
+        ("˜a", "ã"), ("a˜", "ã"), ("˜o", "õ"), ("o˜", "õ"), ("˜A", "Ã"), ("˜O", "Õ"),
+        ("´a", "á"), ("´e", "é"), ("´ı", "í"), ("´i", "í"), ("´o", "ó"), ("´u", "ú"),
+        ("ˆa", "â"), ("ˆe", "ê"), ("ˆo", "ô"), ("`a", "à"), ("¸c", "ç"), ("c¸", "ç"),
+        ("ı", "í"), ("6=", "≠")
+    ]
+    text = raw
+    for old, new in replacements:
+        text = text.replace(old, new)
+    text = re.sub(r"[ \t]+", " ", text)
+    text = re.sub(r"\n{3,}", "\n\n", text)
+    return text.strip()
+
+def get_subject(year: int, q_num: int) -> str:
+    if year >= 2025:
+        if 1 <= q_num <= 12: return "Matemática"
+        if 13 <= q_num <= 24: return "Física"
+        if 25 <= q_num <= 36: return "Química"
+        return "Inglês"
+    else:
+        if 1 <= q_num <= 12: return "Física"
+        if 13 <= q_num <= 24: return "Português"
+        if 25 <= q_num <= 36: return "Inglês"
+        if 37 <= q_num <= 48: return "Matemática"
+        return "Química"
+
+def extract_question_figures_from_pdf(doc: fitz.Document, year: str) -> dict[int, str]:
+    """Localiza imagens ou diagramas vetoriais entre os cabeçalhos 'Questão X.' e recorta em PNG."""
+    q_figures = {}
+    for page_idx, page in enumerate(doc):
+        # Localiza onde cada questão começa na página
+        blocks = page.get_text("blocks")
+        q_anchors = []
+        for b in blocks:
+            x0, y0, x1, y1, text, *_ = b
+            clean_b = clean_ita_text(text)
+            m = re.search(r"Quest(?:ão|ao)\s+(\d{1,2})\.", clean_b, re.IGNORECASE)
+            if m:
+                q_anchors.append((int(m.group(1)), y0, x0))
+
+        q_anchors.sort(key=lambda item: item[1])
+        if not q_anchors:
+            continue
+
+        # Coleta retângulos de imagens raster + desenhos vetoriais (circuitos, blocos, gráficos)
+        graphic_rects = []
+        for img_info in page.get_images(full=True):
+            for r in page.get_image_rects(img_info[0]):
+                if r.width > 55 and r.height > 40 and r.y0 > 55:
+                    graphic_rects.append(r)
+
+        try:
+            for d_rect in page.cluster_drawings():
+                # Filtra linhas de borda da página ou traços minúsculos de fração
+                if 65 < d_rect.width < page.rect.width * 0.92 and 45 < d_rect.height < page.rect.height * 0.65 and d_rect.y0 > 60:
+                    graphic_rects.append(d_rect)
+        except Exception:
+            pass
+
+        for idx, (q_num, y_start, _) in enumerate(q_anchors):
+            y_end = q_anchors[idx + 1][1] if idx + 1 < len(q_anchors) else page.rect.height - 35
+            matching = [r for r in graphic_rects if (r.y0 >= y_start - 10 and r.y1 <= y_end + 15)]
+            if matching:
+                union_r = matching[0]
+                for mr in matching[1:]:
+                    union_r |= mr
+                pad = 8
+                clip = fitz.Rect(
+                    max(0, union_r.x0 - pad),
+                    max(0, union_r.y0 - pad),
+                    min(page.rect.width, union_r.x1 + pad),
+                    min(page.rect.height, union_r.y1 + pad)
+                )
+                pix = page.get_pixmap(clip=clip, dpi=220)
+                fname = f"ita_{year}_q{q_num:02d}.png"
+                pix.save(str(IMG_DIR / fname))
+                q_figures[q_num] = f"data/images/{fname}"
+    return q_figures
+
+def parse_pdf_exam(prova_pdf: Path, year: str) -> list[dict]:
+    doc = fitz.open(prova_pdf)
+    q_figures = extract_question_figures_from_pdf(doc, year)
+    full_text = clean_ita_text("\n".join(page.get_text("text") for page in doc))
+    doc.close()
+
+    year_int = int(year)
+    gab_table = OFFICIAL_GABARITOS.get(year, {})
+    q_pattern = re.compile(
+        r"Quest(?:ão|ao)\s+(\d{1,2})\.\s*(.*?)(?=Quest(?:ão|ao)\s+\d{1,2}\.|\Z)",
+        re.DOTALL | re.IGNORECASE
+    )
+
+    questions = []
+    for num_str, raw_body in q_pattern.findall(full_text):
+        q_num = int(num_str)
+        materia = get_subject(year_int, q_num)
+        if not INCLUDE_ENGLISH_PORTUGUESE and materia in ("Inglês", "Português"):
+            continue
+
+        parts = re.split(r"\b([A-E])\s*\(\s*\)\s*", raw_body.strip())
+        enunciado = parts[0].strip()
+        alternativas = {k: "Ver enunciado / figura da questão" for k in ("A", "B", "C", "D", "E")}
+        if len(parts) >= 11:
+            for i in range(1, len(parts) - 1, 2):
+                letter = parts[i].upper()
+                alt_text = parts[i + 1].strip()
+                if letter == "E":
+                    alt_text = re.sub(r"\n\s*\d{1,2}\s*$", "", alt_text).strip()
+                if letter in alternativas:
+                    alternativas[letter] = alt_text
+
+        gabarito = gab_table.get(q_num, "A")
+        questions.append({
+            "id": f"ITA-{year}-1F-Q{q_num:02d}",
+            "ano": year_int,
+            "fase": "1ª Fase",
+            "numero": q_num,
+            "materia": materia,
+            "topico": f"{materia} - Prova Oficial ITA {year}",
+            "subtopico": "Com Figura Oficial" if q_num in q_figures else "Questão Oficial 1ª Fase",
+            "dificuldade": "Difícil",
+            "enunciado": enunciado,
+            "figura": q_figures.get(q_num),
+            "alternativas": alternativas,
+            "gabarito": gabarito,
+            "pulo_do_gato": "Use o botão '✨ Copiar Prompt p/ Gemini Pro' para gerar a demonstração em LaTeX desta questão.",
+            "resolucao": (
+                f"Gabarito Oficial ITA {year}: Alternativa {gabarito}."
+                if gabarito != "ANULADA"
+                else f"Questão Oficialmente ANULADA pela banca do ITA {year}."
+            )
+        })
+    return questions
+
 def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     IMG_DIR.mkdir(parents=True, exist_ok=True)
+    hex_svg = generate_hexagram_svg()
 
     existing = []
     if DB_FILE.exists():
@@ -229,19 +221,27 @@ def main():
             existing = []
 
     by_id = {item["id"]: item for item in existing if isinstance(item, dict) and "id" in item}
-    for seed_q in OFFICIAL_SEED_QUESTIONS:
-        by_id[seed_q["id"]] = seed_q
+    if "ITA-2026-1F-Q01" in by_id and not by_id["ITA-2026-1F-Q01"].get("figura"):
+        by_id["ITA-2026-1F-Q01"]["figura"] = hex_svg
 
-    prova_url = f"https://www.vestibular.ita.br/provas/{EXAM_YEAR}_fase1.pdf"
     prova_path = DATA_DIR / f"ita_{EXAM_YEAR}_fase1.pdf"
-
-    print(f"[1/2] Buscando espelho do PDF ITA {EXAM_YEAR}...")
-    if curl_download(prova_url, prova_path):
+    print(f"[1/2] Baixando PDF Oficial ITA {EXAM_YEAR}...")
+    if download_exam_pdf(EXAM_YEAR, prova_path):
+        extracted = parse_pdf_exam(prova_path, EXAM_YEAR)
+        fig_count = sum(1 for q in extracted if q.get("figura"))
+        for q in extracted:
+            # Se já existir uma questão enriquecida com LaTeX, preserva a resolução detalhada mas anexa a figura recortada!
+            if q["id"] in by_id and len(by_id[q["id"]].get("resolucao", "")) > 100:
+                if q.get("figura") and not by_id[q["id"]].get("figura"):
+                    by_id[q["id"]]["figura"] = q["figura"]
+            else:
+                by_id[q["id"]] = q
         prova_path.unlink(missing_ok=True)
+        print(f"  ✓ Extraídas {len(extracted)} questões de Exatas ({fig_count} com figuras recortadas automaticamente)!")
 
     final_questions = sorted(by_id.values(), key=lambda x: (-x["ano"], x["numero"]))
     DB_FILE.write_text(json.dumps(final_questions, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[2/2] Sucesso! {len(final_questions)} questões validadas e gravadas em data/questions.json!")
+    print(f"[2/2] Total no banco agora: {len(final_questions)} questões salvas em data/questions.json!")
 
 if __name__ == "__main__":
     main()
