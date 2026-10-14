@@ -273,7 +273,7 @@ def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None]:
     remaining_blocks = blocks[1:]
 
     # Se dentro do próprio primeiro bloco houver uma quebra explícita para início de texto base
-    inline_ cue = re.split(
+    inline_cue = re.split(
         r"\n\s*(?=(?:As\s+quest[õo]es|Leia\s+o\s+texto|Considere\s+o\s+texto|O\s+texto\s+a\s+seguir|Read\s+the\s+text|Read\s+the\s+following|Texto\s+[I1V]|TEXTO\s+[I1V]|O\s+enunciado\s+a\s+seguir))",
         alt_e_blocks[0],
         maxsplit=1,
