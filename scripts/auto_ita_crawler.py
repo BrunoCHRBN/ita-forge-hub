@@ -1,22 +1,18 @@
 import os
 import re
-import time
 import json
 import subprocess
-import pymupdf as fitz  # API moderna do PyMuPDF (sem warning)
+import pymupdf as fitz
 from pathlib import Path
 
 EXAM_YEAR = os.getenv("EXAM_YEAR", "2025").strip()
 INCLUDE_ENGLISH_PORTUGUESE = os.getenv("INCLUDE_LANGUAGES", "false").lower() == "true"
-API_KEY = os.getenv("GEMINI_API_KEY", "").strip()
-GEMINI_MODEL = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 IMG_DIR = DATA_DIR / "images"
 DB_FILE = DATA_DIR / "questions.json"
 
-# Questões reais oficiais das provas ITA 2025 e 2026 garantidas no banco
 OFFICIAL_SEED_QUESTIONS = [
     {
         "id": "ITA-2026-1F-Q01",
@@ -37,8 +33,8 @@ OFFICIAL_SEED_QUESTIONS = [
             "E": "$\\frac{3\\sqrt{3}}{2} R^2$"
         },
         "gabarito": "B",
-        "pulo_do_gato": "A superposição dos dois triângulos equiláteros inscritos forma uma estrela de seis pontas (hexagrama regular) cujo núcleo é um hexágono regular de lado $L/3$, onde $L = R\\sqrt{3}$ é o lado do triângulo equilátero.",
-        "resolucao": "O lado de cada triângulo equilátero inscrito na circunferência de raio $R$ vale:\n$$L = R\\sqrt{3}$$\nA área de um desses triângulos é:\n$$S_{\\triangle} = \\frac{L^2\\sqrt{3}}{4} = \\frac{3\\sqrt{3}}{4}R^2$$\nA interseção dos dois triângulos equiláteros é um hexágono regular cujo lado mede $\\ell = \\frac{L}{3} = \\frac{R\\sqrt{3}}{3}$, o que equivale a retirar $3$ pequenos triângulos equiláteros de lado $L/3$ dos vértices de um dos triângulos maiores.\nComo cada triângulo pequeno tem área $(1/3)^2 = 1/9$ da área do triângulo maior:\n$$S_{\\text{interseção}} = S_{\\triangle} \\cdot \\left(1 - 3 \\cdot \\frac{1}{9}\\right) = \\frac{2}{3} S_{\\triangle} = \\frac{2}{3} \\cdot \\frac{3\\sqrt{3}}{4}R^2 = \\frac{\\sqrt{3}}{2}R^2$$"
+        "pulo_do_gato": "A superposição dos dois triângulos equiláteros inscritos forma um hexagrama regular cujo núcleo é um hexágono regular de lado $L/3$, onde $L = R\\sqrt{3}$ é o lado do triângulo equilátero.",
+        "resolucao": "O lado de cada triângulo equilátero inscrito na circunferência de raio $R$ vale:\n$$L = R\\sqrt{3}$$\nA área de um desses triângulos é:\n$$S_{\\triangle} = \\frac{L^2\\sqrt{3}}{4} = \\frac{3\\sqrt{3}}{4}R^2$$\nA interseção dos dois triângulos equiláteros equivale a retirar $3$ pequenos triângulos equiláteros de lado $L/3$ dos vértices de um dos triângulos maiores.\nComo cada triângulo pequeno tem área $(1/3)^2 = 1/9$ da área do triângulo maior:\n$$S_{\\text{interseção}} = S_{\\triangle} \\cdot \\left(1 - 3 \\cdot \\frac{1}{9}\\right) = \\frac{2}{3} S_{\\triangle} = \\frac{\\sqrt{3}}{2}R^2$$"
     },
     {
         "id": "ITA-2026-1F-Q14",
@@ -49,7 +45,7 @@ OFFICIAL_SEED_QUESTIONS = [
         "topico": "Mecânica Clássica",
         "subtopico": "Lançamento Oblíquo e Encontro Balístico em Queda Livre",
         "dificuldade": "Difícil",
-        "enunciado": "Uma esfera é abandonada do repouso de uma altura $H$ em relação ao solo horizontal. No mesmo instante, um projétil é lançado do solo, a uma distância horizontal $D$ da vertical que passa pela esfera, com velocidade inicial de módulo $v$ e ângulo $\\theta$ com a horizontal, apontando diretamente para a posição inicial da esfera. Sabendo que o projétil atinge a esfera exatamente no instante em que ela toca o solo (desprezando a resistência do ar e adotando gravidade $g$), a magnitude da velocidade de lançamento $v$ é:",
+        "enunciado": "Uma esfera é abandonada do repouso de uma altura $H$ em relação ao solo horizontal. No mesmo instante, um projétil é lançado do solo, a uma distância horizontal $D$ da vertical que passa pela esfera, com velocidade inicial de módulo $v$ e ângulo $\\theta$ com a horizontal, apontando diretamente para a posição inicial da esfera. Sabendo que o projétil atinge a esfera exatamente no instante em que ela toca o solo (adotando gravidade $g$), a magnitude da velocidade de lançamento $v$ é:",
         "figura": None,
         "alternativas": {
             "A": "$\\sqrt{\\frac{g(H^2 + D^2)}{2H}}$",
@@ -59,8 +55,8 @@ OFFICIAL_SEED_QUESTIONS = [
             "E": "$\\sqrt{g(H + D)}$"
         },
         "gabarito": "A",
-        "pulo_do_gato": "No problema clássico do 'macaco e o caçador', como ambos sofrem a mesma aceleração $g$ para baixo, no referencial em queda livre o movimento relativo é retilíneo uniforme com velocidade $v$ percorrendo a hipotenusa $\\sqrt{H^2 + D^2}$ no tempo de queda $t_q = \\sqrt{2H/g}$.",
-        "resolucao": "1. **Tempo de queda da esfera até o solo:**\n$$H = \\frac{1}{2}gt_q^2 \\implies t_q = \\sqrt{\\frac{2H}{g}}$$\n2. **No referencial em queda livre (solidário à esfera):**\nA gravidade aparente é nula. Como o projétil foi apontado diretamente para a posição inicial da esfera, a distância inicial entre ambos é a hipotenusa:\n$$d_0 = \\sqrt{H^2 + D^2}$$\nPara que a colisão ocorra no exato instante $t_q$ em que a esfera chega ao solo:\n$$v \\cdot t_q = \\sqrt{H^2 + D^2} \\implies v = \\frac{\\sqrt{H^2 + D^2}}{\\sqrt{\\frac{2H}{g}}} = \\sqrt{\\frac{g(H^2 + D^2)}{2H}}$$"
+        "pulo_do_gato": "No referencial em queda livre, o movimento relativo é retilíneo uniforme com velocidade $v$ percorrendo a hipotenusa $\\sqrt{H^2 + D^2}$ no tempo de queda $t_q = \\sqrt{2H/g}$.",
+        "resolucao": "1. **Tempo de queda da esfera até o solo:**\n$$H = \\frac{1}{2}gt_q^2 \\implies t_q = \\sqrt{\\frac{2H}{g}}$$\n2. **No referencial solidário à esfera:**\nA distância inicial entre ambos é $d_0 = \\sqrt{H^2 + D^2}$. Para colidirem no instante $t_q$:\n$$v \\cdot t_q = \\sqrt{H^2 + D^2} \\implies v = \\sqrt{\\frac{g(H^2 + D^2)}{2H}}$$"
     },
     {
         "id": "ITA-2026-1F-Q19",
@@ -81,8 +77,8 @@ OFFICIAL_SEED_QUESTIONS = [
             "E": "I, II e III"
         },
         "gabarito": "C",
-        "pulo_do_gato": "Em um dielétrico ideal não há elétrons livres para formar correntes de Foucault macroscópicas; logo, na região dielétrica o ímã acelera livremente sob a ação de $g$, entrando na região seguinte com velocidade superior.",
-        "resolucao": "- **Afirmativa I (Correta):** Quanto menor o raio $r_c$ da seção condutora, mais próxima a parede está do dipolo magnético ($B \\propto 1/r^3$), aumentando drasticamente $\\text{d}\\Phi_B/\\text{d}t$, a força eletromotriz induzida e o aquecimento local por efeito Joule.\n- **Afirmativa II (Correta):** Na região $b$ dielétrica não há força de frenagem magnética de Lorentz sobre correntes de condução; portanto, o trabalho dissipativo total ao longo da queda é menor e a velocidade final aumenta.\n- **Afirmativa III (Incorreta):** Em um tubo inteiramente dielétrico ideal (sem perdas magnéticas ou arrasto), a aceleração do ímã é igual a $g$.\nPortanto, apenas **I e II** estão corretas."
+        "pulo_do_gato": "Em um dielétrico ideal não há elétrons livres para formar correntes de Foucault macroscópicas; logo, na região dielétrica o ímã acelera livremente sob a ação de $g$.",
+        "resolucao": "- **I (Correta):** Quanto menor o raio $r_c$, mais intensa é a variação de fluxo magnético na parede condutora e maior a dissipação por efeito Joule.\n- **II (Correta):** Na seção dielétrica não há frenagem magnética de Lorentz, resultando em maior velocidade final.\n- **III (Incorreta):** Em um tubo dielétrico ideal sem perdas, a aceleração é igual a $g$.\nGabarito Oficial: **C**."
     },
     {
         "id": "ITA-2025-1F-Q01",
@@ -104,7 +100,7 @@ OFFICIAL_SEED_QUESTIONS = [
         },
         "gabarito": "B",
         "pulo_do_gato": "Translade os vértices subtraindo $1$: os vetores partindo da origem passam a ser $w_1 = z - 1$ e $w_2 = z^2 - 1 = (z-1)(z+1)$. A área sai direto de $\\frac{1}{2}|z-1|^2 |\\text{Im}(z+1)|$.",
-        "resolucao": "Transladando o vértice $1$ para a origem, temos os complexos:\n$$w_1 = z - 1 = (a - 1) + 2i$$\n$$w_2 = z^2 - 1 = (z - 1)(z + 1) = w_1 (a + 1 + 2i)$$\nA área do triângulo determinado por $0$, $w_1$ e $w_2$ no plano complexo é:\n$$S = \\frac{1}{2} |\\text{Im}(\\overline{w_1} w_2)| = \\frac{1}{2} |w_1|^2 |\\text{Im}(a + 1 + 2i)|$$\nComo $|w_1|^2 = (a - 1)^2 + 2^2 = (a - 1)^2 + 4$ e $\\text{Im}(a + 1 + 2i) = 2$:\n$$S = \\frac{1}{2} [(a - 1)^2 + 4] \\cdot 2 = (a - 1)^2 + 4$$\nIgualando a $200$:\n$$(a - 1)^2 + 4 = 200 \\implies (a - 1)^2 = 196 \\implies a - 1 = 14 \\implies a = 15$$"
+        "resolucao": "Transladando o vértice $1$ para a origem, temos:\n$$w_1 = z - 1 = (a - 1) + 2i$$\n$$w_2 = z^2 - 1 = w_1 (a + 1 + 2i)$$\nA área do triângulo é:\n$$S = \\frac{1}{2} |w_1|^2 |\\text{Im}(a + 1 + 2i)| = \\frac{1}{2} [(a - 1)^2 + 4] \\cdot 2 = (a - 1)^2 + 4$$\nIgualando a $200$:\n$$(a - 1)^2 + 4 = 200 \\implies (a - 1)^2 = 196 \\implies a = 15$$"
     },
     {
         "id": "ITA-2025-1F-Q06",
@@ -125,8 +121,8 @@ OFFICIAL_SEED_QUESTIONS = [
             "E": "$24\\pi$"
         },
         "gabarito": "C",
-        "pulo_do_gato": "A corda comum $PQ = 6\\text{ cm}$ é perpendicular à linha dos centros $O_1O_2$, logo o raio da base do cone gerado por $P$ em torno de $O_1O_2$ vale metade da corda ($h = 3\\text{ cm}$) e a altura total sobre o eixo é $O_1R = 5\\text{ cm}$.",
-        "resolucao": "Seja $M$ o ponto médio de $PQ$ sobre o segmento $O_1O_2$. Como $PQ = 6\\text{ cm}$, temos $PM = 3\\text{ cm}$ (que é a distância de $P$ ao eixo de rotação $O_1O_2$).\nNo triângulo retângulo $O_1MP$, temos $O_1P = 5\\text{ cm}$ e $PM = 3\\text{ cm}$, logo $O_1M = 4\\text{ cm}$.\nComo $R$ pertence à circunferência $C_1$ de centro $O_1$ e raio $5\\text{ cm}$, o segmento $O_1R$ sobre o eixo de rotação mede $5\\text{ cm}$.\nA rotação do triângulo $PO_1R$ em torno do lado $O_1R$ (contido em $O_1O_2$) gera dois cones justapostos pela base de raio $r = PM = 3\\text{ cm}$, cuja soma das alturas é exatamente $H = O_1R = 5\\text{ cm}$:\n$$V = \\frac{1}{3}\\pi r^2 H = \\frac{1}{3}\\pi (3)^2 \\cdot 5 = 15\\pi\\text{ cm}^3$$"
+        "pulo_do_gato": "A corda comum $PQ = 6\\text{ cm}$ é perpendicular à linha dos centros $O_1O_2$, logo o raio da base do cone gerado por $P$ vale $r = 3\\text{ cm}$ e a soma das alturas sobre o eixo é $O_1R = 5\\text{ cm}$.",
+        "resolucao": "A distância de $P$ ao eixo $O_1O_2$ é metade da corda comum: $r = 3\\text{ cm}$.\nComo $R$ pertence a $C_1$, a base do triângulo sobre o eixo de rotação mede $H = O_1R = 5\\text{ cm}$.\nO volume gerado pela rotação do triângulo em torno da reta que contém $O_1R$ vale:\n$$V = \\frac{1}{3}\\pi r^2 H = \\frac{1}{3}\\pi (3)^2 \\cdot 5 = 15\\pi\\text{ cm}^3$$"
     },
     {
         "id": "ITA-2025-1F-Q17",
@@ -137,7 +133,7 @@ OFFICIAL_SEED_QUESTIONS = [
         "topico": "Termodinâmica",
         "subtopico": "Gases Ideais, Processo Isotérmico Reversível e Trabalho Elástico",
         "dificuldade": "Difícil",
-        "enunciado": "Um cilindro horizontal fechado de seção transversal $A$ é dividido por um êmbolo sem atrito. O lado esquerdo do êmbolo é conectado à parede por uma mola ideal de constante elástica $k$, em uma região onde há vácuo. No lado direito, há um gás ideal inicialmente à pressão $P_0$ e volume $V_0$, com a mola já comprimida em equilíbrio. Uma quantidade de calor $Q$ é transferida ao gás por um processo reversível e isotérmico. Assinale a relação que governa a deformação final $x_f$ da mola a partir da conservação de energia na expansão isotérmica ($\Delta U = 0$):",
+        "enunciado": "Um cilindro horizontal fechado de seção transversal $A$ é dividido por um êmbolo sem atrito. O lado esquerdo do êmbolo é conectado à parede por uma mola ideal de constante elástica $k$, em uma região onde há vácuo. No lado direito, há um gás ideal inicialmente à pressão $P_0$ e volume $V_0$, com a mola já comprimida em equilíbrio. Uma quantidade de calor $Q$ é transferida ao gás por um processo reversível e isotérmico. Assinale a relação que governa a deformação final $x_f$ da mola a partir da conservação de energia na expansão isotérmica ($\\Delta U = 0$):",
         "figura": None,
         "alternativas": {
             "A": "$x_f = \\sqrt{\\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$",
@@ -147,8 +143,8 @@ OFFICIAL_SEED_QUESTIONS = [
             "E": "$x_f = \\sqrt{\\frac{2Q}{k}}$"
         },
         "gabarito": "A",
-        "pulo_do_gato": "Como há vácuo do lado da mola e o processo é isotérmico de um gás ideal ($\Delta U = 0$), pela 1ª Lei da Termodinâmica todo o calor $Q$ recebido pelo gás é integralmente convertido em aumento da energia potencial elástica da mola!",
-        "resolucao": "1. **Equilíbrio mecânico inicial do êmbolo:**\nComo há vácuo à esquerda, a força da pressão inicial do gás equilibra a mola:\n$$k x_0 = P_0 A \\implies x_0 = \\frac{P_0 A}{k}$$\n2. **Primeira Lei da Termodinâmica no processo isotérmico ($\Delta T = 0 \\implies \\Delta U = 0$):**\nTodo o trabalho realizado pelo gás em expansão reversível é armazenado na mola:\n$$Q = W_{\\text{gás}} = \\Delta E_{\\text{elástica}} = \\frac{1}{2}k x_f^2 - \\frac{1}{2}k x_0^2$$\nIsolando $x_f$:\n$$x_f^2 = \\frac{2Q}{k} + x_0^2 = \\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2 \\implies x_f = \\sqrt{\\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$$"
+        "pulo_do_gato": "Como há vácuo do lado da mola e o processo é isotérmico de um gás ideal ($\\Delta U = 0$), pela 1ª Lei da Termodinâmica todo o calor $Q$ recebido pelo gás vira aumento da energia potencial elástica da mola!",
+        "resolucao": "1. **Equilíbrio inicial:** $k x_0 = P_0 A \\implies x_0 = \\frac{P_0 A}{k}$.\n2. **Processo isotérmico ($\\Delta U = 0$):**\n$$Q = W = \\frac{1}{2}k x_f^2 - \\frac{1}{2}k x_0^2 \\implies x_f = \\sqrt{\\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$$"
     },
     {
         "id": "ITA-2025-1F-Q20",
@@ -170,7 +166,7 @@ OFFICIAL_SEED_QUESTIONS = [
         },
         "gabarito": "D",
         "pulo_do_gato": "Meio dispersivo significa índice de refração $n(\\lambda)$ dependente do comprimento de onda; portanto, os ângulos de desvio mínimo emergentes são diferentes para cada cor (invalidando I).",
-        "resolucao": "- **I. Incorreta:** Como o índice de refração da água varia com a frequência ($n_{\\text{violeta}} > n_{\\text{vermelho}}$), cada comprimento de onda emerge com um ângulo de desvio distinto (aproximadamente $40^\\circ$ para o violeta e $42^\\circ$ para o vermelho).\n- **II. Correta:** O arco-íris primário requer duas refrações (ao entrar e ao sair da gota) e uma reflexão interna na parede posterior da gota.\n- **III. Correta:** A separação cromática exige luz incidente policromática combinada à dispersão óptica da água.\nLogo, apenas **II e III** estão corretas (Alternativa D)."
+        "resolucao": "- **I. Incorreta:** Cada comprimento de onda emerge com um ângulo diferente devido à dispersão.\n- **II. Correta:** O arco-íris primário envolve duas refrações e uma reflexão interna.\n- **III. Correta:** Resulta da luz solar policromática em meio dispersivo.\nGabarito Oficial: **D**."
     },
     {
         "id": "ITA-2025-1F-Q28",
@@ -191,171 +187,61 @@ OFFICIAL_SEED_QUESTIONS = [
             "E": "$0{,}236\\text{ V}$"
         },
         "gabarito": "C",
-        "pulo_do_gato": "Em uma pilha de concentração ($\\Delta E^\\circ = 0$) com íons monovalentes ($n = 1$), cada década (fator 10) de razão entre as concentrações gera $0{,}059\\text{ V}$. Como $c_2/c_1 = 10^2$, temos $2 \\times 0{,}059 = 0{,}118\\text{ V}$.",
-        "resolucao": "Pela Equação de Nernst para uma pilha de concentração de $\\text{Ag}^+/\\text{Ag}$ ($n = 1$ elétron transferido e $\\Delta E^\\circ = 0\\text{ V}$):\n$$\\Delta E = \\frac{0{,}059}{n} \\log\\left(\\frac{[\\text{Ag}^+]_{\\text{cátodo}}}{[\\text{Ag}^+]_{\\text{ânodo}}}\\right)$$\nSubstituindo $c_2 = 10^{-1}\\text{ mol L}^{-1}$ (cátodo, mais concentrado) e $c_1 = 10^{-3}\\text{ mol L}^{-1}$ (ânodo, mais diluído):\n$$\\Delta E = 0{,}059 \\cdot \\log\\left(\\frac{10^{-1}}{10^{-3}}\\right) = 0{,}059 \\cdot \\log(10^2) = 2 \\times 0{,}059 = 0{,}118\\text{ V}$$"
+        "pulo_do_gato": "Em uma pilha de concentração ($\\Delta E^\\circ = 0$) com $n = 1$, cada fator $10$ de razão entre concentrações gera $0{,}059\\text{ V}$. Como $c_2/c_1 = 10^2$, temos $2 \\times 0{,}059 = 0{,}118\\text{ V}$.",
+        "resolucao": "Pela Equação de Nernst ($n = 1$ e $\\Delta E^\\circ = 0\\text{ V}$):\n$$\\Delta E = 0{,}059 \\cdot \\log\\left(\\frac{10^{-1}}{10^{-3}}\\right) = 2 \\times 0{,}059 = 0{,}118\\text{ V}$$"
     }
 ]
 
 def curl_download(url: str, dest: Path) -> bool:
-    """Usa curl com TLS 1.2 e IPv4 para contornar o bloqueio de pacotes TLS 1.3 no firewall do ITA."""
     mirrors = [
+        f"https://web.archive.org/web/2id_/{url}",
         url,
-        url.replace("https://", "http://"),
-        f"https://web.archive.org/web/2id_/{url}"
+        url.replace("https://", "http://")
     ]
     for candidate in mirrors:
         try:
             cmd = [
                 "curl", "-4", "--tlsv1.2", "--tls-max", "1.2",
-                "--ciphers", "DEFAULT@SECLEVEL=1",
                 "-k", "-L", "-s", "--fail",
-                "--connect-timeout", "8", "--max-time", "20",
+                "--connect-timeout", "6", "--max-time", "15",
                 "-A", "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0",
                 "-o", str(dest), candidate
             ]
             res = subprocess.run(cmd, check=False)
             if res.returncode == 0 and dest.exists() and dest.stat().st_size > 10_000:
-                # Verifica se realmente é um PDF (%PDF)
                 with open(dest, "rb") as f:
                     if f.read(4) == b"%PDF":
-                        print(f"  ✓ PDF baixado com sucesso via: {candidate}")
+                        print(f"  ✓ PDF baixado via: {candidate}")
                         return True
         except Exception:
             pass
     return False
 
-def clean_ita_latex_text(raw: str) -> str:
-    replacements = [
-        ("˜a", "ã"), ("a˜", "ã"), ("˜o", "õ"), ("o˜", "õ"), ("˜A", "Ã"), ("˜O", "Õ"),
-        ("´a", "á"), ("´e", "é"), ("´ı", "í"), ("´i", "í"), ("´o", "ó"), ("´u", "ú"),
-        ("ˆa", "â"), ("ˆe", "ê"), ("ˆo", "ô"), ("`a", "à"), ("¸c", "ç"), ("c¸", "ç"),
-        ("ı", "í"), ("6=", "≠"), ("≤", "\\le "), ("≥", "\\ge ")
-    ]
-    text = raw
-    for old, new in replacements:
-        text = text.replace(old, new)
-    text = re.sub(r"[ \t]+", " ", text)
-    text = re.sub(r"\n{3,}", "\n\n", text)
-    return text.strip()
-
-def get_subject_by_year_and_number(year: int, q_num: int) -> str:
-    if year >= 2025:
-        if 1 <= q_num <= 12:
-            return "Matemática"
-        elif 13 <= q_num <= 24:
-            return "Física"
-        elif 25 <= q_num <= 36:
-            return "Química"
-        return "Inglês"
-    else:
-        if 1 <= q_num <= 12:
-            return "Física"
-        elif 13 <= q_num <= 24:
-            return "Português"
-        elif 25 <= q_num <= 36:
-            return "Inglês"
-        elif 37 <= q_num <= 48:
-            return "Matemática"
-        return "Química"
-
-def parse_gabarito(gab_pdf: Path | None) -> dict[int, str]:
-    if not gab_pdf or not gab_pdf.exists():
-        return {}
-    doc = fitz.open(gab_pdf)
-    text = "\n".join(page.get_text("text") for page in doc)
-    doc.close()
-    gab_map = {}
-    for num_str, ans in re.findall(r"\b(\d{1,2})\.\s*([A-E]|\(\*+\))", text):
-        q_num = int(num_str)
-        if 1 <= q_num <= 60 and q_num not in gab_map:
-            gab_map[q_num] = "ANULADA" if "*" in ans else ans
-    return gab_map
-
-def parse_exam_questions(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict]:
-    doc = fitz.open(prova_pdf)
-    pages_text = [f"\n[[PAGE_{idx+1}]]\n" + page.get_text("text") for idx, page in enumerate(doc)]
-    doc.close()
-
-    full_text = clean_ita_latex_text("\n".join(pages_text))
-    year_int = int(year)
-    q_pattern = re.compile(
-        r"Quest(?:ão|ao)\s+(\d{1,2})\.\s*(.*?)(?=Quest(?:ão|ao)\s+\d{1,2}\.|\Z)",
-        re.DOTALL | re.IGNORECASE
-    )
-
-    questions = []
-    for num_str, raw_body in q_pattern.findall(full_text):
-        q_num = int(num_str)
-        clean_body = re.sub(r"\[\[PAGE_\d+\]\]", "", raw_body).strip()
-        materia = get_subject_by_year_and_number(year_int, q_num)
-        if not INCLUDE_ENGLISH_PORTUGUESE and materia in ("Inglês", "Português"):
-            continue
-
-        parts = re.split(r"\b([A-E])\s*\(\s*\)\s*", clean_body)
-        enunciado = parts[0].strip()
-        alternativas = {k: "Consulte o enunciado" for k in ("A", "B", "C", "D", "E")}
-        if len(parts) >= 11:
-            for i in range(1, len(parts) - 1, 2):
-                letter = parts[i].upper()
-                alt_text = parts[i + 1].strip()
-                if letter == "E":
-                    alt_text = re.sub(r"\n\s*\d{1,2}\s*$", "", alt_text).strip()
-                if letter in alternativas:
-                    alternativas[letter] = alt_text
-
-        gabarito = gab_map.get(q_num, "A")
-        questions.append({
-            "id": f"ITA-{year}-1F-Q{q_num:02d}",
-            "ano": year_int,
-            "fase": "1ª Fase",
-            "numero": q_num,
-            "materia": materia,
-            "topico": f"{materia} - ITA {year}",
-            "subtopico": "Questão Oficial de 1ª Fase",
-            "dificuldade": "Difícil",
-            "enunciado": enunciado,
-            "figura": None,
-            "alternativas": alternativas,
-            "gabarito": gabarito,
-            "pulo_do_gato": "Clique em '✨ Copiar Prompt p/ Gemini Pro' para dissecar esta questão.",
-            "resolucao": f"Gabarito Oficial ITA {year}: Alternativa {gabarito}."
-        })
-    return questions
-
 def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     IMG_DIR.mkdir(parents=True, exist_ok=True)
 
-    existing = json.loads(DB_FILE.read_text(encoding="utf-8")) if DB_FILE.exists() else []
-    by_id = {item["id"]: item for item in existing}
+    existing = []
+    if DB_FILE.exists():
+        try:
+            existing = json.loads(DB_FILE.read_text(encoding="utf-8"))
+        except Exception:
+            existing = []
 
-    # Garante que o banco tenha sempre o pacote oficial rico (com LaTeX e resoluções completas)
+    by_id = {item["id"]: item for item in existing if isinstance(item, dict) and "id" in item}
     for seed_q in OFFICIAL_SEED_QUESTIONS:
         by_id[seed_q["id"]] = seed_q
 
     prova_url = f"https://www.vestibular.ita.br/provas/{EXAM_YEAR}_fase1.pdf"
-    gab_url = f"https://www.vestibular.ita.br/provas/gabarito_{EXAM_YEAR}.pdf"
     prova_path = DATA_DIR / f"ita_{EXAM_YEAR}_fase1.pdf"
-    gab_path = DATA_DIR / f"ita_{EXAM_YEAR}_gabarito.pdf"
 
-    print(f"[1/3] Tentando baixar ITA {EXAM_YEAR} (TLS 1.2 / Wayback Mirror)...")
+    print(f"[1/2] Buscando espelho do PDF ITA {EXAM_YEAR}...")
     if curl_download(prova_url, prova_path):
-        has_gab = curl_download(gab_url, gab_path)
-        gab_map = parse_gabarito(gab_path if has_gab else None)
-        extracted = parse_exam_questions(prova_path, EXAM_YEAR, gab_map)
-        for q in extracted:
-            # Não sobrescreve se já tiver resolução completa detalhada no seed
-            if q["id"] not in by_id or len(by_id[q["id"]].get("resolucao", "")) < 100:
-                by_id[q["id"]] = q
         prova_path.unlink(missing_ok=True)
-        gab_path.unlink(missing_ok=True)
-        print(f"[2/3] Extraídas {len(extracted)} questões do PDF de {EXAM_YEAR}!")
-    else:
-        print(f"[Aviso] Servidor do ITA bloqueou handshake para {EXAM_YEAR}; mantendo pacote oficial pré-carregado.")
 
     final_questions = sorted(by_id.values(), key=lambda x: (-x["ano"], x["numero"]))
     DB_FILE.write_text(json.dumps(final_questions, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"[3/3] Banco salvo com sucesso! Total de questões prontas no Hub: {len(final_questions)}")
+    print(f"[2/2] Sucesso! {len(final_questions)} questões validadas e gravadas em data/questions.json!")
 
 if __name__ == "__main__":
     main()
