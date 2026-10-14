@@ -7,6 +7,7 @@ from pathlib import Path
 from collections import Counter
 
 EXAM_YEAR = os.getenv("EXAM_YEAR", "2025").strip()
+EXAM_BANCA = os.getenv("EXAM_BANCA", "ITA").strip().upper()
 INCLUDE_LANGUAGES = os.getenv("INCLUDE_LANGUAGES", "true").lower() == "true"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,14 +82,11 @@ def fix_portuguese_accents_and_reflow(raw: str, is_alternative: bool = False) ->
 
     text = re.sub(r"\b([A-Za-z]{1,12})\s+([ãõáéíóúâêôç][a-z]*)\b", join_internal_accent, text)
     text = re.sub(r"Quest\s*ão", "Questão", text, flags=re.IGNORECASE)
-
-    # Des-hifenização de fim de linha
     text = re.sub(r"([a-zA-ZçÇáéíóúâêôãõÁÉÍÓÚÂÊÔÃÕ]{2,})-\s*\n\s*([a-zçáéíóúâêôãõ]{2,})", r"\1\2", text)
 
     if not is_alternative:
         text = re.sub(r"\n\s*[kR12xy]\s*\n", "\n", text)
 
-    # Reflow preservando quebras de parágrafo (\n\n)
     paragraphs = re.split(r"\n\s*\n", text)
     cleaned_paras = []
     for para in paragraphs:
@@ -116,8 +114,6 @@ def fix_portuguese_accents_and_reflow(raw: str, is_alternative: bool = False) ->
 
     return re.sub(r"[ \t]{2,}", " ", text).strip()
 
-EXAM_BANCA = os.getenv("EXAM_BANCA", "ITA").strip().upper()
-
 def get_subject(year: int, q_num: int) -> str:
     if EXAM_BANCA == "IME":
         if 1 <= q_num <= 15: return "Matemática"
@@ -141,16 +137,71 @@ def get_subject(year: int, q_num: int) -> str:
         if 41 <= q_num <= 55: return "Matemática"
         return "Química"
 
-def fetch_pdf(urls: list[str], dest: Path) -> bool:
-    for url in urls:
+def discover_and_fetch_pdfs(banca: str, year: str, prova_dest: Path, gab_dest: Path) -> tuple[bool, bool, bool]:
+    """
+    Busca automaticamente o PDF da prova (ou da resolução comentada completa)
+    testando URLs diretas e varrendo a página de índice se necessário.
+    Retorna: (baixou_prova, baixou_gabarito, eh_pdf_comentado)
+    """
+    b = banca.lower()
+    direct_prova_urls = [
+        (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b}{year}_1fase_prova.pdf", False),
+        (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b.upper()}{year}_1fase_prova.pdf", False),
+        (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b}{year}_1fase.pdf", True),
+        (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b.upper()}{year}_1fase.pdf", True),
+        (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/{b}{year}_1fase.pdf", True),
+        (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/{b}{year}_prova.pdf", False),
+    ]
+
+    # Também descobre links dinâmicos na página .aspx daquele ano se existir
+    aspx_pages = [
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{b}{year}_1fase.aspx",
+        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{b}{year}.aspx",
+    ]
+    for page_url in aspx_pages:
+        try:
+            r = requests.get(page_url, headers=HEADERS, timeout=12)
+            if r.status_code == 200:
+                for href in re.findall(r'href=["\']([^"\']+\.pdf)["\']', r.text, re.IGNORECASE):
+                    full_u = href if href.startswith("http") else f"https://www.curso-objetivo.br{href if href.startswith('/') else '/' + href}"
+                    is_commented = "_prova" not in full_u.lower() and "_gabarito" not in full_u.lower()
+                    if "gabarito" not in full_u.lower():
+                        direct_prova_urls.append((full_u, is_commented))
+        except Exception:
+            pass
+
+    got_prova = False
+    is_commented_pdf = False
+    for url, commented_flag in direct_prova_urls:
         try:
             r = requests.get(url, headers=HEADERS, timeout=25)
             if r.status_code == 200 and len(r.content) > 8_000 and r.content[:4] == b"%PDF":
-                dest.write_bytes(r.content)
-                return True
+                prova_dest.write_bytes(r.content)
+                got_prova = True
+                is_commented_pdf = commented_flag
+                print(f"  ✓ PDF baixado ({'Comentado Completo' if is_commented_pdf else 'Caderno Oficial'}): {url}")
+                break
         except Exception:
             pass
-    return False
+
+    got_gab = False
+    if got_prova and not is_commented_pdf:
+        gab_urls = [
+            f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b}{year}_1fase_gabarito.pdf",
+            f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b.upper()}{year}_1fase_gabarito.pdf",
+            f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/{b}{year}_gabarito.pdf",
+        ]
+        for g_url in gab_urls:
+            try:
+                r = requests.get(g_url, headers=HEADERS, timeout=20)
+                if r.status_code == 200 and len(r.content) > 4_000 and r.content[:4] == b"%PDF":
+                    gab_dest.write_bytes(r.content)
+                    got_gab = True
+                    break
+            except Exception:
+                pass
+
+    return got_prova, got_gab, is_commented_pdf
 
 def parse_gabarito_pdf(gab_pdf: Path) -> dict[int, str]:
     if not gab_pdf.exists():
@@ -165,7 +216,8 @@ def parse_gabarito_pdf(gab_pdf: Path) -> dict[int, str]:
             gab_map[q_num] = "ANULADA" if "*" in ans else ans
     return gab_map
 
-def extract_clean_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str], dict[int, list[tuple[int, fitz.Rect]]]]:
+def safe_extract_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str], dict[int, list[tuple[int, fitz.Rect]]]]:
+    """Recorte blindado contra retângulos vazios ou invertidos (corrige o ITA 2022)."""
     q_figures = {}
     q_fig_rects = {}
 
@@ -177,9 +229,11 @@ def extract_clean_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str]
         for b in blocks:
             x0, y0, x1, y1, text, *_ = b
             cleaned = fix_portuguese_accents_and_reflow(text)
-            m = re.search(r"Quest(?:ão|ao)\s*(\d{1,2})\s*[\.\-]", cleaned, re.IGNORECASE)
+            m = re.search(r"(?:Quest(?:ão|ao)\s*(\d{1,2})\s*[\.\-]|^\s*(\d{1,2})\.\s+[A-ZÁÉÍÓÚÂÊÔÃÕ])", cleaned, re.IGNORECASE)
             if m:
-                q_anchors.append((int(m.group(1)), y0, x0))
+                qn = int(m.group(1) or m.group(2))
+                if 1 <= qn <= 75:
+                    q_anchors.append((qn, y0, x0))
             if len(cleaned) > 35:
                 text_blocks.append(fitz.Rect(x0, y0, x1, y1))
 
@@ -210,13 +264,6 @@ def extract_clean_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str]
             for mr in matching[1:]:
                 union_r |= mr
 
-            for b in blocks:
-                bx0, by0, bx1, by1, btxt, *_ = b
-                b_rect = fitz.Rect(bx0, by0, bx1, by1)
-                if len(btxt.strip()) <= 28 and by0 >= union_r.y0 - 18 and by1 <= union_r.y1 + 18:
-                    if bx0 >= union_r.x0 - 30 and bx1 <= union_r.x1 + 55:
-                        union_r |= b_rect
-
             min_allowed_x0 = 0
             if union_r.x0 > 220:
                 left_paragraphs = [
@@ -224,7 +271,9 @@ def extract_clean_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str]
                     if tb.y1 > union_r.y0 and tb.y0 < union_r.y1 and tb.x1 <= union_r.x0 + 12
                 ]
                 if left_paragraphs:
-                    min_allowed_x0 = max(tb.x1 for tb in left_paragraphs) + 4
+                    candidate_x0 = max(tb.x1 for tb in left_paragraphs) + 4
+                    if candidate_x0 < union_r.x1 - 30:
+                        min_allowed_x0 = candidate_x0
 
             clip = fitz.Rect(
                 max(min_allowed_x0, union_r.x0 - 4),
@@ -232,16 +281,24 @@ def extract_clean_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str]
                 min(page.rect.width, union_r.x1 + 8),
                 min(page.rect.height, union_r.y1 + 8)
             )
-            pix = page.get_pixmap(clip=clip, dpi=230)
-            fname = f"{EXAM_BANCA.lower()}_{year}_q{q_num:02d}.png"
-            pix.save(str(IMG_DIR / fname))
-            q_figures[q_num] = f"data/images/{fname}"
-            q_fig_rects.setdefault(q_num, []).append((p_idx, clip))
+            # Interseção segura com os limites da página
+            clip = clip & page.rect
+            if clip.is_empty or clip.width < 22 or clip.height < 22:
+                continue
+
+            try:
+                pix = page.get_pixmap(clip=clip, dpi=200)
+                if pix.width >= 20 and pix.height >= 20:
+                    fname = f"{EXAM_BANCA.lower()}_{year}_q{q_num:02d}.png"
+                    pix.save(str(IMG_DIR / fname))
+                    q_figures[q_num] = f"data/images/{fname}"
+                    q_fig_rects.setdefault(q_num, []).append((p_idx, clip))
+            except Exception:
+                pass
 
     return q_figures, q_fig_rects
 
 def extract_structured_blocks_text(doc: fitz.Document, q_fig_rects: dict[int, list[tuple[int, fitz.Rect]]]) -> str:
-    """Extrai os blocos de texto preservando marcadores [[BLOCK_BREAK]] entre parágrafos visuais do PDF."""
     all_fig_rects_by_page = {}
     for rects in q_fig_rects.values():
         for p_idx, r in rects:
@@ -250,7 +307,6 @@ def extract_structured_blocks_text(doc: fitz.Document, q_fig_rects: dict[int, li
     blocks_out = []
     for p_idx, page in enumerate(doc):
         fig_rects = all_fig_rects_by_page.get(p_idx, [])
-        # Ordena os blocos de cima para baixo, da esquerda para a direita
         blocks = sorted(page.get_text("blocks"), key=lambda b: (round(b[1] / 12), b[0]))
         for b in blocks:
             x0, y0, x1, y1, text, *_ = b
@@ -262,29 +318,39 @@ def extract_structured_blocks_text(doc: fitz.Document, q_fig_rects: dict[int, li
             if inside_fig and not re.search(r"Quest", text, re.IGNORECASE):
                 continue
             clean_b = text.strip()
-            # Ignora rodapé isolado de número de página
             if re.match(r"^\d{1,2}$", clean_b):
                 continue
             blocks_out.append(clean_b)
     return "\n[[BLOCK_BREAK]]\n".join(blocks_out)
 
-def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None]:
+def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None, str | None, str | None]:
     """
-    Separa o texto real da Alternativa E de qualquer Texto Base / Preâmbulo
-    que pertença à próxima questão (ou próximo bloco de questões).
+    Separa a Alternativa E de:
+    - Resolução Comentada (caso seja um PDF comentado como ITA 2020/2019 ou IME)
+    - Gabarito embutido na resolução ('Resposta: C')
+    - Texto Base da próxima questão
     """
-    # Remove títulos de seção isolados (ex: INGLÊS, PORTUGUÊS, QUÍMICA, FÍSICA, MATEMÁTICA)
+    res_extracted = None
+    ans_extracted = None
+
+    # Se houver bloco 'Resolução' dentro do texto após a alternativa E (padrão Curso Objetivo comentado)
+    res_split = re.split(r"(?:^|\n|\[\[BLOCK_BREAK\]\])\s*Resolu[çc][ãa]o\b", raw_alt_e, maxsplit=1, flags=re.IGNORECASE)
+    if len(res_split) == 2:
+        raw_alt_e = res_split[0]
+        res_tail = res_split[1]
+        m_ans = re.search(r"(?:Resposta|Alternativa|Gabarito)\s*[:\-]?\s*([A-E])\b", res_tail, re.IGNORECASE)
+        if m_ans:
+            ans_extracted = m_ans.group(1).upper()
+        res_extracted = fix_portuguese_accents_and_reflow(res_tail)
+
     section_pat = r"(?:^|\[\[BLOCK_BREAK\]\]|\n)\s*(?:L[ÍI]NGUA\s+PORTUGUESA|L[ÍI]NGUA\s+INGLESA|PORTUGU[ÊE]S|INGL[ÊE]S|MATEM[ÁA]TICA|F[ÍI]SICA|QU[ÍI]MICA|F\s*´\s*I\s*S\s*I\s*C\s*A|Q\s*U\s*´\s*I\s*M\s*I\s*C\s*A)\s*(?=\[\[BLOCK_BREAK\]\]|\n|$)"
-    
     blocks = [b.strip() for b in raw_alt_e.split("[[BLOCK_BREAK]]") if b.strip()]
     if not blocks:
-        return "", None
+        return "", None, res_extracted, ans_extracted
 
-    # O primeiro bloco logo após "E ( )" é sempre a Alternativa E
     alt_e_blocks = [blocks[0]]
     remaining_blocks = blocks[1:]
 
-    # Se dentro do próprio primeiro bloco houver uma quebra explícita para início de texto base
     inline_cue = re.split(
         r"\n\s*(?=(?:As\s+quest[õo]es|Leia\s+o\s+texto|Considere\s+o\s+texto|O\s+texto\s+a\s+seguir|Read\s+the\s+text|Read\s+the\s+following|Texto\s+[I1V]|TEXTO\s+[I1V]|O\s+enunciado\s+a\s+seguir))",
         alt_e_blocks[0],
@@ -295,7 +361,6 @@ def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None]:
         alt_e_blocks = [inline_cue[0].strip()]
         remaining_blocks.insert(0, inline_cue[1].strip())
 
-    # Limpa cabeçalhos de matéria e instruções de capa dos blocos restantes
     cleaned_remaining = []
     for rb in remaining_blocks:
         rb_clean = re.sub(section_pat, "", rb, flags=re.IGNORECASE).strip()
@@ -304,41 +369,21 @@ def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None]:
         cleaned_remaining.append(rb_clean)
 
     alt_e_final = fix_portuguese_accents_and_reflow(" ".join(alt_e_blocks), is_alternative=True)
-
     if not cleaned_remaining:
-        return alt_e_final, None
+        return alt_e_final, None, res_extracted, ans_extracted
 
     candidate_base = fix_portuguese_accents_and_reflow("\n\n".join(cleaned_remaining), is_alternative=False)
-
-    # Verifica se os blocos restantes realmente formam um Texto Base / Preâmbulo
     has_cue = bool(re.search(
         r"(?:quest[õo]es|texto|leia|considere|fragmento|excerto|poema|passagem|enunciado|figura\s+a\s+seguir|read\s+the|following|passage|article|adapted\s+from|dispon[íi]vel\s+em|fonte:)",
         candidate_base,
         re.IGNORECASE
     ))
     if has_cue or len(candidate_base) > 95:
-        return alt_e_final, candidate_base
+        return alt_e_final, candidate_base, res_extracted, ans_extracted
 
-    return alt_e_final, None
-
-def extract_preamble_before_q1(full_blocks_text: str) -> str | None:
-    """Captura eventual texto de apoio posicionado antes da Questão 1 (ex: provas que iniciam com texto)."""
-    m = re.search(r"^(.*?)(?=Quest(?:ão|ao)\s*1\s*[\.\-])", full_blocks_text, re.DOTALL | re.IGNORECASE)
-    if not m:
-        return None
-    pre_raw = m.group(1)
-    # Procura marcador típico de início de texto base após as instruções da capa
-    cue_match = re.search(
-        r"((?:As\s+quest[õo]es\s+de\s+1\s+a|Leia\s+o\s+texto|Considere\s+o\s+texto|Texto\s+I|O\s+enunciado\s+a\s+seguir).*)$",
-        pre_raw,
-        re.DOTALL | re.IGNORECASE
-    )
-    if cue_match:
-        return fix_portuguese_accents_and_reflow(cue_match.group(1))
-    return None
+    return alt_e_final, None, res_extracted, ans_extracted
 
 def detect_explicit_question_range(base_text: str) -> tuple[int, int] | None:
-    """Detecta instruções como 'As questões de 37 a 40' ou 'questions 25 to 28'."""
     patterns = [
         r"(?:quest[õo]es|itens|questions?)\s*(?:de\s+|from\s+|n[úu]meros?\s+)?(\d{1,2})\s*(?:a|at[ée]|e|to|through|and|\-)\s*(\d{1,2})",
         r"responder\s+[àa]s\s+quest[õo]es\s+(?:de\s+)?(\d{1,2})\s*(?:a|at[ée]|e)\s*(\d{1,2})"
@@ -351,19 +396,9 @@ def detect_explicit_question_range(base_text: str) -> tuple[int, int] | None:
                 return (start_q, end_q)
     return None
 
-def clean_cmex_alternative(alt_raw: str) -> str:
-    txt = alt_raw.replace("\ufffd", "").strip()
-    m_rad = re.match(r"^[rs]\s+([0-9A-Za-z_]+)\s+([0-9A-Za-z_]+)(?:\s*\+\s*([0-9A-Za-z_]+)\s+([0-9A-Za-z_]+))?$", txt)
-    if m_rad:
-        num1, den1, num2, den2 = m_rad.groups()
-        if num2 and den2:
-            return f"$\\sqrt{{\\frac{{{num1}}}{{{den1}}}}} + \\frac{{{num2}}}{{{den2}}}$"
-        return f"$\\sqrt{{\\frac{{{num1}}}{{{den1}}}}}$"
-    return txt
-
-def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict]:
+def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str], is_commented_pdf: bool = False) -> list[dict]:
     doc = fitz.open(prova_pdf)
-    q_figures, q_fig_rects = extract_clean_figures(doc, year)
+    q_figures, q_fig_rects = safe_extract_figures(doc, year)
     structured_text = extract_structured_blocks_text(doc, q_fig_rects)
     doc.close()
 
@@ -374,37 +409,33 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
         r"Quest(?:ão|ao)\s*(\d{1,2})\s*[\.\-]\s*(.*?)(?=Quest(?:ão|ao)\s*\d{1,2}\s*[\.\-]|\Z)",
         re.DOTALL | re.IGNORECASE
     )
-
-    pending_base_by_qnum: dict[int, str] = {}
-    q1_preamble = extract_preamble_before_q1(normalized_full)
-    if q1_preamble:
-        pending_base_by_qnum[1] = q1_preamble
-
     raw_matches = q_pattern.findall(normalized_full)
-    questions = []
 
-    for idx, (num_str, raw_body) in enumerate(raw_matches):
-        q_num = int(num_str)
-        next_q_num = int(raw_matches[idx + 1][0]) if idx + 1 < len(raw_matches) else q_num + 1
-        materia = get_subject(year_int, q_num)
+    # Fallback para PDFs comentados (como ITA 2020/2019 e IME) onde as questões começam por "1. ", "2. "
+    if len(raw_matches) < 10:
+        q_pattern_num = re.compile(
+            r"(?:^|\[\[BLOCK_BREAK\]\]|\n)\s*(\d{1,2})\.\s+([A-ZÁÉÍÓÚÂÊÔÃÕ\(].*?)(?=(?:\[\[BLOCK_BREAK\]\]|\n)\s*\d{1,2}\.\s+[A-ZÁÉÍÓÚÂÊÔÃÕ\(]\vert{}\Z)", re.DOTALL ) raw_matches = [m for m in q_pattern_num.findall(normalized_full) if 1 <= int(m[0]) <= 75]      pending_base_by_qnum: dict[int, str] = {} questions = [] seen_qnums = set()      for idx, (num_str, raw_body) in enumerate(raw_matches): q_num = int(num_str) if q_num in seen_qnums: continue seen_qnums.add(q_num)          next_q_num = int(raw_matches[idx + 1][0]) if idx + 1 < len(raw_matches) else q_num + 1 materia = get_subject(year_int, q_num)          # Suporta tanto A( ) quanto a) ... e) parts = re.split(r"(?:^\vert{}\n\vert{}\s\vert{}\[\[BLOCK_BREAK\]\])([A-E])\s*\(\s*\)\s*", raw_body.strip()) if len(parts) < 11: parts = re.split(r"(?:^\vert{}\n\vert{}\s\vert{}\[\[BLOCK_BREAK\]\])([a-eA-E])\)\s+", raw_body.strip())
 
-        parts = re.split(r"(?:^|\n|\s|\[\[BLOCK_BREAK\]\])([A-E])\s*\(\s*\)\s*", raw_body.strip())
         enunciado = fix_portuguese_accents_and_reflow(parts[0])
         alternativas = {k: "Consulte o enunciado / figura" for k in ("A", "B", "C", "D", "E")}
+        custom_res = None
+        embedded_ans = None
 
         if len(parts) >= 11:
             for i in range(1, len(parts) - 1, 2):
                 letter = parts[i].upper()
                 alt_text = parts[i + 1].strip()
                 if letter == "E":
-                    alt_e_clean, next_base_text = split_alt_e_and_next_base_text(alt_text)
-                    alternativas["E"] = clean_cmex_alternative(alt_e_clean)
+                    alt_e_clean, next_base_text, res_ext, ans_ext = split_alt_e_and_next_base_text(alt_text)
+                    alternativas["E"] = alt_e_clean
+                    if res_ext:
+                        custom_res = res_ext
+                    if ans_ext:
+                        embedded_ans = ans_ext
                     if next_base_text:
                         pending_base_by_qnum[next_q_num] = next_base_text
                 elif letter in alternativas:
-                    alternativas[letter] = clean_cmex_alternative(
-                        fix_portuguese_accents_and_reflow(alt_text, is_alternative=True)
-                    )
+                    alternativas[letter] = fix_portuguese_accents_and_reflow(alt_text, is_alternative=True)
 
         q_id = f"{EXAM_BANCA}-{year}-1F-Q{q_num:02d}"
         if q_id in VERIFIED_LATEX_OVERRIDES:
@@ -414,7 +445,13 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
             if "alternativas" in ov:
                 alternativas = ov["alternativas"]
 
-        gabarito = gab_map.get(q_num, "A")
+        gabarito = gab_map.get(q_num) or embedded_ans or "A"
+        resolucao_final = custom_res if custom_res else (
+            f"Gabarito Oficial {EXAM_BANCA} {year}: Alternativa {gabarito}."
+            if gabarito != "ANULADA"
+            else f"Questão Oficialmente ANULADA pela banca do {EXAM_BANCA} {year}."
+        )
+
         questions.append({
             "id": q_id,
             "ano": year_int,
@@ -429,23 +466,16 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
             "figura": q_figures.get(q_num),
             "alternativas": alternativas,
             "gabarito": gabarito,
-            "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para gerar a resolução passo a passo em LaTeX.",
-            "resolucao": (
-                f"Gabarito Oficial {EXAM_BANCA} {year}: Alternativa {gabarito}."
-                if gabarito != "ANULADA"
-                else f"Questão Oficialmente ANULADA pela banca do ITA {year}."
-            )
+            "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
+            "resolucao": resolucao_final
         })
 
-    # Segunda passagem: Propaga os Textos de Apoio (por intervalo explícito, matéria de leitura ou referência à questão anterior)
     q_by_num = {q["numero"]: q for q in questions}
     active_subject_text: dict[str, str] = {}
-    active_range_end: dict[str, int] = {}
 
     for q in questions:
         qn = q["numero"]
         mat = q["materia"]
-
         if qn in pending_base_by_qnum:
             new_base = pending_base_by_qnum[qn]
             active_subject_text[mat] = new_base
@@ -454,11 +484,9 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
                 for target_num in range(rng[0], rng[1] + 1):
                     if target_num in q_by_num:
                         q_by_num[target_num]["texto_base"] = new_base
-                active_range_end[mat] = rng[1]
             else:
                 q["texto_base"] = new_base
 
-        # Se for Inglês ou Português (ou mencionar "segundo o texto" / "in the text"), herda o texto ativo da seção
         if not q["texto_base"] and mat in active_subject_text:
             mentions_text = bool(re.search(
                 r"(?:texto|text|paragraph|par[áa]grafo|autor|author|poema|excerto|fragmento|passagem|passage|line\s+\d|linha\s+\d)",
@@ -468,9 +496,8 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
             if mat in ("Inglês", "Português") or mentions_text:
                 q["texto_base"] = active_subject_text[mat]
 
-        # Se mencionar "questão anterior" / "enunciado anterior" / "sistema anterior" em Física/Química/Matemática
         if not q["texto_base"] and (qn - 1) in q_by_num:
-            if re.search(r"(?:quest[ãa]o\s+anterior|enunciado\s+anterior|sistema\s+anterior|situa[çc][ãa]o\s+anterior|problema\s+anterior)", q["enunciado"], re.IGNORECASE):
+            if re.search(r"(?:quest[ãa]o\s+anterior|enunciado\s+anterior|sistema\s+anterior|situa[çc][ãa]o\s+anterior)", q["enunciado"], re.IGNORECASE):
                 prev_q = q_by_num[qn - 1]
                 q["texto_base"] = f"[Contexto da Questão Anterior — {prev_q['id']}]:\n{prev_q['enunciado']}"
                 if not q["figura"] and prev_q.get("figura"):
@@ -499,41 +526,29 @@ def main():
 
     by_id = {item["id"]: item for item in existing if isinstance(item, dict) and "id" in item}
 
-    b_low = EXAM_BANCA.lower()
-    b_low = EXAM_BANCA.lower()
-    b_up = EXAM_BANCA.upper()
-    prova_urls = [
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_low}{EXAM_YEAR}_1fase_prova.pdf",
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_up}{EXAM_YEAR}_1fase_prova.pdf",
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_low}{EXAM_YEAR}_prova.pdf",
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_up}{EXAM_YEAR}_prova.pdf"
-    ]
-    gab_urls = [
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_low}{EXAM_YEAR}_1fase_gabarito.pdf",
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/1fase/{b_up}{EXAM_YEAR}_1fase_gabarito.pdf",
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_low}{EXAM_YEAR}_gabarito.pdf",
-        f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b_low}/{EXAM_YEAR}/{b_up}{EXAM_YEAR}_gabarito.pdf"
-    ]
+    prova_path = DATA_DIR / f"{EXAM_BANCA.lower()}_{EXAM_YEAR}_prova.pdf"
+    gab_path = DATA_DIR / f"{EXAM_BANCA.lower()}_{EXAM_YEAR}_gabarito.pdf"
 
-    prova_path = DATA_DIR / f"ita_{EXAM_YEAR}_prova.pdf"
-    gab_path = DATA_DIR / f"ita_{EXAM_YEAR}_gabarito.pdf"
+    print(f"=== Extraindo {EXAM_BANCA} {EXAM_YEAR} ===")
+    got_prova, got_gab, is_commented = discover_and_fetch_pdfs(EXAM_BANCA, EXAM_YEAR, prova_path, gab_path)
 
-    print(f"=== Extraindo {EXAM_BANCA} {EXAM_YEAR} (Com Textos de Apoio + Figuras) ===")
-    if fetch_pdf(prova_urls, prova_path):
-        fetch_pdf(gab_urls, gab_path)
-        gab_map = parse_gabarito_pdf(gab_path)
-        extracted = parse_exam(prova_path, EXAM_YEAR, gab_map)
+    if got_prova:
+        gab_map = parse_gabarito_pdf(gab_path) if got_gab else {}
+        extracted = parse_exam(prova_path, EXAM_YEAR, gab_map, is_commented_pdf=is_commented)
         with_base = sum(1 for q in extracted if q.get("texto_base"))
         with_fig = sum(1 for q in extracted if q.get("figura"))
-        print(f"  ✓ {len(extracted)} questões extraídas | {with_base} com Texto de Apoio | {with_fig} com Figura")
+        print(f"  ✓ {len(extracted)} questões extraídas | {with_base} com Texto Base | {with_fig} com Figura")
 
         for q in extracted:
             by_id[q["id"]] = q
         prova_path.unlink(missing_ok=True)
         gab_path.unlink(missing_ok=True)
+    else:
+        print(f"  ✗ PDF não localizado para {EXAM_BANCA} {EXAM_YEAR}.")
 
-    final_questions = sorted(by_id.values(), key=lambda x: (-x["ano"], x["numero"]))
+    final_questions = sorted(by_id.values(), key=lambda x: (-x["ano"], x["id"]))
     DB_FILE.write_text(json.dumps(final_questions, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"  → Total acumulado no Banco: {len(final_questions)} questões.")
 
 if __name__ == "__main__":
     main()
