@@ -18,7 +18,6 @@ HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
 }
 
-# Substituições de LaTeX verificadas para questões do ITA onde a fonte CMEX10 usa glifos gráficos
 VERIFIED_LATEX_OVERRIDES = {
     "ITA-2025-1F-Q18": {
         "enunciado": "Um recipiente de paredes diatérmicas é dividido ao meio por um êmbolo de área $A$. O lado esquerdo do êmbolo é conectado ao recipiente por uma mola ideal de constante elástica $k$, em uma região onde há vácuo. No lado direito do êmbolo, há um gás ideal a uma pressão inicial $P_0$. Então, uma quantidade $Q$ de calor é transferida a esse gás por um processo reversível e isotérmico.\n\nAssinale a alternativa que fornece a diferença entre o comprimento natural da mola e o seu comprimento ao final do processo descrito.",
@@ -46,19 +45,12 @@ VERIFIED_LATEX_OVERRIDES = {
 }
 
 def fix_portuguese_accents_and_reflow(raw: str, is_alternative: bool = False) -> str:
-    """
-    1. Converte acentos flutuantes do pdflatex SEM engolir o espaço antes de novas palavras.
-    2. Junta palavras hifenizadas na quebra de linha (ex: 'ampla-\\nmente' -> 'amplamente').
-    3. Faz o reflow de linhas estreitas em parágrafos fluidos e formata unidades em LaTeX.
-    """
-    text = raw
+    text = raw.replace("[[BLOCK_BREAK]]", "\n\n")
 
-    # Acentos isolados após espaço (ex: " ´e" -> " é", " `a" -> " à") mantendo o espaço anterior!
     text = re.sub(r"(?<=\s)´\s*e(?=\s|[.,;:!?\)]|$)", "é", text)
     text = re.sub(r"(?<=\s)`\s*a(?=\s|[.,;:!?\)]|$)", "à", text)
     text = re.sub(r"(?<=\s)´\s*a(?=\s|[.,;:!?\)]|$)", "á", text)
 
-    # Acentos flutuantes SEM consumir espaço anterior (\s* apenas DEPOIS do acento)
     accent_map = [
         (r"[˜~]\s*a", "ã"), (r"[˜~]\s*o", "õ"),
         (r"[˜~]\s*A", "Ã"), (r"[˜~]\s*O", "Õ"),
@@ -76,16 +68,13 @@ def fix_portuguese_accents_and_reflow(raw: str, is_alternative: bool = False) ->
     for pat, repl in accent_map:
         text = re.sub(pat, repl, text)
 
-    # Caso o pdflatex tenha colocado espaço antes do acento no meio da palavra (ex: "Quest ã o"),
-    # só junta se a parte anterior NÃO for uma palavra inteira de ligação (de, do, da, um, com, e, o, a...)
     STOPWORDS = {
         "o", "a", "os", "as", "um", "uma", "de", "do", "da", "dos", "das",
         "em", "no", "na", "nos", "nas", "ao", "aos", "por", "para", "com",
         "sem", "sob", "que", "se", "ou", "como", "mais", "sua", "seu", "e", "v"
     }
     def join_internal_accent(m):
-        prefix = m.group(1)
-        accented = m.group(2)
+        prefix, accented = m.group(1), m.group(2)
         if prefix.lower() in STOPWORDS or accented in ("é", "à", "às"):
             return f"{prefix} {accented}"
         return f"{prefix}{accented}"
@@ -93,29 +82,31 @@ def fix_portuguese_accents_and_reflow(raw: str, is_alternative: bool = False) ->
     text = re.sub(r"\b([A-Za-z]{1,12})\s+([ãõáéíóúâêôç][a-z]*)\b", join_internal_accent, text)
     text = re.sub(r"Quest\s*ão", "Questão", text, flags=re.IGNORECASE)
 
-    # Des-hifenização de fim de linha (ex: "ampla-\nmente" -> "amplamente")
+    # Des-hifenização de fim de linha
     text = re.sub(r"([a-zA-ZçÇáéíóúâêôãõÁÉÍÓÚÂÊÔÃÕ]{2,})-\s*\n\s*([a-zçáéíóúâêôãõ]{2,})", r"\1\2", text)
 
-    # Remove linhas órfãs de 1 caractere que vieram de rótulos de figuras (ex: "\nk\n")
     if not is_alternative:
         text = re.sub(r"\n\s*[kR12xy]\s*\n", "\n", text)
 
-    # Reflow de quebras de linha estreitas (preservando parágrafos e itens I, II, III)
-    lines = [ln.strip() for ln in text.splitlines() if ln.strip()]
-    merged_lines = []
-    for ln in lines:
-        if not merged_lines:
-            merged_lines.append(ln)
+    # Reflow preservando quebras de parágrafo (\n\n)
+    paragraphs = re.split(r"\n\s*\n", text)
+    cleaned_paras = []
+    for para in paragraphs:
+        lines = [ln.strip() for ln in para.splitlines() if ln.strip()]
+        if not lines:
             continue
-        # Mantém quebra se começar com algarismo romano, item ou frase de comando final
-        if re.match(r"^(?:I{1,3}|IV|V|1\.|2\.|3\.|a\)|b\)|c\)|•|Assinale|Determine|Calcule|Sabendo|Dados?:)", ln):
-            merged_lines.append("\n" + ln)
-        else:
-            merged_lines[-1] += " " + ln
+        merged = []
+        for ln in lines:
+            if not merged:
+                merged.append(ln)
+            elif re.match(r"^(?:I{1,3}|IV|V|1\.|2\.|3\.|a\)|b\)|c\)|•|Assinale|Determine|Calcule|Sabendo|Dados?:|Fonte:|Adaptado)", ln):
+                merged.append("\n" + ln)
+            else:
+                merged[-1] += " " + ln
+        cleaned_paras.append("\n".join(merged))
 
-    text = "\n".join(merged_lines)
+    text = "\n\n".join(cleaned_paras)
 
-    # Embelezamento automático de variáveis e unidades físicas/químicas para KaTeX
     if not is_alternative and "$" not in text:
         text = re.sub(r"\b([RPVTdv])([012])\b", r"$\1_\2$", text)
         text = re.sub(r"(\d+[,.]?\d*)\s*g/cm3\b", r"$\1\\text{ g/cm}^3$", text)
@@ -162,11 +153,7 @@ def parse_gabarito_pdf(gab_pdf: Path) -> dict[int, str]:
             gab_map[q_num] = "ANULADA" if "*" in ans else ans
     return gab_map
 
-def extract_clean_figures_and_alt_crops(doc: fitz.Document, year: str) -> tuple[dict[int, str], dict[int, list[tuple[int, fitz.Rect]]]]:
-    """
-    Recorta as figuras das questões garantindo que NUNCA invadam a coluna de texto à esquerda,
-    e retorna os retângulos recortados para excluir rótulos internos do texto do enunciado.
-    """
+def extract_clean_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str], dict[int, list[tuple[int, fitz.Rect]]]]:
     q_figures = {}
     q_fig_rects = {}
 
@@ -181,7 +168,7 @@ def extract_clean_figures_and_alt_crops(doc: fitz.Document, year: str) -> tuple[
             m = re.search(r"Quest(?:ão|ao)\s*(\d{1,2})\s*[\.\-]", cleaned, re.IGNORECASE)
             if m:
                 q_anchors.append((int(m.group(1)), y0, x0))
-            if len(cleaned) > 35:  # Bloco real de parágrafo de texto
+            if len(cleaned) > 35:
                 text_blocks.append(fitz.Rect(x0, y0, x1, y1))
 
         q_anchors.sort(key=lambda item: item[1])
@@ -211,7 +198,6 @@ def extract_clean_figures_and_alt_crops(doc: fitz.Document, year: str) -> tuple[
             for mr in matching[1:]:
                 union_r |= mr
 
-            # Inclui rótulos curtos da própria figura (ex: 'Pistão móvel', 'óleo', 'água') que estejam próximos
             for b in blocks:
                 bx0, by0, bx1, by1, btxt, *_ = b
                 b_rect = fitz.Rect(bx0, by0, bx1, by1)
@@ -219,7 +205,6 @@ def extract_clean_figures_and_alt_crops(doc: fitz.Document, year: str) -> tuple[
                     if bx0 >= union_r.x0 - 30 and bx1 <= union_r.x1 + 55:
                         union_r |= b_rect
 
-            # Se a figura está na direita da página (x0 > 240), impede que o crop invada a coluna de texto à esquerda!
             min_allowed_x0 = 0
             if union_r.x0 > 220:
                 left_paragraphs = [
@@ -243,37 +228,119 @@ def extract_clean_figures_and_alt_crops(doc: fitz.Document, year: str) -> tuple[
 
     return q_figures, q_fig_rects
 
-def extract_page_text_excluding_figures(doc: fitz.Document, q_fig_rects: dict[int, list[tuple[int, fitz.Rect]]]) -> str:
-    """Extrai o texto das páginas ignorando palavras que estão desenhadas dentro das figuras."""
+def extract_structured_blocks_text(doc: fitz.Document, q_fig_rects: dict[int, list[tuple[int, fitz.Rect]]]) -> str:
+    """Extrai os blocos de texto preservando marcadores [[BLOCK_BREAK]] entre parágrafos visuais do PDF."""
     all_fig_rects_by_page = {}
     for rects in q_fig_rects.values():
         for p_idx, r in rects:
             all_fig_rects_by_page.setdefault(p_idx, []).append(r)
 
-    pages_out = []
+    blocks_out = []
     for p_idx, page in enumerate(doc):
         fig_rects = all_fig_rects_by_page.get(p_idx, [])
-        blocks = page.get_text("blocks")
-        kept_texts = []
+        # Ordena os blocos de cima para baixo, da esquerda para a direita
+        blocks = sorted(page.get_text("blocks"), key=lambda b: (round(b[1] / 12), b[0]))
         for b in blocks:
             x0, y0, x1, y1, text, *_ = b
             b_rect = fitz.Rect(x0, y0, x1, y1)
-            # Se o bloco de texto estiver contido dentro de uma figura e não for cabeçalho de Questão, ignora!
             inside_fig = any(
                 (b_rect.x0 >= fr.x0 - 5 and b_rect.x1 <= fr.x1 + 5 and b_rect.y0 >= fr.y0 - 5 and b_rect.y1 <= fr.y1 + 5)
                 for fr in fig_rects
             )
             if inside_fig and not re.search(r"Quest", text, re.IGNORECASE):
                 continue
-            kept_texts.append(text)
-        pages_out.append("\n".join(kept_texts))
-    return "\n".join(pages_out)
+            clean_b = text.strip()
+            # Ignora rodapé isolado de número de página
+            if re.match(r"^\d{1,2}$", clean_b):
+                continue
+            blocks_out.append(clean_b)
+    return "\n[[BLOCK_BREAK]]\n".join(blocks_out)
+
+def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None]:
+    """
+    Separa o texto real da Alternativa E de qualquer Texto Base / Preâmbulo
+    que pertença à próxima questão (ou próximo bloco de questões).
+    """
+    # Remove títulos de seção isolados (ex: INGLÊS, PORTUGUÊS, QUÍMICA, FÍSICA, MATEMÁTICA)
+    section_pat = r"(?:^|\[\[BLOCK_BREAK\]\]|\n)\s*(?:L[ÍI]NGUA\s+PORTUGUESA|L[ÍI]NGUA\s+INGLESA|PORTUGU[ÊE]S|INGL[ÊE]S|MATEM[ÁA]TICA|F[ÍI]SICA|QU[ÍI]MICA|F\s*´\s*I\s*S\s*I\s*C\s*A|Q\s*U\s*´\s*I\s*M\s*I\s*C\s*A)\s*(?=\[\[BLOCK_BREAK\]\]|\n|$)"
+    
+    blocks = [b.strip() for b in raw_alt_e.split("[[BLOCK_BREAK]]") if b.strip()]
+    if not blocks:
+        return "", None
+
+    # O primeiro bloco logo após "E ( )" é sempre a Alternativa E
+    alt_e_blocks = [blocks[0]]
+    remaining_blocks = blocks[1:]
+
+    # Se dentro do próprio primeiro bloco houver uma quebra explícita para início de texto base
+    inline_ cue = re.split(
+        r"\n\s*(?=(?:As\s+quest[õo]es|Leia\s+o\s+texto|Considere\s+o\s+texto|O\s+texto\s+a\s+seguir|Read\s+the\s+text|Read\s+the\s+following|Texto\s+[I1V]|TEXTO\s+[I1V]|O\s+enunciado\s+a\s+seguir))",
+        alt_e_blocks[0],
+        maxsplit=1,
+        flags=re.IGNORECASE
+    )
+    if len(inline_cue) == 2:
+        alt_e_blocks = [inline_cue[0].strip()]
+        remaining_blocks.insert(0, inline_cue[1].strip())
+
+    # Limpa cabeçalhos de matéria e instruções de capa dos blocos restantes
+    cleaned_remaining = []
+    for rb in remaining_blocks:
+        rb_clean = re.sub(section_pat, "", rb, flags=re.IGNORECASE).strip()
+        if not rb_clean or re.match(r"^\d{1,2}$", rb_clean):
+            continue
+        cleaned_remaining.append(rb_clean)
+
+    alt_e_final = fix_portuguese_accents_and_reflow(" ".join(alt_e_blocks), is_alternative=True)
+
+    if not cleaned_remaining:
+        return alt_e_final, None
+
+    candidate_base = fix_portuguese_accents_and_reflow("\n\n".join(cleaned_remaining), is_alternative=False)
+
+    # Verifica se os blocos restantes realmente formam um Texto Base / Preâmbulo
+    has_cue = bool(re.search(
+        r"(?:quest[õo]es|texto|leia|considere|fragmento|excerto|poema|passagem|enunciado|figura\s+a\s+seguir|read\s+the|following|passage|article|adapted\s+from|dispon[íi]vel\s+em|fonte:)",
+        candidate_base,
+        re.IGNORECASE
+    ))
+    if has_cue or len(candidate_base) > 95:
+        return alt_e_final, candidate_base
+
+    return alt_e_final, None
+
+def extract_preamble_before_q1(full_blocks_text: str) -> str | None:
+    """Captura eventual texto de apoio posicionado antes da Questão 1 (ex: provas que iniciam com texto)."""
+    m = re.search(r"^(.*?)(?=Quest(?:ão|ao)\s*1\s*[\.\-])", full_blocks_text, re.DOTALL | re.IGNORECASE)
+    if not m:
+        return None
+    pre_raw = m.group(1)
+    # Procura marcador típico de início de texto base após as instruções da capa
+    cue_match = re.search(
+        r"((?:As\s+quest[õo]es\s+de\s+1\s+a|Leia\s+o\s+texto|Considere\s+o\s+texto|Texto\s+I|O\s+enunciado\s+a\s+seguir).*)$",
+        pre_raw,
+        re.DOTALL | re.IGNORECASE
+    )
+    if cue_match:
+        return fix_portuguese_accents_and_reflow(cue_match.group(1))
+    return None
+
+def detect_explicit_question_range(base_text: str) -> tuple[int, int] | None:
+    """Detecta instruções como 'As questões de 37 a 40' ou 'questions 25 to 28'."""
+    patterns = [
+        r"(?:quest[õo]es|itens|questions?)\s*(?:de\s+|from\s+|n[úu]meros?\s+)?(\d{1,2})\s*(?:a|at[ée]|e|to|through|and|\-)\s*(\d{1,2})",
+        r"responder\s+[àa]s\s+quest[õo]es\s+(?:de\s+)?(\d{1,2})\s*(?:a|at[ée]|e)\s*(\d{1,2})"
+    ]
+    for pat in patterns:
+        m = re.search(pat, base_text, re.IGNORECASE)
+        if m:
+            start_q, end_q = int(m.group(1)), int(m.group(2))
+            if 1 <= start_q <= end_q <= 60:
+                return (start_q, end_q)
+    return None
 
 def clean_cmex_alternative(alt_raw: str) -> str:
-    """Limpa glifos corrompidos da fonte matemática CMEX10 (raízes 'r'/'s' e parênteses '\ufffd')."""
-    txt = fix_portuguese_accents_and_reflow(alt_raw, is_alternative=True)
-    txt = txt.replace("\ufffd", "")
-    # Converte padrão CMEX10 "r A B" -> "\sqrt{A / B}"
+    txt = alt_raw.replace("\ufffd", "").strip()
     m_rad = re.match(r"^[rs]\s+([0-9A-Za-z_]+)\s+([0-9A-Za-z_]+)(?:\s*\+\s*([0-9A-Za-z_]+)\s+([0-9A-Za-z_]+))?$", txt)
     if m_rad:
         num1, den1, num2, den2 = m_rad.groups()
@@ -284,12 +351,11 @@ def clean_cmex_alternative(alt_raw: str) -> str:
 
 def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict]:
     doc = fitz.open(prova_pdf)
-    q_figures, q_fig_rects = extract_clean_figures_and_alt_crops(doc, year)
-    raw_pages = extract_page_text_excluding_figures(doc, q_fig_rects)
+    q_figures, q_fig_rects = extract_clean_figures(doc, year)
+    structured_text = extract_structured_blocks_text(doc, q_fig_rects)
     doc.close()
 
-    # Normaliza apenas o cabeçalho Questão X. para o split
-    normalized_full = re.sub(r"Quest\s*[˜~]?\s*a\s*o", "Questão", raw_pages, flags=re.IGNORECASE)
+    normalized_full = re.sub(r"Quest\s*[˜~]?\s*a\s*o", "Questão", structured_text, flags=re.IGNORECASE)
     year_int = int(year)
 
     q_pattern = re.compile(
@@ -297,14 +363,20 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
         re.DOTALL | re.IGNORECASE
     )
 
-    questions = []
-    for num_str, raw_body in q_pattern.findall(normalized_full):
-        q_num = int(num_str)
-        materia = get_subject(year_int, q_num)
-        if not INCLUDE_LANGUAGES and materia in ("Inglês", "Português"):
-            continue
+    pending_base_by_qnum: dict[int, str] = {}
+    q1_preamble = extract_preamble_before_q1(normalized_full)
+    if q1_preamble:
+        pending_base_by_qnum[1] = q1_preamble
 
-        parts = re.split(r"(?:^|\n|\s)([A-E])\s*\(\s*\)\s*", raw_body.strip())
+    raw_matches = q_pattern.findall(normalized_full)
+    questions = []
+
+    for idx, (num_str, raw_body) in enumerate(raw_matches):
+        q_num = int(num_str)
+        next_q_num = int(raw_matches[idx + 1][0]) if idx + 1 < len(raw_matches) else q_num + 1
+        materia = get_subject(year_int, q_num)
+
+        parts = re.split(r"(?:^|\n|\s|\[\[BLOCK_BREAK\]\])([A-E])\s*\(\s*\)\s*", raw_body.strip())
         enunciado = fix_portuguese_accents_and_reflow(parts[0])
         alternativas = {k: "Consulte o enunciado / figura" for k in ("A", "B", "C", "D", "E")}
 
@@ -313,10 +385,14 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
                 letter = parts[i].upper()
                 alt_text = parts[i + 1].strip()
                 if letter == "E":
-                    alt_text = re.sub(r"\n\s*\d{1,2}\s*$", "", alt_text).strip()
-                    alt_text = re.sub(r"\n\s*(?:FÍSICA|QUÍMICA|MATEMÁTICA|INGLÊS|PORTUGUÊS|F\s*´\s*I\s*S\s*I\s*C\s*A).*$", "", alt_text, flags=re.DOTALL | re.IGNORECASE).strip()
-                if letter in alternativas:
-                    alternativas[letter] = clean_cmex_alternative(alt_text)
+                    alt_e_clean, next_base_text = split_alt_e_and_next_base_text(alt_text)
+                    alternativas["E"] = clean_cmex_alternative(alt_e_clean)
+                    if next_base_text:
+                        pending_base_by_qnum[next_q_num] = next_base_text
+                elif letter in alternativas:
+                    alternativas[letter] = clean_cmex_alternative(
+                        fix_portuguese_accents_and_reflow(alt_text, is_alternative=True)
+                    )
 
         q_id = f"ITA-{year}-1F-Q{q_num:02d}"
         if q_id in VERIFIED_LATEX_OVERRIDES:
@@ -334,8 +410,9 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
             "numero": q_num,
             "materia": materia,
             "topico": f"{materia} - ITA {year}",
-            "subtopico": "Com Figura Oficial" if q_num in q_figures else "Questão Oficial 1ª Fase",
+            "subtopico": "Questão Oficial 1ª Fase",
             "dificuldade": "Difícil",
+            "texto_base": None,
             "enunciado": enunciado,
             "figura": q_figures.get(q_num),
             "alternativas": alternativas,
@@ -347,6 +424,54 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str]) -> list[dict
                 else f"Questão Oficialmente ANULADA pela banca do ITA {year}."
             )
         })
+
+    # Segunda passagem: Propaga os Textos de Apoio (por intervalo explícito, matéria de leitura ou referência à questão anterior)
+    q_by_num = {q["numero"]: q for q in questions}
+    active_subject_text: dict[str, str] = {}
+    active_range_end: dict[str, int] = {}
+
+    for q in questions:
+        qn = q["numero"]
+        mat = q["materia"]
+
+        if qn in pending_base_by_qnum:
+            new_base = pending_base_by_qnum[qn]
+            active_subject_text[mat] = new_base
+            rng = detect_explicit_question_range(new_base)
+            if rng:
+                for target_num in range(rng[0], rng[1] + 1):
+                    if target_num in q_by_num:
+                        q_by_num[target_num]["texto_base"] = new_base
+                active_range_end[mat] = rng[1]
+            else:
+                q["texto_base"] = new_base
+
+        # Se for Inglês ou Português (ou mencionar "segundo o texto" / "in the text"), herda o texto ativo da seção
+        if not q["texto_base"] and mat in active_subject_text:
+            mentions_text = bool(re.search(
+                r"(?:texto|text|paragraph|par[áa]grafo|autor|author|poema|excerto|fragmento|passagem|passage|line\s+\d|linha\s+\d)",
+                q["enunciado"],
+                re.IGNORECASE
+            ))
+            if mat in ("Inglês", "Português") or mentions_text:
+                q["texto_base"] = active_subject_text[mat]
+
+        # Se mencionar "questão anterior" / "enunciado anterior" / "sistema anterior" em Física/Química/Matemática
+        if not q["texto_base"] and (qn - 1) in q_by_num:
+            if re.search(r"(?:quest[ãa]o\s+anterior|enunciado\s+anterior|sistema\s+anterior|situa[çc][ãa]o\s+anterior|problema\s+anterior)", q["enunciado"], re.IGNORECASE):
+                prev_q = q_by_num[qn - 1]
+                q["texto_base"] = f"[Contexto da Questão Anterior — {prev_q['id']}]:\n{prev_q['enunciado']}"
+                if not q["figura"] and prev_q.get("figura"):
+                    q["figura"] = prev_q["figura"]
+
+        if q["texto_base"]:
+            q["subtopico"] = "Com Texto de Apoio" + (" & Figura" if q.get("figura") else "")
+        elif q.get("figura"):
+            q["subtopico"] = "Com Figura Oficial"
+
+    if not INCLUDE_LANGUAGES:
+        questions = [q for q in questions if q["materia"] not in ("Inglês", "Português")]
+
     return questions
 
 def main():
@@ -374,16 +499,19 @@ def main():
     prova_path = DATA_DIR / f"ita_{EXAM_YEAR}_prova.pdf"
     gab_path = DATA_DIR / f"ita_{EXAM_YEAR}_gabarito.pdf"
 
-    print(f"=== Reprocessando ITA {EXAM_YEAR} com Limpeza Tipográfica e Recorte Isolado ===")
+    print(f"=== Extraindo ITA {EXAM_YEAR} (Com Textos de Apoio + Figuras) ===")
     if fetch_pdf(prova_urls, prova_path):
         fetch_pdf(gab_urls, gab_path)
         gab_map = parse_gabarito_pdf(gab_path)
         extracted = parse_exam(prova_path, EXAM_YEAR, gab_map)
+        with_base = sum(1 for q in extracted if q.get("texto_base"))
+        with_fig = sum(1 for q in extracted if q.get("figura"))
+        print(f"  ✓ {len(extracted)} questões extraídas | {with_base} com Texto de Apoio | {with_fig} com Figura")
+
         for q in extracted:
             by_id[q["id"]] = q
         prova_path.unlink(missing_ok=True)
         gab_path.unlink(missing_ok=True)
-        print(f"  ✓ {len(extracted)} questões atualizadas com sucesso!")
 
     final_questions = sorted(by_id.values(), key=lambda x: (-x["ano"], x["numero"]))
     DB_FILE.write_text(json.dumps(final_questions, ensure_ascii=False, indent=2), encoding="utf-8")

@@ -14,10 +14,10 @@
     <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-6 mb-6">
       <div>
         <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded border border-emerald-800">
-          GitHub Actions + PyMuPDF Figure Cropper
+          GitHub Actions + PyMuPDF Context Engine
         </span>
         <h1 class="text-3xl font-bold mt-2">ITA-Forge Study Hub</h1>
-        <p class="text-slate-400 text-sm">Provas oficiais extraídas com imagens recortadas, LaTeX e suporte a Ctrl+V de prints do Hyprland</p>
+        <p class="text-slate-400 text-sm">Provas oficiais com Textos de Apoio, Figuras Recortadas, LaTeX e Ponte para o Gemini Pro</p>
       </div>
       <div class="grid grid-cols-4 gap-2 w-full md:w-auto">
         <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
@@ -26,7 +26,7 @@
         </div>
         <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
           <div id="stat-figs" class="text-xl font-bold text-sky-400">0</div>
-          <div class="text-[11px] text-slate-400">Com Figura</div>
+          <div class="text-[11px] text-slate-400">Com Figura/Texto</div>
         </div>
         <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
           <div id="stat-hits" class="text-xl font-bold text-emerald-400">0</div>
@@ -52,8 +52,9 @@
         <option value="Português">Português</option>
       </select>
       <select id="f-media" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
-        <option value="ALL">Com ou Sem Imagem</option>
-        <option value="WITH_IMG">🖼️ Apenas com Imagem/Diagrama</option>
+        <option value="ALL">Todas as Questões</option>
+        <option value="WITH_IMG">🖼️ Com Figura/Diagrama</option>
+        <option value="WITH_TEXT">📖 Com Texto de Apoio</option>
       </select>
       <select id="f-status" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
         <option value="ALL">Todos os Status</option>
@@ -61,7 +62,7 @@
         <option value="CORRECT">Acertadas</option>
         <option value="WRONG">Erradas (Revisar)</option>
       </select>
-      <input id="f-busca" type="text" placeholder="Buscar no enunciado..." class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
+      <input id="f-busca" type="text" placeholder="Buscar no enunciado ou texto..." class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
     </section>
 
     <input type="file" id="hidden-file-input" accept="image/*" class="hidden" />
@@ -98,7 +99,7 @@
 
     function attachImage(id) {
       activeImageQuestionId = id;
-      const choice = confirm("Clique em OK para escolher um arquivo de imagem do seu PC, ou CANCELE e apenas pressione Ctrl+V na página após tirar um print no Hyprland!");
+      const choice = confirm("Clique em OK para escolher uma imagem do PC, ou CANCELE e pressione Ctrl+V na página após tirar um print no Hyprland!");
       if (choice) {
         document.getElementById("hidden-file-input").click();
       }
@@ -116,7 +117,6 @@
       reader.readAsDataURL(file);
     });
 
-    // Permite colar print direto da área de transferência do Wayland/Hyprland (Ctrl+V)
     window.addEventListener("paste", (ev) => {
       if (!activeImageQuestionId) return;
       const items = ev.clipboardData?.items || [];
@@ -138,9 +138,10 @@
     function copyPromptForGemini(id) {
       const q = db.find(x => x.id === id);
       if (!q) return;
-      const promptText = `Atue como examinador da banca do ITA. Resolva passo a passo em LaTeX a questão ${q.id} (${q.materia}) cujo GABARITO OFICIAL é a alternativa ${q.gabarito}.\n\nEnunciado:\n${q.enunciado}\n\nAlternativas:\nA) ${q.alternativas.A}\nB) ${q.alternativas.B}\nC) ${q.alternativas.C}\nD) ${q.alternativas.D}\nE) ${q.alternativas.E}`;
+      const baseBlock = q.texto_base ? `Texto de Apoio / Contexto:\n${q.texto_base}\n\n` : "";
+      const promptText = `Atue como examinador da banca do ITA. Resolva passo a passo em LaTeX a questão ${q.id} (${q.materia}) cujo GABARITO OFICIAL é a alternativa ${q.gabarito}.\n\n${baseBlock}Enunciado:\n${q.enunciado}\n\nAlternativas:\nA) ${q.alternativas.A}\nB) ${q.alternativas.B}\nC) ${q.alternativas.C}\nD) ${q.alternativas.D}\nE) ${q.alternativas.E}`;
       navigator.clipboard.writeText(promptText);
-      alert("Prompt copiado! Cole na conversa do Gemini para gerar a resolução completa em LaTeX.");
+      alert("Prompt (com Texto de Apoio) copiado! Cole na conversa do Gemini.");
     }
 
     function editResolution(id) {
@@ -162,18 +163,20 @@
 
       const attempts = Object.values(progress);
       const hits = attempts.filter(a => a.correct).length;
-      const totalFigs = db.filter(q => customImg[q.id] || q.figura).length;
+      const totalRich = db.filter(q => customImg[q.id] || q.figura || q.texto_base).length;
       document.getElementById("stat-total").textContent = db.length;
-      document.getElementById("stat-figs").textContent = totalFigs;
+      document.getElementById("stat-figs").textContent = totalRich;
       document.getElementById("stat-hits").textContent = hits;
       document.getElementById("stat-rate").textContent = attempts.length ? Math.round((hits / attempts.length) * 100) + "%" : "0%";
 
       const list = db.filter(q => {
         const hasImg = Boolean(customImg[q.id] || q.figura);
+        const hasTxt = Boolean(q.texto_base);
         if (fAno !== "ALL" && String(q.ano) !== fAno) return false;
         if (fMat !== "ALL" && q.materia !== fMat) return false;
         if (fMed === "WITH_IMG" && !hasImg) return false;
-        if (fBus && !(`${q.id} ${q.topico} ${q.enunciado}`).toLowerCase().includes(fBus)) return false;
+        if (fMed === "WITH_TEXT" && !hasTxt) return false;
+        if (fBus && !(`${q.id} ${q.topico} ${q.texto_base || ""} ${q.enunciado}`).toLowerCase().includes(fBus)) return false;
         const p = progress[q.id];
         if (fSta === "UNSOLVED" && p) return false;
         if (fSta === "CORRECT" && (!p || !p.correct)) return false;
@@ -192,6 +195,7 @@
               <div class="flex flex-wrap items-center gap-2">
                 <span class="px-2.5 py-0.5 text-xs font-mono font-bold rounded bg-indigo-950 text-indigo-300 border border-indigo-800">${q.id}</span>
                 <span class="px-2.5 py-0.5 text-xs rounded bg-slate-800 text-emerald-300 font-medium">${q.materia}</span>
+                ${q.texto_base ? '<span class="px-2 py-0.5 text-xs rounded bg-amber-950/80 text-amber-300 border border-amber-800">📖 Com Texto de Apoio</span>' : ''}
                 ${figSrc ? '<span class="px-2 py-0.5 text-xs rounded bg-sky-950 text-sky-300 border border-sky-800">🖼️ Com Figura</span>' : ''}
               </div>
               <div class="flex flex-wrap gap-2">
@@ -206,6 +210,15 @@
                 </button>
               </div>
             </div>
+
+            ${q.texto_base ? `
+              <details open class="mb-5 bg-slate-950/90 border border-amber-900/50 rounded-xl p-4">
+                <summary class="cursor-pointer text-xs font-semibold uppercase tracking-wider text-amber-400 select-none">
+                  📖 Texto de Apoio / Fragmento Base (Clique para recolher/expandir)
+                </summary>
+                <div class="mt-3 text-sm text-slate-300 leading-relaxed whitespace-pre-line border-t border-slate-800/80 pt-3">${q.texto_base}</div>
+              </details>
+            ` : ""}
 
             <div class="text-slate-200 leading-relaxed whitespace-pre-line mb-4">${q.enunciado}</div>
 
