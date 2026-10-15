@@ -1,266 +1,813 @@
 <!DOCTYPE html>
-<html lang="pt-BR" class="dark">
+<html lang="pt-BR">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ITA-Forge | Hub de Estudos & Banco Oficial</title>
+  <title>Caderno de Provas & Diagnóstico Acadêmico — ITA</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" />
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+  <style>
+    :root {
+      --bg-paper: #F6F4EE;
+      --bg-sheet: #FFFFFF;
+      --bg-subtle: #EFECE4;
+      --ink-primary: #18181B;
+      --ink-secondary: #52525B;
+      --ink-muted: #71717A;
+      --border-hairline: #D6D3C9;
+      --accent-academic: #1B365D;
+      --accent-correct: #1B4D3E;
+      --accent-wrong: #8B2635;
+    }
+    body {
+      background-color: var(--bg-paper);
+      color: var(--ink-primary);
+      font-family: 'Source Serif 4', 'EB Garamond', Georgia, serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .font-ui {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    }
+    .font-mono-num {
+      font-family: 'JetBrains Mono', monospace;
+      font-variant-numeric: tabular-nums;
+    }
+    .academic-sheet {
+      background-color: var(--bg-sheet);
+      border: 1px solid var(--border-hairline);
+      box-shadow: 0 1px 3px rgba(24, 24, 27, 0.04);
+    }
+    .question-stem {
+      font-size: 1.135rem;
+      line-height: 1.78;
+      color: #141413;
+      text-align: justify;
+      hyphens: auto;
+    }
+    .katex { font-size: 1.06em; }
+  </style>
 </head>
-<body class="bg-slate-950 text-slate-100 min-h-screen font-sans">
-  <div class="max-w-6xl mx-auto px-4 py-8">
-    <header class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-slate-800 pb-6 mb-6">
+<body class="min-h-screen flex flex-col">
+
+  <!-- Cabeçalho Institucional Sóbrio -->
+  <header class="bg-[#EFECE4] border-b border-[#D6D3C9]">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
       <div>
-        <span class="text-xs font-mono uppercase tracking-widest text-emerald-400 bg-emerald-950/60 px-2.5 py-1 rounded border border-emerald-800">
-          GitHub Actions + PyMuPDF Context Engine
-        </span>
-        <h1 class="text-3xl font-bold mt-2">ITA-Forge Study Hub</h1>
-        <p class="text-slate-400 text-sm">Provas oficiais com Textos de Apoio, Figuras Recortadas, LaTeX e Ponte para o Gemini Pro</p>
+        <div class="font-ui text-[11px] uppercase tracking-[0.18em] text-[#52525B] font-semibold">
+          Instituto Tecnológico de Aeronáutica • Repositório de Provas Oficiais
+        </div>
+        <h1 class="text-2xl md:text-[26px] font-bold tracking-tight text-[#18181B] mt-0.5" style="font-family: 'EB Garamond', Georgia, serif;">
+          Caderno de Questões & Diagnóstico de Desempenho
+        </h1>
       </div>
-      <div class="grid grid-cols-4 gap-2 w-full md:w-auto">
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
-          <div id="stat-total" class="text-xl font-bold">0</div>
-          <div class="text-[11px] text-slate-400">Questões</div>
+
+      <!-- Abas de Navegação Principal -->
+      <nav class="flex items-center border border-[#C8C4B8] bg-[#FAF8F5] rounded-sm p-0.5 font-ui text-xs font-medium">
+        <button id="tab-exam" onclick="switchView('exam')" class="px-4 py-2 bg-[#1B365D] text-white rounded-sm transition">
+          Caderno de Prova (Individual)
+        </button>
+        <button id="tab-hub" onclick="switchView('hub')" class="px-4 py-2 text-[#3F3F46] hover:text-[#18181B] rounded-sm transition">
+          Relatório & Diagnóstico por Matéria
+        </button>
+        <button id="tab-add" onclick="switchView('add')" class="px-4 py-2 text-[#3F3F46] hover:text-[#18181B] rounded-sm transition">
+          Inserir Questão
+        </button>
+      </nav>
+    </div>
+
+    <!-- Faixa de Indicadores Rápidos -->
+    <div class="border-t border-[#E2DFD5] bg-[#FAF8F5]">
+      <div class="max-w-7xl mx-auto px-6 py-2.5 flex flex-wrap items-center justify-between gap-4 font-ui text-xs text-[#52525B]">
+        <div class="flex flex-wrap items-center gap-6">
+          <span>Acervo Total: <strong id="hdr-total" class="font-mono-num text-[#18181B]">0</strong></span>
+          <span>Filtro Atual: <strong id="hdr-filtered" class="font-mono-num text-[#18181B]">0</strong></span>
+          <span>Resolvidas: <strong id="hdr-answered" class="font-mono-num text-[#1B365D]">0</strong></span>
+          <span>Acertos: <strong id="hdr-correct" class="font-mono-num text-[#1B4D3E]">0</strong></span>
+          <span>Erros: <strong id="hdr-wrong" class="font-mono-num text-[#8B2635]">0</strong></span>
+          <span>Puladas: <strong id="hdr-skipped" class="font-mono-num text-[#71717A]">0</strong></span>
         </div>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
-          <div id="stat-figs" class="text-xl font-bold text-sky-400">0</div>
-          <div class="text-[11px] text-slate-400">Com Figura/Texto</div>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
-          <div id="stat-hits" class="text-xl font-bold text-emerald-400">0</div>
-          <div class="text-[11px] text-slate-400">Acertos</div>
-        </div>
-        <div class="bg-slate-900 border border-slate-800 rounded-lg p-3 text-center">
-          <div id="stat-rate" class="text-xl font-bold text-amber-400">0%</div>
-          <div class="text-[11px] text-slate-400">Aproveitamento</div>
+        <div class="flex items-center gap-4">
+          <span>Aproveitamento Global: <strong id="hdr-accuracy" class="font-mono-num text-[#18181B]">0.0%</strong></span>
+          <span class="text-[#D6D3C9]">|</span>
+          <span>Tempo na Questão: <strong id="hdr-timer" class="font-mono-num text-[#1B365D]">00:00</strong></span>
         </div>
       </div>
-    </header>
+    </div>
+  </header>
 
-    <section class="grid grid-cols-1 md:grid-cols-5 gap-3 bg-slate-900/80 border border-slate-800 p-4 rounded-xl mb-6">
-      <select id="f-ano" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
-        <option value="ALL">Todos os Anos</option>
-      </select>
-      <select id="f-materia" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
-        <option value="ALL">Todas as Matérias</option>
-        <option value="Matemática">Matemática</option>
-        <option value="Física">Física</option>
-        <option value="Química">Química</option>
-        <option value="Inglês">Inglês</option>
-        <option value="Português">Português</option>
-      </select>
-      <select id="f-media" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
-        <option value="ALL">Todas as Questões</option>
-        <option value="WITH_IMG">🖼️ Com Figura/Diagrama</option>
-        <option value="WITH_TEXT">📖 Com Texto de Apoio</option>
-      </select>
-      <select id="f-status" class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm">
-        <option value="ALL">Todos os Status</option>
-        <option value="UNSOLVED">Não Resolvidas</option>
-        <option value="CORRECT">Acertadas</option>
-        <option value="WRONG">Erradas (Revisar)</option>
-      </select>
-      <input id="f-busca" type="text" placeholder="Buscar no enunciado ou texto..." class="bg-slate-950 border border-slate-700 rounded-lg px-3 py-2 text-sm" />
-    </section>
+  <!-- Conteúdo Principal -->
+  <main class="max-w-7xl w-full mx-auto px-6 py-8 flex-1">
 
-    <input type="file" id="hidden-file-input" accept="image/*" class="hidden" />
-    <main id="questions-list" class="space-y-6"></main>
-  </div>
+    <!-- ================= VISÃO 1: CADERNO DE PROVA (1 QUESTÃO POR VEZ) ================= -->
+    <div id="view-exam" class="space-y-6">
+
+      <!-- Barra de Filtros Acadêmica -->
+      <section class="academic-sheet p-4 font-ui">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-[#71717A] mb-1 font-semibold">Edição / Ano</label>
+            <select id="f-ano" class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-1.5 text-xs text-[#18181B] focus:outline-none focus:border-[#1B365D]">
+              <option value="ALL">Todas as Edições</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-[#71717A] mb-1 font-semibold">Disciplina</label>
+            <select id="f-materia" class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-1.5 text-xs text-[#18181B] focus:outline-none focus:border-[#1B365D]">
+              <option value="ALL">Todas as Disciplinas</option>
+              <option value="Matemática">Matemática</option>
+              <option value="Física">Física</option>
+              <option value="Química">Química</option>
+              <option value="Inglês">Inglês</option>
+              <option value="Português">Português</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-[#71717A] mb-1 font-semibold">Elementos</label>
+            <select id="f-media" class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-1.5 text-xs text-[#18181B] focus:outline-none focus:border-[#1B365D]">
+              <option value="ALL">Todas as Questões</option>
+              <option value="WITH_IMG">Com Figura ou Diagrama</option>
+              <option value="WITH_TEXT">Com Texto de Apoio</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-[#71717A] mb-1 font-semibold">Situação</label>
+            <select id="f-status" class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-1.5 text-xs text-[#18181B] focus:outline-none focus:border-[#1B365D]">
+              <option value="ALL">Todas</option>
+              <option value="UNSOLVED">Não Respondidas</option>
+              <option value="CORRECT">Acertadas</option>
+              <option value="WRONG">Erradas (Caderno de Erros)</option>
+              <option value="SKIPPED">Puladas / Para Revisão</option>
+            </select>
+          </div>
+          <div class="lg:col-span-2">
+            <label class="block text-[11px] uppercase tracking-wider text-[#71717A] mb-1 font-semibold">Pesquisa Textual ou Código</label>
+            <div class="flex gap-2">
+              <input id="f-busca" type="text" placeholder="Ex: ITA-2025-1F-Q14, logaritmo, mola..." class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-1.5 text-xs text-[#18181B] focus:outline-none focus:border-[#1B365D]" />
+              <button onclick="resetFilters()" class="px-3 py-1.5 border border-[#C8C4B8] bg-[#EFECE4] hover:bg-[#E4E0D6] text-xs text-[#3F3F46] shrink-0">
+                Limpar
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Layout Principal da Prova: Folha de Questão (Esquerda) + Mapa do Caderno (Direita) -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- Folha de Prova Individual (8 colunas) -->
+        <div class="lg:col-span-8 academic-sheet p-8 md:p-10" id="question-sheet">
+          <!-- Renderizado via JS -->
+        </div>
+
+        <!-- Painel Lateral: Navegador de Questões e Ações Auxiliares (4 colunas) -->
+        <aside class="lg:col-span-4 space-y-5 font-ui">
+          <div class="academic-sheet p-5">
+            <div class="flex justify-between items-center border-b border-[#E2DFD5] pb-3 mb-3">
+              <h2 class="text-xs font-semibold uppercase tracking-wider text-[#18181B]">Mapa do Caderno</h2>
+              <span id="nav-position-label" class="text-xs font-mono-num text-[#52525B]">0 / 0</span>
+            </div>
+            <div id="question-grid" class="grid grid-cols-6 sm:grid-cols-8 lg:grid-cols-6 gap-1.5 max-h-64 overflow-y-auto pr-1">
+              <!-- Botões numerados gerados via JS -->
+            </div>
+            <div class="mt-4 pt-3 border-t border-[#E2DFD5] grid grid-cols-2 gap-2 text-[11px] text-[#52525B]">
+              <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 inline-block bg-[#1B4D3E]"></span> Correta</div>
+              <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 inline-block bg-[#8B2635]"></span> Incorreta</div>
+              <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 inline-block bg-[#D97706]"></span> Pulada</div>
+              <div class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 inline-block border border-[#C8C4B8] bg-[#FAF8F5]"></span> Pendente</div>
+            </div>
+          </div>
+
+          <!-- Ferramentas de Estudo & Edição da Questão Atual -->
+          <div class="academic-sheet p-5 space-y-3">
+            <h3 class="text-xs font-semibold uppercase tracking-wider text-[#18181B] border-b border-[#E2DFD5] pb-2">
+              Ferramentas da Questão
+            </h3>
+            <p class="text-xs text-[#52525B] leading-relaxed">
+              Caso deseje auditar esta questão com IA ou anexar um diagrama complementar:
+            </p>
+            <div class="flex flex-col gap-2">
+              <button onclick="copyPromptCurrent()" class="w-full text-left px-3 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] text-xs text-[#18181B] transition flex justify-between items-center">
+                <span>Copiar Enunciado Formal para Dissecação</span>
+                <span class="font-mono-num text-[10px] text-[#71717A]">PROMPT</span>
+              </button>
+              <button onclick="attachImageCurrent()" class="w-full text-left px-3 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] text-xs text-[#18181B] transition flex justify-between items-center">
+                <span>Substituir / Colar Figura (Ctrl+V)</span>
+                <span class="font-mono-num text-[10px] text-[#71717A]">IMAGEM</span>
+              </button>
+              <button onclick="editResolutionCurrent()" class="w-full text-left px-3 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] text-xs text-[#18181B] transition flex justify-between items-center">
+                <span>Editar Resolução Comentada (LaTeX)</span>
+                <span class="font-mono-num text-[10px] text-[#71717A]">TEXTO</span>
+              </button>
+            </div>
+            <div class="pt-2 border-t border-[#E2DFD5] text-[11px] text-[#71717A]">
+              <strong>Atalhos:</strong> Teclas <code class="px-1 bg-[#EFECE4]">A</code>–<code class="px-1 bg-[#EFECE4]">E</code> selecionam, <code class="px-1 bg-[#EFECE4]">Enter</code> confirma resposta, <code class="px-1 bg-[#EFECE4]">←</code> <code class="px-1 bg-[#EFECE4]">→</code> navegam, <code class="px-1 bg-[#EFECE4]">P</code> pula.
+            </div>
+          </div>
+        </aside>
+      </div>
+    </div>
+
+    <!-- ================= VISÃO 2: RELATÓRIO & DIAGNÓSTICO POR MATÉRIA ================= -->
+    <div id="view-hub" class="hidden space-y-8">
+      <div class="academic-sheet p-8">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 border-b border-[#D6D3C9] pb-5 mb-6">
+          <div>
+            <h2 class="text-2xl font-bold text-[#18181B]" style="font-family: 'EB Garamond', Georgia, serif;">
+              Boletim Analítico de Desempenho por Disciplina
+            </h2>
+            <p class="font-ui text-xs text-[#52525B] mt-1">
+              Acompanhamento cumulativo de acertos, erros, omissões e tempo médio de resolução frente ao corte histórico do ITA.
+            </p>
+          </div>
+          <div class="flex gap-2 font-ui">
+            <button onclick="startErrorNotebook()" class="px-4 py-2 bg-[#1B365D] text-white text-xs font-medium hover:bg-[#152C4E] transition">
+              Iniciar Caderno de Erros & Puladas
+            </button>
+            <button onclick="clearAllProgress()" class="px-3 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] text-xs text-[#8B2635] transition">
+              Zerar Histórico
+            </button>
+          </div>
+        </div>
+
+        <!-- Cartões de Indicadores Estratégicos -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8 font-ui">
+          <div class="border border-[#D6D3C9] bg-[#FAF8F5] p-4">
+            <div class="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">Aproveitamento Geral</div>
+            <div id="hub-global-rate" class="text-2xl font-bold font-mono-num text-[#18181B] mt-1">0.0%</div>
+            <div id="hub-cutoff-status" class="text-xs text-[#52525B] mt-1">Meta de segurança 1ª Fase: ≥ 70.0%</div>
+          </div>
+          <div class="border border-[#D6D3C9] bg-[#FAF8F5] p-4">
+            <div class="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">Saldo Líquido (Acertos / Tentativas)</div>
+            <div id="hub-net-score" class="text-2xl font-bold font-mono-num text-[#1B4D3E] mt-1">0 / 0</div>
+            <div class="text-xs text-[#52525B] mt-1">Questões finalizadas com gabarito</div>
+          </div>
+          <div class="border border-[#D6D3C9] bg-[#FAF8F5] p-4">
+            <div class="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">Pendências de Revisão</div>
+            <div id="hub-review-count" class="text-2xl font-bold font-mono-num text-[#8B2635] mt-1">0</div>
+            <div class="text-xs text-[#52525B] mt-1">Soma de questões erradas e puladas</div>
+          </div>
+          <div class="border border-[#D6D3C9] bg-[#FAF8F5] p-4">
+            <div class="text-[11px] uppercase tracking-wider text-[#71717A] font-semibold">Tempo Médio por Questão</div>
+            <div id="hub-avg-time" class="text-2xl font-bold font-mono-num text-[#1B365D] mt-1">00:00</div>
+            <div class="text-xs text-[#52525B] mt-1">Ritmo alvo ITA 1ª Fase: ~06:15 / questão</div>
+          </div>
+        </div>
+
+        <!-- Tabela Por Matéria -->
+        <div class="overflow-x-auto font-ui">
+          <table class="w-full text-left border-collapse border border-[#D6D3C9] text-xs">
+            <thead>
+              <tr class="bg-[#EFECE4] text-[#3F3F46] border-b border-[#D6D3C9] uppercase tracking-wider text-[11px]">
+                <th class="py-3 px-4">Disciplina</th>
+                <th class="py-3 px-4 text-right">Acervo</th>
+                <th class="py-3 px-4 text-right">Respondidas</th>
+                <th class="py-3 px-4 text-right text-[#1B4D3E]">Acertos</th>
+                <th class="py-3 px-4 text-right text-[#8B2635]">Erros</th>
+                <th class="py-3 px-4 text-right text-[#B45309]">Puladas</th>
+                <th class="py-3 px-4 text-right">Tempo Médio</th>
+                <th class="py-3 px-4 text-right">Precisão</th>
+                <th class="py-3 px-4 w-44">Diagnóstico (Corte 50%)</th>
+                <th class="py-3 px-4 text-center">Ação</th>
+              </tr>
+            </thead>
+            <tbody id="hub-subject-rows" class="divide-y divide-[#E2DFD5]">
+              <!-- Gerado via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Desempenho por Edição (Ano da Prova) -->
+      <div class="academic-sheet p-8">
+        <h3 class="text-xl font-bold text-[#18181B] mb-4" style="font-family: 'EB Garamond', Georgia, serif;">
+          Progresso por Edição do Vestibular
+        </h3>
+        <div id="hub-year-cards" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4 font-ui">
+          <!-- Gerado via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= VISÃO 3: INSERIR NOVA QUESTÃO INDIVIDUAL ================= -->
+    <div id="view-add" class="hidden">
+      <div class="academic-sheet p-8 max-w-4xl mx-auto">
+        <div class="border-b border-[#D6D3C9] pb-4 mb-6">
+          <h2 class="text-2xl font-bold text-[#18181B]" style="font-family: 'EB Garamond', Georgia, serif;">
+            Catalogar Nova Questão no Acervo
+          </h2>
+          <p class="font-ui text-xs text-[#52525B] mt-1">
+            Insira uma questão individualmente com suporte a notação LaTeX (<code class="bg-[#EFECE4] px-1">$...$</code> ou <code class="bg-[#EFECE4] px-1">$$...$$</code>) e figura.
+          </p>
+        </div>
+
+        <form id="form-new-question" onsubmit="saveNewQuestion(event)" class="space-y-5 font-ui text-xs">
+          <div class="grid grid-cols-1 sm:grid-cols-4 gap-4">
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Banca</label>
+              <input id="nq-banca" type="text" value="ITA" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Ano</label>
+              <input id="nq-ano" type="number" value="2026" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2 font-mono-num" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Número da Questão</label>
+              <input id="nq-numero" type="number" value="1" min="1" max="99" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2 font-mono-num" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Disciplina</label>
+              <select id="nq-materia" class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2">
+                <option value="Matemática">Matemática</option>
+                <option value="Física">Física</option>
+                <option value="Química">Química</option>
+                <option value="Inglês">Inglês</option>
+                <option value="Português">Português</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Tópico Principal</label>
+              <input id="nq-topico" type="text" placeholder="Ex: Mecânica Clássica / Números Complexos" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Subtópico / Micro-habilidade</label>
+              <input id="nq-subtopico" type="text" placeholder="Ex: Conservação de Momento e Colisões" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2" />
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Texto de Apoio / Fragmento Base (Opcional)</label>
+            <textarea id="nq-texto-base" rows="3" placeholder="Preencha apenas se a questão depender de um texto ou preâmbulo anterior..." class="w-full bg-[#FAF8F5] border border-[#C8C4B8] p-3"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Enunciado da Questão (Suporta LaTeX)</label>
+            <textarea id="nq-enunciado" rows="5" required placeholder="Digite o enunciado completo..." class="w-full bg-[#FAF8F5] border border-[#C8C4B8] p-3"></textarea>
+          </div>
+
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Figura / Diagrama (Opcional — Selecione arquivo ou cole URL/Base64)</label>
+            <div class="flex gap-3 items-center">
+              <input id="nq-fig-file" type="file" accept="image/*" class="text-xs" />
+              <span id="nq-fig-status" class="text-[#1B4D3E] font-medium"></span>
+            </div>
+          </div>
+
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Alternativa A</label>
+              <input id="nq-alt-a" type="text" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Alternativa B</label>
+              <input id="nq-alt-b" type="text" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Alternativa C</label>
+              <input id="nq-alt-c" type="text" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Alternativa D</label>
+              <input id="nq-alt-d" type="text" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Alternativa E</label>
+              <input id="nq-alt-e" type="text" required class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2" />
+            </div>
+            <div>
+              <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Gabarito Oficial</label>
+              <select id="nq-gabarito" class="w-full bg-[#FAF8F5] border border-[#C8C4B8] px-3 py-2 font-mono-num font-semibold">
+                <option value="A">Alternativa A</option>
+                <option value="B">Alternativa B</option>
+                <option value="C">Alternativa C</option>
+                <option value="D">Alternativa D</option>
+                <option value="E">Alternativa E</option>
+                <option value="ANULADA">ANULADA</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="block text-[11px] uppercase tracking-wider text-[#52525B] font-semibold mb-1">Resolução Comentada / Demonstração (LaTeX)</label>
+            <textarea id="nq-resolucao" rows="4" placeholder="Demonstração passo a passo..." class="w-full bg-[#FAF8F5] border border-[#C8C4B8] p-3"></textarea>
+          </div>
+
+          <div class="flex justify-between items-center pt-4 border-t border-[#D6D3C9]">
+            <button type="button" onclick="exportDatabaseJson()" class="px-4 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] text-[#18181B]">
+              Exportar Banco Atualizado (questions.json)
+            </button>
+            <button type="submit" class="px-6 py-2.5 bg-[#1B365D] hover:bg-[#152C4E] text-white font-medium">
+              Salvar Questão no Acervo
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </main>
+
+  <input type="file" id="hidden-file-input" accept="image/*" class="hidden" />
 
   <script>
     let db = [];
-    let activeImageQuestionId = null;
+    let filteredList = [];
+    let currentIndex = 0;
+    let draftChoice = null;
+    let manualReveal = false;
+    let questionStartTime = Date.now();
+    let timerInterval = null;
+    let pendingNewQuestionImage = null;
+
     const PROGRESS_KEY = "ita_forge_user_progress_v2";
     const CUSTOM_RES_KEY = "ita_forge_custom_resolutions_v2";
     const CUSTOM_IMG_KEY = "ita_forge_custom_images_v2";
+    const USER_ADDED_KEY = "ita_forge_user_added_questions_v1";
+
     let progress = JSON.parse(localStorage.getItem(PROGRESS_KEY) || "{}");
     let customRes = JSON.parse(localStorage.getItem(CUSTOM_RES_KEY) || "{}");
     let customImg = JSON.parse(localStorage.getItem(CUSTOM_IMG_KEY) || "{}");
+    let userAddedQuestions = JSON.parse(localStorage.getItem(USER_ADDED_KEY) || "[]");
 
     async function init() {
       const resp = await fetch("./data/questions.json?t=" + Date.now());
-      db = await resp.json();
+      const officialData = await resp.json();
+      const mapById = {};
+      officialData.forEach(q => { mapById[q.id] = q; });
+      userAddedQuestions.forEach(q => { mapById[q.id] = q; });
+      db = Object.values(mapById).sort((a, b) => (b.ano - a.ano) || (a.numero - b.numero));
+
       populateFilters();
-      render();
+      applyFilters(0);
+      startTimer();
+    }
+
+    function formatSeconds(sec) {
+      const s = Math.max(0, Math.round(sec || 0));
+      const m = Math.floor(s / 60);
+      const rem = s % 60;
+      return String(m).padStart(2, "0") + ":" + String(rem).padStart(2, "0");
+    }
+
+    function startTimer() {
+      if (timerInterval) clearInterval(timerInterval);
+      questionStartTime = Date.now();
+      timerInterval = setInterval(() => {
+        const q = filteredList[currentIndex];
+        if (!q) return;
+        const prevSaved = progress[q.id]?.timeSpent || 0;
+        const elapsed = prevSaved + Math.floor((Date.now() - questionStartTime) / 1000);
+        document.getElementById("hdr-timer").textContent = formatSeconds(elapsed);
+      }, 1000);
     }
 
     function populateFilters() {
       const anos = [...new Set(db.map(q => q.ano))].sort((a, b) => b - a);
-      document.getElementById("f-ano").innerHTML = '<option value="ALL">Todos os Anos</option>' + anos.map(a => `<option value="${a}">ITA ${a}</option>`).join("");
+      document.getElementById("f-ano").innerHTML =
+        '<option value="ALL">Todas as Edições</option>' +
+        anos.map(a => `<option value="${a}">Vestibular ${a}</option>`).join("");
     }
 
-    function answerQuestion(id, letter, official) {
-      progress[id] = { selected: letter, correct: official === "ANULADA" || letter === official };
-      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
-      render();
-    }
-
-    function attachImage(id) {
-      activeImageQuestionId = id;
-      const choice = confirm("Clique em OK para escolher uma imagem do PC, ou CANCELE e pressione Ctrl+V na página após tirar um print no Hyprland!");
-      if (choice) {
-        document.getElementById("hidden-file-input").click();
-      }
-    }
-
-    document.getElementById("hidden-file-input").addEventListener("change", (ev) => {
-      const file = ev.target.files[0];
-      if (!file || !activeImageQuestionId) return;
-      const reader = new FileReader();
-      reader.onload = () => {
-        customImg[activeImageQuestionId] = reader.result;
-        localStorage.setItem(CUSTOM_IMG_KEY, JSON.stringify(customImg));
-        render();
-      };
-      reader.readAsDataURL(file);
-    });
-
-    window.addEventListener("paste", (ev) => {
-      if (!activeImageQuestionId) return;
-      const items = ev.clipboardData?.items || [];
-      for (const item of items) {
-        if (item.type.startsWith("image/")) {
-          const file = item.getAsFile();
-          const reader = new FileReader();
-          reader.onload = () => {
-            customImg[activeImageQuestionId] = reader.result;
-            localStorage.setItem(CUSTOM_IMG_KEY, JSON.stringify(customImg));
-            alert("Figura colada com sucesso na questão " + activeImageQuestionId + "!");
-            render();
-          };
-          reader.readAsDataURL(file);
+    function switchView(view) {
+      ["exam", "hub", "add"].forEach(v => {
+        document.getElementById(`view-${v}`).classList.toggle("hidden", v !== view);
+        const btn = document.getElementById(`tab-${v}`);
+        if (v === view) {
+          btn.className = "px-4 py-2 bg-[#1B365D] text-white rounded-sm transition";
+        } else {
+          btn.className = "px-4 py-2 text-[#3F3F46] hover:text-[#18181B] rounded-sm transition";
         }
-      }
-    });
-
-    function copyPromptForGemini(id) {
-      const q = db.find(x => x.id === id);
-      if (!q) return;
-      const baseBlock = q.texto_base ? `Texto de Apoio / Contexto:\n${q.texto_base}\n\n` : "";
-      const promptText = `Atue como examinador da banca do ITA. Resolva passo a passo em LaTeX a questão ${q.id} (${q.materia}) cujo GABARITO OFICIAL é a alternativa ${q.gabarito}.\n\n${baseBlock}Enunciado:\n${q.enunciado}\n\nAlternativas:\nA) ${q.alternativas.A}\nB) ${q.alternativas.B}\nC) ${q.alternativas.C}\nD) ${q.alternativas.D}\nE) ${q.alternativas.E}`;
-      navigator.clipboard.writeText(promptText);
-      alert("Prompt (com Texto de Apoio) copiado! Cole na conversa do Gemini.");
+      });
+      if (view === "hub") renderHubAnalytics();
+      if (view === "exam") renderExamView();
     }
 
-    function editResolution(id) {
-      const current = customRes[id] || db.find(x => x.id === id)?.resolucao || "";
-      const updated = prompt("Cole aqui a Resolução Comentada em LaTeX:", current);
-      if (updated !== null && updated.trim() !== "") {
-        customRes[id] = updated.trim();
-        localStorage.setItem(CUSTOM_RES_KEY, JSON.stringify(customRes));
-        render();
-      }
-    }
-
-    function render() {
+    function applyFilters(targetIndex = 0) {
       const fAno = document.getElementById("f-ano").value;
       const fMat = document.getElementById("f-materia").value;
       const fMed = document.getElementById("f-media").value;
       const fSta = document.getElementById("f-status").value;
-      const fBus = document.getElementById("f-busca").value.toLowerCase();
+      const fBus = document.getElementById("f-busca").value.trim().toLowerCase();
 
-      const attempts = Object.values(progress);
-      const hits = attempts.filter(a => a.correct).length;
-      const totalRich = db.filter(q => customImg[q.id] || q.figura || q.texto_base).length;
-      document.getElementById("stat-total").textContent = db.length;
-      document.getElementById("stat-figs").textContent = totalRich;
-      document.getElementById("stat-hits").textContent = hits;
-      document.getElementById("stat-rate").textContent = attempts.length ? Math.round((hits / attempts.length) * 100) + "%" : "0%";
-
-      const list = db.filter(q => {
+      filteredList = db.filter(q => {
         const hasImg = Boolean(customImg[q.id] || q.figura);
         const hasTxt = Boolean(q.texto_base);
         if (fAno !== "ALL" && String(q.ano) !== fAno) return false;
         if (fMat !== "ALL" && q.materia !== fMat) return false;
         if (fMed === "WITH_IMG" && !hasImg) return false;
         if (fMed === "WITH_TEXT" && !hasTxt) return false;
-        if (fBus && !(`${q.id} ${q.topico} ${q.texto_base || ""} ${q.enunciado}`).toLowerCase().includes(fBus)) return false;
+        if (fBus && !(`${q.id} ${q.topico} ${q.subtopico} ${q.texto_base || ""} ${q.enunciado}`).toLowerCase().includes(fBus)) return false;
+
         const p = progress[q.id];
-        if (fSta === "UNSOLVED" && p) return false;
-        if (fSta === "CORRECT" && (!p || !p.correct)) return false;
-        if (fSta === "WRONG" && (!p || p.correct)) return false;
+        if (fSta === "UNSOLVED" && p && !p.skipped) return false;
+        if (fSta === "CORRECT" && (!p || p.skipped || !p.correct)) return false;
+        if (fSta === "WRONG" && (!p || p.skipped || p.correct)) return false;
+        if (fSta === "SKIPPED" && (!p || !p.skipped)) return false;
         return true;
       });
 
-      const container = document.getElementById("questions-list");
-      container.innerHTML = list.map(q => {
-        const p = progress[q.id];
-        const resText = customRes[q.id] || q.resolucao;
-        const figSrc = customImg[q.id] || q.figura;
+      currentIndex = Math.max(0, Math.min(targetIndex, filteredList.length - 1));
+      draftChoice = null;
+      manualReveal = false;
+      questionStartTime = Date.now();
+      updateHeaderCounters();
+      renderExamView();
+    }
+
+    function resetFilters() {
+      document.getElementById("f-ano").value = "ALL";
+      document.getElementById("f-materia").value = "ALL";
+      document.getElementById("f-media").value = "ALL";
+      document.getElementById("f-status").value = "ALL";
+      document.getElementById("f-busca").value = "";
+      applyFilters(0);
+    }
+
+    function updateHeaderCounters() {
+      const entries = Object.values(progress);
+      const answered = entries.filter(e => !e.skipped && e.selected);
+      const correct = answered.filter(e => e.correct).length;
+      const wrong = answered.filter(e => !e.correct).length;
+      const skipped = entries.filter(e => e.skipped).length;
+      const acc = answered.length ? ((correct / answered.length) * 100).toFixed(1) + "%" : "0.0%";
+
+      document.getElementById("hdr-total").textContent = db.length;
+      document.getElementById("hdr-filtered").textContent = filteredList.length;
+      document.getElementById("hdr-answered").textContent = answered.length;
+      document.getElementById("hdr-correct").textContent = correct;
+      document.getElementById("hdr-wrong").textContent = wrong;
+      document.getElementById("hdr-skipped").textContent = skipped;
+      document.getElementById("hdr-accuracy").textContent = acc;
+    }
+
+    function goToQuestion(idx) {
+      if (idx < 0 || idx >= filteredList.length) return;
+      currentIndex = idx;
+      const q = filteredList[currentIndex];
+      const p = q ? progress[q.id] : null;
+      draftChoice = (p && !p.skipped) ? p.selected : null;
+      manualReveal = false;
+      questionStartTime = Date.now();
+      renderExamView();
+    }
+
+    function selectDraftOption(letter) {
+      const q = filteredList[currentIndex];
+      if (!q) return;
+      draftChoice = letter;
+      renderExamView();
+    }
+
+    function confirmAnswer() {
+      const q = filteredList[currentIndex];
+      if (!q || !draftChoice) {
+        alert("Selecione uma das alternativas (A, B, C, D ou E) antes de confirmar a resposta.");
+        return;
+      }
+      const prevTime = progress[q.id]?.timeSpent || 0;
+      const delta = Math.floor((Date.now() - questionStartTime) / 1000);
+      progress[q.id] = {
+        selected: draftChoice,
+        correct: q.gabarito === "ANULADA" || draftChoice === q.gabarito,
+        skipped: false,
+        timeSpent: prevTime + delta,
+        timestamp: new Date().toISOString()
+      };
+      questionStartTime = Date.now();
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+      updateHeaderCounters();
+      renderExamView();
+    }
+
+    function skipCurrentQuestion() {
+      const q = filteredList[currentIndex];
+      if (!q) return;
+      const prevTime = progress[q.id]?.timeSpent || 0;
+      const delta = Math.floor((Date.now() - questionStartTime) / 1000);
+      progress[q.id] = {
+        selected: null,
+        correct: false,
+        skipped: true,
+        timeSpent: prevTime + delta,
+        timestamp: new Date().toISOString()
+      };
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+      updateHeaderCounters();
+      if (currentIndex + 1 < filteredList.length) {
+        goToQuestion(currentIndex + 1);
+      } else {
+        renderExamView();
+      }
+    }
+
+    function toggleRevealSolution() {
+      manualReveal = !manualReveal;
+      renderExamView();
+    }
+
+    function resetCurrentQuestionAttempt() {
+      const q = filteredList[currentIndex];
+      if (!q) return;
+      delete progress[q.id];
+      draftChoice = null;
+      manualReveal = false;
+      localStorage.setItem(PROGRESS_KEY, JSON.stringify(progress));
+      updateHeaderCounters();
+      renderExamView();
+    }
+
+    function renderExamView() {
+      const sheet = document.getElementById("question-sheet");
+      const grid = document.getElementById("question-grid");
+      const posLabel = document.getElementById("nav-position-label");
+
+      if (!filteredList.length) {
+        posLabel.textContent = "0 / 0";
+        grid.innerHTML = "";
+        sheet.innerHTML = `
+          <div class="py-16 text-center font-ui">
+            <p class="text-sm text-[#52525B] mb-4">Nenhuma questão encontrada para a combinação de filtros selecionada.</p>
+            <button onclick="resetFilters()" class="px-4 py-2 bg-[#1B365D] text-white text-xs">Restaurar Caderno Completo</button>
+          </div>
+        `;
+        return;
+      }
+
+      const q = filteredList[currentIndex];
+      const p = progress[q.id];
+      const isAnswered = Boolean(p && !p.skipped && p.selected);
+      const showSolution = isAnswered || manualReveal;
+      const activeChoice = draftChoice || (isAnswered ? p.selected : null);
+      const figSrc = customImg[q.id] || q.figura;
+      const resText = customRes[q.id] || q.resolucao;
+
+      posLabel.textContent = `Questão ${currentIndex + 1} de ${filteredList.length}`;
+
+      // Renderiza Mapa Lateral
+      grid.innerHTML = filteredList.map((item, idx) => {
+        const st = progress[item.id];
+        let colorCls = "border-[#C8C4B8] bg-[#FAF8F5] text-[#3F3F46] hover:border-[#1B365D]";
+        if (st) {
+          if (st.skipped) colorCls = "border-[#D97706] bg-[#FEF3C7] text-[#92400E]";
+          else if (st.correct) colorCls = "border-[#1B4D3E] bg-[#1B4D3E] text-white";
+          else colorCls = "border-[#8B2635] bg-[#8B2635] text-white";
+        }
+        const activeRing = idx === currentIndex ? "ring-2 ring-[#1B365D] ring-offset-1 font-bold" : "";
         return `
-          <article class="bg-slate-900 border border-slate-800 rounded-xl p-6 shadow-md">
-            <div class="flex flex-wrap justify-between items-center gap-2 mb-4">
-              <div class="flex flex-wrap items-center gap-2">
-                <span class="px-2.5 py-0.5 text-xs font-mono font-bold rounded bg-indigo-950 text-indigo-300 border border-indigo-800">${q.id}</span>
-                <span class="px-2.5 py-0.5 text-xs rounded bg-slate-800 text-emerald-300 font-medium">${q.materia}</span>
-                ${q.texto_base ? '<span class="px-2 py-0.5 text-xs rounded bg-amber-950/80 text-amber-300 border border-amber-800">📖 Com Texto de Apoio</span>' : ''}
-                ${figSrc ? '<span class="px-2 py-0.5 text-xs rounded bg-sky-950 text-sky-300 border border-sky-800">🖼️ Com Figura</span>' : ''}
-              </div>
-              <div class="flex flex-wrap gap-2">
-                <button onclick="attachImage('${q.id}')" class="text-xs bg-sky-950/80 hover:bg-sky-900 text-sky-200 border border-sky-700/70 px-2.5 py-1 rounded transition">
-                  🖼️ Anexar / Colar Figura
-                </button>
-                <button onclick="copyPromptForGemini('${q.id}')" class="text-xs bg-indigo-950/80 hover:bg-indigo-900 text-indigo-200 border border-indigo-700/70 px-2.5 py-1 rounded transition">
-                  ✨ Copiar Prompt p/ Gemini Pro
-                </button>
-                <button onclick="editResolution('${q.id}')" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1 rounded transition">
-                  💾 Salvar Resolução
-                </button>
-              </div>
-            </div>
-
-            ${q.texto_base ? `
-              <details open class="mb-5 bg-slate-950/90 border border-amber-900/50 rounded-xl p-4">
-                <summary class="cursor-pointer text-xs font-semibold uppercase tracking-wider text-amber-400 select-none">
-                  📖 Texto de Apoio / Fragmento Base (Clique para recolher/expandir)
-                </summary>
-                <div class="mt-3 text-sm text-slate-300 leading-relaxed whitespace-pre-line border-t border-slate-800/80 pt-3">${q.texto_base}</div>
-              </details>
-            ` : ""}
-
-            <div class="text-slate-200 leading-relaxed whitespace-pre-line mb-4">${q.enunciado}</div>
-
-            ${figSrc ? `
-              <div class="my-4 bg-white p-3 rounded-xl inline-block shadow border border-slate-700">
-                <img onerror="this.parentElement.style.display='none'" src="${figSrc}" class="max-h-80 object-contain rounded" alt="Figura ${q.id}"/>
-              </div>
-            ` : ""}
-
-            <div class="space-y-2 my-4">
-              ${["A", "B", "C", "D", "E"].map(letter => {
-                const isOfficial = q.gabarito === letter;
-                const isSelected = p && p.selected === letter;
-                let cls = "border-slate-800 bg-slate-950/60 hover:border-slate-600";
-                if (p) {
-                  if (isOfficial || q.gabarito === "ANULADA") cls = "border-emerald-500 bg-emerald-950/40 text-emerald-200";
-                  else if (isSelected) cls = "border-rose-500 bg-rose-950/40 text-rose-200";
-                }
-                return `
-                  <button onclick="answerQuestion('${q.id}', '${letter}', '${q.gabarito}')"
-                    class="w-full text-left px-4 py-2.5 rounded-lg border transition flex items-center gap-3 ${cls}">
-                    <span class="font-mono font-bold text-xs w-6 h-6 flex items-center justify-center rounded bg-slate-800 shrink-0">${letter}</span>
-                    <span class="text-sm">${q.alternativas[letter] || ""}</span>
-                  </button>
-                `;
-              }).join("")}
-            </div>
-
-            ${p ? `
-              <div class="mt-4 pt-4 border-t border-slate-800 space-y-3">
-                <div class="text-sm font-semibold ${p.correct ? 'text-emerald-400' : 'text-rose-400'}">
-                  ${p.correct ? `✓ Correto! (Gabarito Oficial: ${q.gabarito})` : `✗ Incorreto — Você marcou ${p.selected}, mas o Gabarito Oficial é ${q.gabarito}`}
-                </div>
-                <div class="bg-slate-950 border border-slate-800 rounded-lg p-4 text-sm text-slate-300 whitespace-pre-line">${resText}</div>
-              </div>
-            ` : ""}
-          </article>
+          <button onclick="goToQuestion(${idx})" title="${item.id} (${item.materia})"
+            class="h-8 text-[11px] font-mono-num border transition ${colorCls} ${activeRing}">
+            ${item.numero}
+          </button>
         `;
       }).join("");
 
+      // Renderiza Folha de Prova
+      sheet.innerHTML = `
+        <!-- Cabeçalho da Questão -->
+        <div class="flex flex-wrap justify-between items-baseline gap-2 border-b border-[#D6D3C9] pb-4 mb-6">
+          <div class="flex flex-wrap items-center gap-3 font-ui">
+            <span class="font-mono-num text-xs font-semibold px-2.5 py-1 bg-[#EFECE4] border border-[#C8C4B8] text-[#18181B]">
+              ${q.id}
+            </span>
+            <span class="text-xs font-semibold uppercase tracking-wider text-[#1B365D]">
+              ${q.materia}
+            </span>
+            <span class="text-xs text-[#71717A]">•</span>
+            <span class="text-xs text-[#52525B]">${q.topico}</span>
+          </div>
+          <div class="font-ui text-xs text-[#71717A] font-mono-num">
+            Questão Nº ${String(q.numero).padStart(2, "0")} • Edição ${q.ano}
+          </div>
+        </div>
+
+        <!-- Texto de Apoio (se houver) -->
+        ${q.texto_base ? `
+          <details open class="mb-6 bg-[#FAF8F5] border-l-2 border-[#1B365D] p-4">
+            <summary class="cursor-pointer font-ui text-xs font-semibold uppercase tracking-wider text-[#1B365D] select-none">
+              Texto de Apoio / Preâmbulo Compartilhado
+            </summary>
+            <div class="mt-3 text-[15px] leading-relaxed text-[#27272A] whitespace-pre-line border-t border-[#E2DFD5] pt-3">${q.texto_base}</div>
+          </details>
+        ` : ""}
+
+        <!-- Enunciado Principal -->
+        <div class="question-stem whitespace-pre-line mb-6">${q.enunciado}</div>
+
+        <!-- Figura Oficial -->
+        ${figSrc ? `
+          <figure class="my-6 p-4 bg-white border border-[#E2DFD5] flex flex-col items-center">
+            <img onerror="this.parentElement.style.display='none'" src="${figSrc}" class="max-h-96 object-contain" alt="Figura ${q.id}" />
+            <figcaption class="font-ui text-[11px] text-[#71717A] mt-2">Figura referente à questão ${q.id}</figcaption>
+          </figure>
+        ` : ""}
+
+        <!-- Alternativas A - E -->
+        <div class="space-y-2.5 my-8">
+          ${["A", "B", "C", "D", "E"].map(letter => {
+            const isSelected = activeChoice === letter;
+            const isOfficial = q.gabarito === letter || q.gabarito === "ANULADA";
+
+            let rowStyle = "border-[#D6D3C9] bg-[#FAF8F5] hover:border-[#1B365D] hover:bg-white";
+            let badgeStyle = "border-[#C8C4B8] bg-white text-[#18181B]";
+
+            if (showSolution) {
+              if (isOfficial) {
+                rowStyle = "border-[#1B4D3E] bg-[#F0FDF4] text-[#14532D]";
+                badgeStyle = "border-[#1B4D3E] bg-[#1B4D3E] text-white";
+              } else if (isSelected && !isOfficial) {
+                rowStyle = "border-[#8B2635] bg-[#FEF2F2] text-[#7F1D1D]";
+                badgeStyle = "border-[#8B2635] bg-[#8B2635] text-white";
+              }
+            } else if (isSelected) {
+              rowStyle = "border-[#1B365D] bg-[#F0F4F8] ring-1 ring-[#1B365D]";
+              badgeStyle = "border-[#1B365D] bg-[#1B365D] text-white";
+            }
+
+            return `
+              <button onclick="selectDraftOption('${letter}')"
+                class="w-full text-left px-4 py-3 border transition flex items-start gap-3.5 ${rowStyle}">
+                <span class="font-mono-num text-xs font-semibold w-6 h-6 flex items-center justify-center border shrink-0 mt-0.5 ${badgeStyle}">
+                  ${letter}
+                </span>
+                <span class="text-[16px] leading-snug pt-0.5">${q.alternativas[letter] || ""}</span>
+              </button>
+            `;
+          }).join("")}
+        </div>
+
+        <!-- Barra de Controle de Prova (Responder, Ver Resposta, Pular, Avançar) -->
+        <div class="pt-5 border-t border-[#D6D3C9] flex flex-wrap items-center justify-between gap-3 font-ui text-xs">
+          <div class="flex items-center gap-2">
+            <button onclick="goToQuestion(${currentIndex - 1})" ${currentIndex === 0 ? "disabled" : ""}
+              class="px-3.5 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] disabled:opacity-40 text-[#18181B]">
+              ← Anterior
+            </button>
+            <button onclick="skipCurrentQuestion()"
+              class="px-3.5 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] text-[#52525B]">
+              Pular Questão
+            </button>
+            <button onclick="goToQuestion(${currentIndex + 1})" ${currentIndex >= filteredList.length - 1 ? "disabled" : ""}
+              class="px-3.5 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] disabled:opacity-40 text-[#18181B]">
+              Próxima →
+            </button>
+          </div>
+
+          <div class="flex items-center gap-2">
+            ${isAnswered ? `
+              <button onclick="resetCurrentQuestionAttempt()"
+                class="px-3.5 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] text-[#52525B]">
+                Refazer Questão
+              </button>
+            ` : ""}
+            <button onclick="toggleRevealSolution()"
+              class="px-3.5 py-2 border border-[#C8C4B8] bg-[#FAF8F5] hover:bg-[#EFECE4] text-[#18181B]">
+              ${showSolution ? "Ocultar Gabarito" : "Ver Gabarito / Resolução"}
+            </button>
+            <button onclick="confirmAnswer()"
+              class="px-5 py-2 bg-[#1B365D] hover:bg-[#152C4E] text-white font-medium">
+              Confirmar Resposta
+            </button>
+          </div>
+        </div>
+
+        <!-- Seção de Gabarito Oficial & Resolução Comentada -->
+        ${showSolution ? `
+          <div class="mt-8 pt-6 border-t-2 border-[#D6D3C9] space-y-4">
+            <div class="flex flex-wrap items-center justify-between gap-2 font-ui">
+              <div class="text-xs font-semibold uppercase tracking-wider ${
+                isAnswered
+                  ? (p.correct ? "text-[#1B4D3E]" : "text-[#8B2635]")
+                  : "text-[#1B365D]"
+              }">
+                ${
+                  isAnswered
+                    ? (p.correct
+                        ? `Resposta Confirmada: Alternativa ${p.selected} — Correta (Gabarito Oficial: ${q.gabarito})`
+                        : `Resposta Confirmada: Você assinalou ${p.selected} — Incorreta (Gabarito Oficial: ${q.gabarito})`)
+                    : `Consulta de Gabarito Oficial: Alternativa ${q.gabarito}`
+                }
+              </div>
+              ${p?.timeSpent ? `<span class="font-mono-num text-xs text-[#71717A]">Tempo registrado: ${formatSeconds(p.timeSpent)}</span>` : ""}
+            </div>
+
+            <div class="bg-[#FAF8F5] border border-[#D6D3C9] p-5 text-[16px] leading-relaxed text-[#18181B] whitespace-pre-line">
+              <div class="font-ui text-[11px] font-semibold uppercase tracking-wider text-[#52525B] mb-2">
+                Demonstração & Resolução Comentada
+              </div>
+              ${resText}
+            </div>
+          </div>
+        ` : ""}
+      `;
+
       if (window.renderMathInElement) {
-        renderMathInElement(container, {
+        renderMathInElement(sheet, {
           delimiters: [
             { left: "$$", right: "$$", display: true },
             { left: "$", right: "$", display: false }
@@ -269,8 +816,304 @@
       }
     }
 
-    ["f-ano", "f-materia", "f-media", "f-status"].forEach(id => document.getElementById(id).addEventListener("change", render));
-    document.getElementById("f-busca").addEventListener("input", render);
+    // ================= RELATÓRIO ANALÍTICO DO HUB =================
+    function renderHubAnalytics() {
+      const subjects = ["Matemática", "Física", "Química", "Inglês", "Português"];
+      const allAttempts = Object.values(progress);
+      const answered = allAttempts.filter(a => !a.skipped && a.selected);
+      const totalCorrect = answered.filter(a => a.correct).length;
+      const totalWrong = answered.filter(a => !a.correct).length;
+      const totalSkipped = allAttempts.filter(a => a.skipped).length;
+      const globalRate = answered.length ? (totalCorrect / answered.length) * 100 : 0;
+      const avgTime = answered.length
+        ? answered.reduce((acc, x) => acc + (x.timeSpent || 0), 0) / answered.length
+        : 0;
+
+      document.getElementById("hub-global-rate").textContent = globalRate.toFixed(1) + "%";
+      document.getElementById("hub-net-score").textContent = `${totalCorrect} / ${answered.length}`;
+      document.getElementById("hub-review-count").textContent = totalWrong + totalSkipped;
+      document.getElementById("hub-avg-time").textContent = formatSeconds(avgTime);
+
+      const cutoffEl = document.getElementById("hub-cutoff-status");
+      if (!answered.length) {
+        cutoffEl.textContent = "Resolva questões para aferir sua média frente ao corte.";
+      } else if (globalRate >= 70) {
+        cutoffEl.textContent = "Acima da linha histórica de classificação da 1ª Fase (≥ 70%).";
+        cutoffEl.className = "text-xs text-[#1B4D3E] mt-1 font-medium";
+      } else {
+        cutoffEl.textContent = `Abaixo da meta de segurança (+${(70 - globalRate).toFixed(1)}% necessários).`;
+        cutoffEl.className = "text-xs text-[#8B2635] mt-1 font-medium";
+      }
+
+      const tbody = document.getElementById("hub-subject-rows");
+      tbody.innerHTML = subjects.map(sub => {
+        const subQuestions = db.filter(q => q.materia === sub);
+        let done = 0, hits = 0, errs = 0, skips = 0, timeSum = 0;
+
+        subQuestions.forEach(q => {
+          const p = progress[q.id];
+          if (!p) return;
+          if (p.skipped) skips++;
+          else if (p.selected) {
+            done++;
+            timeSum += (p.timeSpent || 0);
+            if (p.correct) hits++;
+            else errs++;
+          }
+        });
+
+        const rate = done ? (hits / done) * 100 : 0;
+        const avgSubTime = done ? timeSum / done : 0;
+        const statusText = !done
+          ? "Sem amostragem"
+          : (rate >= 50 ? "Acima do mínimo (≥ 50%)" : "Alerta: Abaixo do corte de 50%");
+        const statusColor = !done ? "text-[#71717A]" : (rate >= 50 ? "text-[#1B4D3E]" : "text-[#8B2635] font-semibold");
+
+        return `
+          <tr class="hover:bg-[#FAF8F5]">
+            <td class="py-3.5 px-4 font-semibold text-[#18181B]">${sub}</td>
+            <td class="py-3.5 px-4 text-right font-mono-num">${subQuestions.length}</td>
+            <td class="py-3.5 px-4 text-right font-mono-num">${done}</td>
+            <td class="py-3.5 px-4 text-right font-mono-num text-[#1B4D3E] font-medium">${hits}</td>
+            <td class="py-3.5 px-4 text-right font-mono-num text-[#8B2635] font-medium">${errs}</td>
+            <td class="py-3.5 px-4 text-right font-mono-num text-[#B45309]">${skips}</td>
+            <td class="py-3.5 px-4 text-right font-mono-num">${formatSeconds(avgSubTime)}</td>
+            <td class="py-3.5 px-4 text-right font-mono-num font-semibold">${rate.toFixed(1)}%</td>
+            <td class="py-3.5 px-4 ${statusColor}">${statusText}</td>
+            <td class="py-3.5 px-4 text-center">
+              <button onclick="filterBySubjectFromHub('${sub}')" class="px-2.5 py-1 border border-[#C8C4B8] bg-white hover:bg-[#EFECE4] text-[11px] text-[#1B365D]">
+                Praticar ${sub}
+              </button>
+            </td>
+          </tr>
+        `;
+      }).join("");
+
+      const years = [...new Set(db.map(q => q.ano))].sort((a, b) => b - a);
+      document.getElementById("hub-year-cards").innerHTML = years.map(yr => {
+        const yrQs = db.filter(q => q.ano === yr);
+        const yrDone = yrQs.filter(q => progress[q.id] && !progress[q.id].skipped && progress[q.id].selected);
+        const yrHits = yrDone.filter(q => progress[q.id].correct).length;
+        const pct = Math.round((yrDone.length / yrQs.length) * 100);
+        return `
+          <div class="border border-[#D6D3C9] bg-[#FAF8F5] p-4 flex flex-col justify-between">
+            <div>
+              <div class="flex justify-between items-baseline">
+                <span class="font-bold text-sm text-[#18181B]">ITA ${yr}</span>
+                <span class="font-mono-num text-xs text-[#52525B]">${yrDone.length}/${yrQs.length} resolvidas</span>
+              </div>
+              <div class="w-full h-1.5 bg-[#E2DFD5] mt-2 overflow-hidden">
+                <div class="h-full bg-[#1B365D]" style="width: ${pct}%"></div>
+              </div>
+              <div class="mt-2 text-xs text-[#52525B] flex justify-between font-mono-num">
+                <span>Acertos: ${yrHits}</span>
+                <span>Precisão: ${yrDone.length ? Math.round((yrHits / yrDone.length) * 100) : 0}%</span>
+              </div>
+            </div>
+            <button onclick="filterByYearFromHub('${yr}')" class="mt-4 w-full py-1.5 border border-[#C8C4B8] bg-white hover:bg-[#EFECE4] text-xs text-[#18181B]">
+              Abrir Prova ${yr}
+            </button>
+          </div>
+        `;
+      }).join("");
+    }
+
+    function filterBySubjectFromHub(sub) {
+      document.getElementById("f-materia").value = sub;
+      document.getElementById("f-status").value = "ALL";
+      switchView("exam");
+      applyFilters(0);
+    }
+
+    function filterByYearFromHub(yr) {
+      document.getElementById("f-ano").value = String(yr);
+      document.getElementById("f-status").value = "ALL";
+      switchView("exam");
+      applyFilters(0);
+    }
+
+    function startErrorNotebook() {
+      document.getElementById("f-status").value = "WRONG";
+      switchView("exam");
+      applyFilters(0);
+    }
+
+    function clearAllProgress() {
+      if (!confirm("Deseja realmente zerar todo o histórico de respostas e tempos registrados?")) return;
+      progress = {};
+      localStorage.removeItem(PROGRESS_KEY);
+      updateHeaderCounters();
+      renderHubAnalytics();
+    }
+
+    // ================= FERRAMENTAS DA QUESTÃO ATUAL =================
+    function copyPromptCurrent() {
+      const q = filteredList[currentIndex];
+      if (!q) return;
+      const baseBlock = q.texto_base ? `Texto de Apoio:\n${q.texto_base}\n\n` : "";
+      const promptText = `Atue como examinador da banca do ITA. Demonstre rigorosamente passo a passo em LaTeX a resolução da questão ${q.id} (${q.materia}) cujo GABARITO OFICIAL é a alternativa ${q.gabarito}.\n\n${baseBlock}Enunciado:\n${q.enunciado}\n\nAlternativas:\nA) ${q.alternativas.A}\nB) ${q.alternativas.B}\nC) ${q.alternativas.C}\nD) ${q.alternativas.D}\nE) ${q.alternativas.E}`;
+      navigator.clipboard.writeText(promptText);
+      alert("Enunciado e alternativas copiados para a área de transferência.");
+    }
+
+    function attachImageCurrent() {
+      const q = filteredList[currentIndex];
+      if (!q) return;
+      const useFile = confirm("Clique em OK para selecionar uma imagem do computador, ou CANCELE e pressione Ctrl+V diretamente nesta página após copiar um recorte no Hyprland.");
+      if (useFile) document.getElementById("hidden-file-input").click();
+    }
+
+    document.getElementById("hidden-file-input").addEventListener("change", (ev) => {
+      const file = ev.target.files[0];
+      const q = filteredList[currentIndex];
+      if (!file || !q) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        customImg[q.id] = reader.result;
+        localStorage.setItem(CUSTOM_IMG_KEY, JSON.stringify(customImg));
+        renderExamView();
+      };
+      reader.readAsDataURL(file);
+    });
+
+    window.addEventListener("paste", (ev) => {
+      const q = filteredList[currentIndex];
+      if (!q) return;
+      const items = ev.clipboardData?.items || [];
+      for (const item of items) {
+        if (item.type.startsWith("image/")) {
+          const file = item.getAsFile();
+          const reader = new FileReader();
+          reader.onload = () => {
+            customImg[q.id] = reader.result;
+            localStorage.setItem(CUSTOM_IMG_KEY, JSON.stringify(customImg));
+            renderExamView();
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+    });
+
+    function editResolutionCurrent() {
+      const q = filteredList[currentIndex];
+      if (!q) return;
+      const current = customRes[q.id] || q.resolucao || "";
+      const updated = prompt("Insira ou edite a Resolução Comentada em LaTeX:", current);
+      if (updated !== null && updated.trim() !== "") {
+        customRes[q.id] = updated.trim();
+        localStorage.setItem(CUSTOM_RES_KEY, JSON.stringify(customRes));
+        manualReveal = true;
+        renderExamView();
+      }
+    }
+
+    // ================= INSERIR NOVA QUESTÃO INDIVIDUAL =================
+    document.getElementById("nq-fig-file").addEventListener("change", (ev) => {
+      const file = ev.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        pendingNewQuestionImage = reader.result;
+        document.getElementById("nq-fig-status").textContent = "Imagem carregada (" + file.name + ")";
+      };
+      reader.readAsDataURL(file);
+    });
+
+    function saveNewQuestion(ev) {
+      ev.preventDefault();
+      const banca = document.getElementById("nq-banca").value.trim().toUpperCase();
+      const ano = parseInt(document.getElementById("nq-ano").value, 10);
+      const numero = parseInt(document.getElementById("nq-numero").value, 10);
+      const materia = document.getElementById("nq-materia").value;
+      const topico = document.getElementById("nq-topico").value.trim();
+      const subtopico = document.getElementById("nq-subtopico").value.trim();
+      const texto_base = document.getElementById("nq-texto-base").value.trim() || null;
+      const enunciado = document.getElementById("nq-enunciado").value.trim();
+      const gabarito = document.getElementById("nq-gabarito").value;
+      const resolucao = document.getElementById("nq-resolucao").value.trim() || `Gabarito Oficial: Alternativa ${gabarito}.`;
+
+      const q_id = `${banca}-${ano}-1F-Q${String(numero).padStart(2, "0")}`;
+      const newRecord = {
+        id: q_id,
+        ano,
+        fase: "1ª Fase",
+        numero,
+        materia,
+        topico,
+        subtopico,
+        dificuldade: "Difícil",
+        texto_base,
+        enunciado,
+        figura: pendingNewQuestionImage,
+        alternativas: {
+          A: document.getElementById("nq-alt-a").value.trim(),
+          B: document.getElementById("nq-alt-b").value.trim(),
+          C: document.getElementById("nq-alt-c").value.trim(),
+          D: document.getElementById("nq-alt-d").value.trim(),
+          E: document.getElementById("nq-alt-e").value.trim()
+        },
+        gabarito,
+        pulo_do_gato: "Questão catalogada manualmente no acervo.",
+        resolucao
+      };
+
+      userAddedQuestions = userAddedQuestions.filter(x => x.id !== q_id);
+      userAddedQuestions.push(newRecord);
+      localStorage.setItem(USER_ADDED_KEY, JSON.stringify(userAddedQuestions));
+
+      db = db.filter(x => x.id !== q_id);
+      db.push(newRecord);
+      db.sort((a, b) => (b.ano - a.ano) || (a.numero - b.numero));
+
+      pendingNewQuestionImage = null;
+      document.getElementById("form-new-question").reset();
+      document.getElementById("nq-fig-status").textContent = "";
+      populateFilters();
+      switchView("exam");
+      const newIdx = filteredList.findIndex(x => x.id === q_id);
+      applyFilters(newIdx >= 0 ? newIdx : 0);
+      alert(`Questão ${q_id} catalogada com sucesso!`);
+    }
+
+    function exportDatabaseJson() {
+      const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(db, null, 2));
+      const a = document.createElement("a");
+      a.setAttribute("href", dataStr);
+      a.setAttribute("download", "questions.json");
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+    }
+
+    // Atalhos de Teclado para Resolução Rápida
+    window.addEventListener("keydown", (ev) => {
+      if (["INPUT", "TEXTAREA", "SELECT"].includes(document.activeElement?.tagName)) return;
+      if (document.getElementById("view-exam").classList.contains("hidden")) return;
+
+      const key = ev.key.toUpperCase();
+      if (["A", "B", "C", "D", "E"].includes(key)) {
+        ev.preventDefault();
+        selectDraftOption(key);
+      } else if (ev.key === "Enter") {
+        ev.preventDefault();
+        confirmAnswer();
+      } else if (ev.key === "ArrowRight") {
+        ev.preventDefault();
+        goToQuestion(currentIndex + 1);
+      } else if (ev.key === "ArrowLeft") {
+        ev.preventDefault();
+        goToQuestion(currentIndex - 1);
+      } else if (key === "P") {
+        ev.preventDefault();
+        skipCurrentQuestion();
+      }
+    });
+
+    ["f-ano", "f-materia", "f-media", "f-status"].forEach(id =>
+      document.getElementById(id).addEventListener("change", () => applyFilters(0))
+    );
+    document.getElementById("f-busca").addEventListener("input", () => applyFilters(0));
+
     init();
   </script>
 </body>

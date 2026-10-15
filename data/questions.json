@@ -308,14 +308,14 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Um carrinho realiza um percurso sobre um trilho em um plano vertical, como mostra a ﬁgura ao lado. Partindo do repouso no ponto A, ele percorre uma distância ℓaté o ponto B com aceleração constante a0. Ao chegar ao ponto B, segue uma trajetória circular de raio R sob a ação da aceleração gravitacional até o ponto C. Então, passa a executar um movimento retilíneo uniforme. Ao chegar ao ponto D, realiza uma colisão perfeitamente inelástica com um outro carrinho de mesma massa.\n\nDesconsiderando efeitos de forças de atrito, assinale a alternativa que corresponde ao módulo da velocidade do carrinho após o choque.\n\nA ( ) 1\n\nB ( )",
+    "enunciado": "Um carrinho realiza um percurso sobre um trilho em um plano vertical, como mostra a ﬁgura ao lado. Partindo do repouso no ponto A, ele percorre uma distância ℓaté o ponto B com aceleração constante $a_0$. Ao chegar ao ponto B, segue uma trajetória circular de raio R sob a ação da aceleração gravitacional até o ponto C. Então, passa a executar um movimento retilíneo uniforme. Ao chegar ao ponto D, realiza uma colisão perfeitamente inelástica com um outro carrinho de mesma massa.\n\nDesconsiderando efeitos de forças de atrito, assinale a alternativa que corresponde ao módulo da velocidade do carrinho após o choque.",
     "figura": "data/images/ita_2025_q14.png",
     "alternativas": {
-      "A": "Ver enunciado",
-      "B": "Ver enunciado",
-      "C": "Ver enunciado",
-      "D": "Ver enunciado",
-      "E": "Ver enunciado"
+      "A": "$\\frac{1}{2}\\sqrt{2a_0 \\ell + gR}$",
+      "B": "$\\frac{1}{2}\\sqrt{2a_0 \\ell + 2gR}$",
+      "C": "$\\sqrt{a_0 \\ell + gR}$",
+      "D": "$\\frac{1}{2}\\sqrt{a_0 \\ell + 2gR}$",
+      "E": "$\\sqrt{2a_0 \\ell + 2gR}$"
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
@@ -1136,7 +1136,7 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Uma fonte luminosa está presa ao teto de um recinto fechado, a uma altura H do solo, conforme mostra a ﬁgura. No recinto há um objeto de altura h (h < H/2) a uma distância 2a de uma das paredes. A lâmpada desprende-se, iniciando um movimento de queda livre, e atinge o solo a uma distância 3a da parede. Considere que o efeito de reﬂexão de luz nas paredes é desprezível e que a fonte de luz é pontual.\n\nAssinale a alternativa que apresenta a expressão correta do módulo da velocidade da sombra a partir do instante em que esta começa a ser projetada sobre a parede.\n\nA ( )\n\nq\n\n2g(H – 3 2h)\n\nC ( ) 1\n\nq\n\n2g(H – 3 2h)\n\nq\n\n2g(H – 3 2h)\n\nB ( )\n\np\n\n2g(H – h)\n\nD ( ) 2",
+    "enunciado": "Uma fonte luminosa está presa ao teto de um recinto fechado, a uma altura H do solo, conforme mostra a ﬁgura. No recinto há um objeto de altura h (h < H/2) a uma distância 2a de uma das paredes. A lâmpada desprende-se, iniciando um movimento de queda livre, e atinge o solo a uma distância 3a da parede. Considere que o efeito de reﬂexão de luz nas paredes é desprezível e que a fonte de luz é pontual.\n\nAssinale a alternativa que apresenta a expressão correta do módulo da velocidade da sombra a partir do instante em que esta começa a ser projetada sobre a parede.",
     "figura": "data/images/ita_2024_q02.png",
     "alternativas": {
       "A": "Ver enunciado",
@@ -1320,7 +1320,7 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Um próton com posição inicial x = R e velocidade inicial⃗$v_0$ na direção y ($v_0$ ≪c) adentra uma região (x > 0 e y > 0) onde atua um campo magnético perpendicular ao plano xy, conforme mostra a ﬁgura. Considere que logo após acessar esta região a trajetória do próton apresenta um raio de curvatura R (L/2 < R < L) e que um detetor suﬁcientemente estreito é posicionado para sua contagem em y = L/2.\n\nDetermine a posição em x que o detetor deve estar para a contagem deste próton.\n\nA ( ) R cos(arcsen(L/R))\n\nC ( ) R sen(arccos(L/(2R)))\n\nB ( ) 0\n\nD ( ) R cos(arcsen(L/(2R)))",
+    "enunciado": "Um próton com posição inicial x = R e velocidade inicial⃗$v_0$ na direção y ($v_0$ ≪c) adentra uma região (x > 0 e y > 0) onde atua um campo magnético perpendicular ao plano xy, conforme mostra a ﬁgura. Considere que logo após acessar esta região a trajetória do próton apresenta um raio de curvatura R (L/2 < R < L) e que um detetor suﬁcientemente estreito é posicionado para sua contagem em y = L/2.\n\nDetermine a posição em x que o detetor deve estar para a contagem deste próton.",
     "figura": "data/images/ita_2024_q10.png",
     "alternativas": {
       "A": "Ver enunciado",
@@ -2033,7 +2033,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Considere o conjunto C = {1; 2; 3; 4; 5}. Para cada escolha possível de a0, a1, a2, a3, a4 ∈C, dois a dois distintos, formamos o polinômio\n\na0 + a1x + a2x2 + a3x3 + a4x4:\n\nA soma das raízes, contadas com multiplicidade, de todos os polinômios formados nesse processo é igual a:",
+    "enunciado": "Considere o conjunto C = {1; 2; 3; 4; 5}. Para cada escolha possível de $a_0$, a1, a2, a3, a4 ∈C, dois a dois distintos, formamos o polinômio\n\n$a_0$ + a1x + a2x2 + a3x3 + a4x4:\n\nA soma das raízes, contadas com multiplicidade, de todos os polinômios formados nesse processo é igual a:",
     "figura": null,
     "alternativas": {
       "A": "−17125\n\n4 .",
@@ -2654,7 +2654,7 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Considere um ﬁltro polarizador linear no plano S, cuja polarização é paralela ao eixo x. Uma onda eletromagnética com polarização linear no eixo z propaga-se na direção do eixo y. Um pêndulo é colocado na frente do ﬁl- tro. A ponta do pêndulo contém uma pequena placa circular feita de um ﬁltro de polarização linear. Quando o pêndulo está em repouso, a polarização é paralela ao eixo x. O pêndulo oscila no plano S′, de −90◦a 90◦, conforme mostra a ﬁgura. Uma chapa fotográﬁca capaz de absorver a onda eletromagnética é colocada atrás dos ﬁltros de polarização. Despreze efeitos de difração e interferência. Considere que os planos S e S′ são paralelos ao plano xz.\n\nAssinale a alternativa que melhor representa o que vai ser visto na chapa fotográﬁca.\n\nA ( )\n\nB ( )",
+    "enunciado": "Considere um ﬁltro polarizador linear no plano S, cuja polarização é paralela ao eixo x. Uma onda eletromagnética com polarização linear no eixo z propaga-se na direção do eixo y. Um pêndulo é colocado na frente do ﬁl- tro. A ponta do pêndulo contém uma pequena placa circular feita de um ﬁltro de polarização linear. Quando o pêndulo está em repouso, a polarização é paralela ao eixo x. O pêndulo oscila no plano S′, de −90◦a 90◦, conforme mostra a ﬁgura. Uma chapa fotográﬁca capaz de absorver a onda eletromagnética é colocada atrás dos ﬁltros de polarização. Despreze efeitos de difração e interferência. Considere que os planos S e S′ são paralelos ao plano xz.\n\nAssinale a alternativa que melhor representa o que vai ser visto na chapa fotográﬁca.",
     "figura": "data/images/ita_2023_q08.png",
     "alternativas": {
       "A": "Ver enunciado",
@@ -3919,7 +3919,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Unia ponte levadiça uniforme com peso P e compri\n\nmento L é sustentada por uma corda vertical na sua extremidade B.\n\nque pode sustentar uma tensão máxima de 1,5 P. A ponte é articu\n\nlada no ponto fixo :4. Um homem de peso P,, começa a subir a ponte\n\nalternativa que contém a clistãncia percorrida pelo homem ao longo\n\nSe necessitar, use os seguintes valores para as constantes;\n\nFÍSICA\n\n1 ‘A/VB 1 logo após o choque.\n\nVelocidade da luz no vácuo e = 3,Ox io m/s.\n\nna frequência de 540 THz (Krd).\n\nintroduzidas pela redefinição de 2019.\n\na razao das velocidades,\n\nC ( ) PL/Ph\n\nda ponte.\n\nC( )PV?(1_1c2)\n\nA( )O D‘ B( E( ) Pv?(1_k2)",
+    "enunciado": "Unia ponte levadiça uniforme com peso P e compri\n\nmento L é sustentada por uma corda vertical na sua extremidade B.\n\nque pode sustentar uma tensão máxima de 1,5 P. A ponte é articu\n\nlada no ponto fixo :4. Um homem de peso P,, começa a subir a ponte\n\nalternativa que contém a clistãncia percorrida pelo homem ao longo\n\nSe necessitar, use os seguintes valores para as constantes;\n\nFÍSICA\n\n1 ‘A/VB 1 logo após o choque.\n\nVelocidade da luz no vácuo e = 3,Ox io m/s.\n\nna frequência de 540 THz (Krd).\n\nintroduzidas pela redefinição de 2019.\n\na razao das velocidades,\n\nC ( ) PL/Ph\n\nda ponte.\n\nC( )PV?(1_1c2)",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -4057,7 +4057,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Muitos instrumentos musicais. conio o piano. geram sons a partir da excitação de cordas com\n\nextremidades fixas. Ao pressionar uma tecla do piano. um dispositivo mecânico percute uma corda tcusionada.\n\nsua decomposição espectral é fornecida tio gráfico a seguir, à respeito do qual são feitas três sentenças.\n\nII. A velocidade de propagação de cada nota no ar é proporcional à sua frequência característica.\n\na alteruativa que apresenta o intervalo contendo a melhor estimativa da temperatura do fluido.\n\nsi\n\nd-2O,o miii\n\n1. Para gerar um espectro sonoro dessa natureza é necessário acionar 5 teclas do piano.\n\nA( ) 30°C<T<80°C -\n\nFonte de laser\n\nlinear de massa.\n\nA( ) 0,33s B( ) 0.66s C( ) l,OOs\n\netn que B = 1,001. Er 100 N/C e E: = 800 N/C. O eixo z corresponde à direção vertical para cima. Sabendo que a partícula partiu da origem do sistema de coordenada com velocidade ir. escrita em termos de suas componentes paralela e perpendicular a B. ou seja. { = t + tt. sendo r1 = 2.0 ni/s e v = 1.0 in/s. calcule o tempo necessário para ela atingir a posição z = 1,0 m.",
+    "enunciado": "Muitos instrumentos musicais. conio o piano. geram sons a partir da excitação de cordas com\n\nextremidades fixas. Ao pressionar uma tecla do piano. um dispositivo mecânico percute uma corda tcusionada.\n\nsua decomposição espectral é fornecida tio gráfico a seguir, à respeito do qual são feitas três sentenças.\n\nII. A velocidade de propagação de cada nota no ar é proporcional à sua frequência característica.\n\na alteruativa que apresenta o intervalo contendo a melhor estimativa da temperatura do fluido.\n\nsi\n\nd-2O,o miii\n\n1. Para gerar um espectro sonoro dessa natureza é necessário acionar 5 teclas do piano.",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -4103,7 +4103,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Considere uma montagem de um experimento de dupla fenda de Young, na qua.l as fendas estão afastadas de d = 2,0 mm e são iluminadas por luz azul (À = 480 nm) e amarela (À’ 600 nm) de mesma intensidade. O padrão de difração resultante é projetado sobre uni anteparo localizado a 5,0 m das fendas. A que distância, contada a partir da região brilhante central, uma franja verde pode ser observada no anteparo.\n\nC( ) 3cm<:r<8cm\n\nB( ) 3cin<,r<Gcm\n\nA( ) Ocm<x<2.67cm",
+    "enunciado": "Considere uma montagem de um experimento de dupla fenda de Young, na qua.l as fendas estão afastadas de d = 2,0 mm e são iluminadas por luz azul (À = 480 nm) e amarela (À’ 600 nm) de mesma intensidade. O padrão de difração resultante é projetado sobre uni anteparo localizado a 5,0 m das fendas. A que distância, contada a partir da região brilhante central, uma franja verde pode ser observada no anteparo.\n\nC( ) 3cm<:r<8cm\n\nB( ) 3cin<,r<Gcm",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -4126,7 +4126,7 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Considere o movimento de um objeto de massa m = 1,0 g. positivan ente carregado, com carga q = 20.0 iC. na presença do campo gravitacional da superfície terrestre. g. e de um campo eletromagnético dado por\n\nC ( ) 6,0 mm\n\nB ( )\n\n1.5\n\nA( ) 1.2mni D( ) 9,Omm",
+    "enunciado": "Considere o movimento de um objeto de massa m = 1,0 g. positivan ente carregado, com carga q = 20.0 iC. na presença do campo gravitacional da superfície terrestre. g. e de um campo eletromagnético dado por\n\nC ( ) 6,0 mm\n\nB ( )\n\n1.5",
     "figura": "data/images/ita_2022_q12.png",
     "alternativas": {
       "A": "Ver enunciado",
@@ -4540,7 +4540,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Leia atentamente o trecho destacado do conto ‘Seminário dos ratos’. no qual o Chefe das Relações Públicas dirige-se ao Secretário do Bem-Estar Público e Privado. Em seguida, assinale a alternativa CORRETA. Bueno, ontem à noite ele sofreu um pequeno acidente, Vossa Excelência sabe como anda o nosso trânsito! Teve que engessar um braço. Só pode chegar amanhã. já providenciei o jatinho acrescentou o jovem com energia. Na retaguarda fica toda uma equipe armada para a cobertura. Nosso Assessor vai pingando o noticiário por telefone, criando suspense até o encerramento. quando virão todos num jato especial. fotógrafos, canais de televisão. correspondentes estrangeiros, uma apoteose. Finis coionat opus. o fim coroa a obra!\n\nA ( ) em nossa prática política diáriaS. novas ideias radicais podem surgir de um pensameuto aparentemente",
+    "enunciado": "Leia atentamente o trecho destacado do conto ‘Seminário dos ratos’. no qual o Chefe das Relações Públicas dirige-se ao Secretário do Bem-Estar Público e Privado. Em seguida, assinale a alternativa CORRETA. Bueno, ontem à noite ele sofreu um pequeno acidente, Vossa Excelência sabe como anda o nosso trânsito! Teve que engessar um braço. Só pode chegar amanhã. já providenciei o jatinho acrescentou o jovem com energia. Na retaguarda fica toda uma equipe armada para a cobertura. Nosso Assessor vai pingando o noticiário por telefone, criando suspense até o encerramento. quando virão todos num jato especial. fotógrafos, canais de televisão. correspondentes estrangeiros, uma apoteose. Finis coionat opus. o fim coroa a obra!",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -4793,7 +4793,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Se\n\nA ( ) lV/12. B ( ) i//12. O ( ) 5h//12, D ( ) 5L//12. E ( ) L//6.",
+    "enunciado": "Se",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -4839,7 +4839,7 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Seja m e IR. Considere os sistemas lineares\n\nA ( ) Não existe vi e IR tal que é equivalente a 82.\n\nL Sezi+z2eIRezi—z2centãozi EIRez2ea.\n\nIII. Se z1 + 22 e IR e z1 z E IR então z1 E IR e 29 E IR.\n\nII. Se zi . e IR e zi/z2 e IR então 21 E R e 22 E .\n\nÉ (são) sempre verdadeira(s):\n\nAssimile a alternativa correta:\n\npodei nos a firmar que",
+    "enunciado": "Seja m e IR. Considere os sistemas lineares",
     "figura": "data/images/ita_2022_q43.png",
     "alternativas": {
       "A": "Ver enunciado",
@@ -4954,7 +4954,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Seja b E IR tal que a equação\n\nA ( ) Nunca determina uma progressão aritmética. B ( ) Pode determinar uma progressão aritmética apenas se r = O. o ( ) Pode determinar uma progressão aritmética apenas se r = O ou se r = D ( ) Pode determinar uma progressão aritmética para infinitos valores distintos de r. E ( ) Determina uma progressão aritmética para todo x e r corno no enunciado.\n\nnesta ordem, podemos afirmar que:\n\nSobre tan(x—r),tan(x) e tan(x+r),",
+    "enunciado": "Seja b E IR tal que a equação",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -4977,7 +4977,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Seja P uma pirâmide regular cujo vértice v é um dos vértices de um cubo de lado 1 e cuja base é o hexágono formado pelos pontos médios das seis arestas do cubo que não contém V nem o vértice oposto a V. O raio da esfera que circunscreve P é\n\nA ( ) Cc {(x,y) e $R_2$/x2/9+y2/12 < 1}. B( )Gc{(x,y)eR2/x2/4+y2/2>l}. O ( ) 0€ {(x,y) € $R_2$/x2/9 — y2/2 < 1}. D( )Cc{(z,y)cR2/3x2—2y2>1}. E ( ) Nenhuma das alternativas anteriores.\n\ndetermina uma hipérbole. Com respeito ao centro 0 desta hipérbole podemos afirmar:",
+    "enunciado": "Seja P uma pirâmide regular cujo vértice v é um dos vértices de um cubo de lado 1 e cuja base é o hexágono formado pelos pontos médios das seis arestas do cubo que não contém V nem o vértice oposto a V. O raio da esfera que circunscreve P é",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -5138,7 +5138,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Considere os seguintes pares de substáncias líquidas a 25 C:\n\nMassas Molares\n\nIn X = 2.3 log X EPH = eletrodo padrão de hidrogênio\n\nCondições ambientes: 25 °C e 1 atm Condições padrão: 1 bar: concentração das soluções 1 molL’ (rigorosamente: atividade unitária das espécies): sólido com estrutura cristalina mais estável nas condições de pressão e temperatura em Questão. (s) sólido. (t) = líquido. (g) gás. (aq) = aquoso. (cone) concentrado. (ua) unidades arbitrárias. uma. = unidade de massa atômica. [X] = concentração da espécie química X em moI-li1\n\nCondições normais de temperatura e pressão (CNTP): O °C e 1 atm\n\nDefinições Pressão: 1 atm = 760 mmHg\n\n1.01325 x io N’nf2\n\n1.01323 bar Energia: .1 = 1 Nm = 1 kg’m2•s2 6.21 x lO eX\n\nConstante de Avogadro (NA) Constante de Faraday (F) Carga elementar Constante dos gases (R) Constante de Planck (b)\n\nVelocidade da luz no vácuo Número de Euler (e)\n\nConstantes\n\nQuímico\n\nElemento\n\nP 15 30.97 $P_1$) 82 207.19\n\nMg 12 24.30 l-{g 80 200.59\n\nNa 11 22.99 53 126.90\n\nF 9 19,00 Ag 47 107,87\n\nO 8 16.00 Br 35 79.90\n\nN\n\n13 e\n\nH\n\n8 16 32.06 Pa 91 231.04\n\nNúmero Massa Molar Elemento Número Massa Molar Atômico (g.mol’) Químico Atômico (g.mo11)\n\n7 14,01 Mn 25 54.91\n\n6 12,01 Ca 20 40.08\n\n5 10,81 K 19 39.10 1,01 Cl 17 35,45\n\n= 8.21x 6,63x\n\n= 1,60x\n\n2,72\n\n1W Cmol’ 9,65 x104 Asmol’ 9,65 x 1W JV’mol’ 1019 e 102 atm.LNnIor’ 8,31 J-K’’mo11 = 1.98 cal1K’inor’ 10 J•s\n\n3.0 x i0 rn-s1\n\n965><\n\n6.02 x\n\n1023 nioL1\n\nQUÍMICA\n\nA ( ) A energia reticular é a energia envolvida na formação do sólido cristalino quando o cristal sólido se",
+    "enunciado": "Considere os seguintes pares de substáncias líquidas a 25 C:\n\nMassas Molares\n\nIn X = 2.3 log X EPH = eletrodo padrão de hidrogênio\n\nCondições ambientes: 25 °C e 1 atm Condições padrão: 1 bar: concentração das soluções 1 molL’ (rigorosamente: atividade unitária das espécies): sólido com estrutura cristalina mais estável nas condições de pressão e temperatura em Questão. (s) sólido. (t) = líquido. (g) gás. (aq) = aquoso. (cone) concentrado. (ua) unidades arbitrárias. uma. = unidade de massa atômica. [X] = concentração da espécie química X em moI-li1\n\nCondições normais de temperatura e pressão (CNTP): O °C e 1 atm\n\nDefinições Pressão: 1 atm = 760 mmHg\n\n1.01325 x io N’nf2\n\n1.01323 bar Energia: .1 = 1 Nm = 1 kg’m2•s2 6.21 x lO eX\n\nConstante de Avogadro (NA) Constante de Faraday (F) Carga elementar Constante dos gases (R) Constante de Planck (b)\n\nVelocidade da luz no vácuo Número de Euler (e)\n\nConstantes\n\nQuímico\n\nElemento\n\nP 15 30.97 $P_1$) 82 207.19\n\nMg 12 24.30 l-{g 80 200.59\n\nNa 11 22.99 53 126.90\n\nF 9 19,00 Ag 47 107,87\n\nO 8 16.00 Br 35 79.90\n\nN\n\n13 e\n\nH\n\n8 16 32.06 Pa 91 231.04\n\nNúmero Massa Molar Elemento Número Massa Molar Atômico (g.mol’) Químico Atômico (g.mo11)\n\n7 14,01 Mn 25 54.91\n\n6 12,01 Ca 20 40.08\n\n5 10,81 K 19 39.10 1,01 Cl 17 35,45\n\n= 8.21x 6,63x\n\n= 1,60x\n\n2,72\n\n1W Cmol’ 9,65 x104 Asmol’ 9,65 x 1W JV’mol’ 1019 e 102 atm.LNnIor’ 8,31 J-K’’mo11 = 1.98 cal1K’inor’ 10 J•s\n\n3.0 x i0 rn-s1\n\n965><\n\n6.02 x\n\n1023 nioL1\n\nQUÍMICA",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -5322,7 +5322,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Assinale a opção que apresenta a sequência que melhor descreve o ciclo de ações envolvidas no\n\nA ( ) Observação —* Hipótese —, Experimento —, Análise dos Resultados —* Conclusões —, Observação\n\nD ( ) Observação — Hipótese — Argumentação —. Contra Argumentação — Consenso —, Observação —",
+    "enunciado": "Assinale a opção que apresenta a sequência que melhor descreve o ciclo de ações envolvidas no",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
@@ -5529,7 +5529,7 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Uma bola de gude de raio r e uma bola de basquete de raio R são lançadas contra uma parede com velocidade horizontal v e com seus centros a uma altura h. A bola de gude e a bola de basquete estão na iminência de contato entre si, assim como ambas contra a parede. Desprezando a duração de todas as colisões e quaisquer perdas de energia, calcule o deslocamento horizontal ∆S da bolinha de gude ao atingir o solo.\n\nA ( ) 3v\n\nB ( ) 3v\n\nC ( ) v",
+    "enunciado": "Uma bola de gude de raio r e uma bola de basquete de raio R são lançadas contra uma parede com velocidade horizontal v e com seus centros a uma altura h. A bola de gude e a bola de basquete estão na iminência de contato entre si, assim como ambas contra a parede. Desprezando a duração de todas as colisões e quaisquer perdas de energia, calcule o deslocamento horizontal ∆S da bolinha de gude ao atingir o solo.",
     "figura": "data/images/ita_2021_q03.png",
     "alternativas": {
       "A": "Ver enunciado",
@@ -5575,7 +5575,7 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Um recipiente, de seçcão de área constante e igual a A, é preenchido por uma coluna de líquido de densidade ρ e altura H. Sobre o líquido encontra-se um pistão de massa M, que pode se deslocar verticalmente livre de atrito. Um furo no recipiente é feito a uma altura h, de tal forma que um ﬁlete de água é expelido conforme mostra a ﬁgura. Assinale a alternativa que contém o alcance horizontal D do jato de água.\n\nA ( ) 2\n\nB ( )\n\nC ( ) 2",
+    "enunciado": "Um recipiente, de seçcão de área constante e igual a A, é preenchido por uma coluna de líquido de densidade ρ e altura H. Sobre o líquido encontra-se um pistão de massa M, que pode se deslocar verticalmente livre de atrito. Um furo no recipiente é feito a uma altura h, de tal forma que um ﬁlete de água é expelido conforme mostra a ﬁgura. Assinale a alternativa que contém o alcance horizontal D do jato de água.",
     "figura": "data/images/ita_2021_q05.png",
     "alternativas": {
       "A": "Ver enunciado",
@@ -5782,7 +5782,7 @@
     "subtopico": "Com Figura Oficial",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Um cilindro condutor oco de comprimento muito longo, cuja seçcão transversal tem raio interno R/2 e raio externo R, é atravessado por uma densidade de corrente elétrica uniforme e paralela ao eixo do cilindro. Qual representação gráﬁca abaixo melhor descreve a intensidade do campo magnético |⃗B| como função da coordenada radial r a partir do eixo de simetria do sistema?\n\nA ( ) B ( ) C ( ) D ( ) E ( )",
+    "enunciado": "Um cilindro condutor oco de comprimento muito longo, cuja seçcão transversal tem raio interno R/2 e raio externo R, é atravessado por uma densidade de corrente elétrica uniforme e paralela ao eixo do cilindro. Qual representação gráﬁca abaixo melhor descreve a intensidade do campo magnético |⃗B| como função da coordenada radial r a partir do eixo de simetria do sistema?",
     "figura": "data/images/ita_2021_q14.png",
     "alternativas": {
       "A": "Ver enunciado",
@@ -6219,7 +6219,7 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "O termo likeliness, destacado no trecho do segundo parágrafo, “[...] whether what is discovered will bear any likeliness to the Treaty of Versailles remains to be seen.”, pode ser substituído, sem prejuízo de significado, por:\n\nA ( ) liability. C ( ) liveliness.\n\nB ( ) likeness. D ( ) probability.\n\nE\n\nlikelihood.\n\n( )\n\nAs questões de 34 a 36 referem-se ao texto destacado a seguir.\n\nIt is the standing reproach of a democratic society that it is the purgatory of genius and the paradise of mediocrity. With ourselves it has become notorious that when a man is so unfortunate as to exhibit uncommon abilities, he usually renders himself ineligible for political honors or distinctions. It would seem that the community is possessed with that groveling quality of a sordid mind which hates superiority, and would ostracize genius, as the Athenians did Aristides. One might believe it would not be unpleasing to the popular taste if some enterprising person could invent a machine for stunting intellectual development, after the fashion of idiotic barbarians who flatten the heads of their children. The masses of the community certainly appear to believe that political equality implies not only social, but should also imply intellectual equality, under pain of being severely frowned down by an outraged public opinion. The prevalent sentiment manifests itself in many different ways. It finds expression in public conveyances and resorts and is not altogether unknown even to the pulpit. It is found to perfection in the speeches of demagogues, who feel certain they are never so successful as when their audience is satisfied that the intellect of the speaker is of no higher an order than that of the lowest intelligence among them. Worse than all, it is demonstrated in the election of public officers of nearly all grades up to the highest: of which latter it has now become quite the custom to assume that it is impossible for a man of first-rate powers to be made President of the United States. The causes which lend to so singular a state of affairs are of an intricate and complex character. At the outset, it is difficult to realize the possibility of a system, the logical deduction from which appears to be that, if a man would rise in life, he must assiduously belittle his understanding. Perhaps it would be fairer to modify the proposition so far as to concede that ability is as useful here as elsewhere, provided the owner has the tact not to affront the sensibilities of the people by showing too much of it. No doubt a vague apprehension exists in the popular mind that shining talents are dangerous when intrusted with executive power in a republic: yet, it were a poor commentary on our institutions to intimate that, under them, for a man to be clever he must also be vicious. Experience rather teaches the contrary. If the diffusion of education, having the general tendency to elevate the understanding, is to produce more bad men than good, we had better abandon than foster our Common School system. Manifestly, we must look further for the solution of our enigma[:] that minds of moderate calibre ordinarily condemn everything which is beyond their range.\n\nTHE NEW YORK TIMES. The worship of mediocrity. 17/08/1862. Disponível em: https://www.nytimes.com/1862/08/17/archives/theworship-of-mediocrity.html. Acesso 20/08/2020.",
+    "enunciado": "O termo likeliness, destacado no trecho do segundo parágrafo, “[...] whether what is discovered will bear any likeliness to the Treaty of Versailles remains to be seen.”, pode ser substituído, sem prejuízo de significado, por:",
     "figura": null,
     "alternativas": {
       "A": "Ver enunciado",
