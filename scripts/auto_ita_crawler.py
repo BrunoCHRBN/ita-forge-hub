@@ -368,14 +368,34 @@ def parse_exam(prova_pdf: Path, banca: str, year: str, gab_map: dict[int, str], 
     year_int = int(year)
 
     q_pattern = re.compile(
-        r"Quest(?:ão|ao)\s*(\d{1,2})\s*[\.\-]\s*(.*?)(?=Quest(?:ão|ao)\s*\d{1,2}\s*[\.\-]|\Z)",
+        r"Quest(?:ão|ao)\s*(\d{1,2})\s*[.\-]\s*(.*?)(?=Quest(?:ão|ao)\s*\d{1,2}\s*[.\-]|\Z)",
         re.DOTALL | re.IGNORECASE
     )
     raw_matches = q_pattern.findall(normalized_full)
 
     if len(raw_matches) < 10:
         q_pattern_num = re.compile(
-            r"(?:^|\n)\s*(\d{1,2})\.\s+([A-ZÁÉÍÓÚÂÊÔÃÕ\(].*?)(?=\n\s*\d{1,2}\.\s+[A-ZÁÉÍÓÚÂÊÔÃÕ\(]\vert{}\Z)", re.DOTALL ) raw_matches = [m for m in q_pattern_num.findall(normalized_full) if 1 <= int(m[0]) <= 75]      pending_base_by_qnum: dict[int, str] = {} questions = [] seen_qnums = set()      for idx, (num_str, raw_body) in enumerate(raw_matches): q_num = int(num_str) if q_num in seen_qnums: continue seen_qnums.add(q_num)          next_q_num = int(raw_matches[idx + 1][0]) if idx + 1 < len(raw_matches) else q_num + 1 materia = get_subject(banca, year_int, q_num)          parts = re.split(r"\s([A-E])\s*\(\s*\)\s*", " " + raw_body.strip()) if len(parts) < 11: parts = re.split(r"\s([a-eA-E])\)\s+", " " + raw_body.strip())
+            r"(?:^|\n)\s*(\d{1,2})[.]\s+([A-ZÁÉÍÓÚÂÊÔÃÕ(].*?)(?=\n\s*\d{1,2}[.]\s+[A-ZÁÉÍÓÚÂÊÔÃÕ(]|\Z)",
+            re.DOTALL
+        )
+        raw_matches = [m for m in q_pattern_num.findall(normalized_full) if 1 <= int(m[0]) <= 75]
+
+    pending_base_by_qnum = {}
+    questions = []
+    seen_qnums = set()
+
+    for idx, (num_str, raw_body) in enumerate(raw_matches):
+        q_num = int(num_str)
+        if q_num in seen_qnums:
+            continue
+        seen_qnums.add(q_num)
+
+        next_q_num = int(raw_matches[idx + 1][0]) if idx + 1 < len(raw_matches) else q_num + 1
+        materia = get_subject(banca, year_int, q_num)
+
+        parts = re.split(r"\s([A-E])\s*[(]\s*[)]\s*", " " + raw_body.strip())
+        if len(parts) < 11:
+            parts = re.split(r"\s([a-eA-E])[)]\s+", " " + raw_body.strip())
 
         enunciado = fix_portuguese_accents_and_reflow(parts[0])
         alternativas = {k: "Consulte o enunciado / figura" for k in ("A", "B", "C", "D", "E")}
@@ -432,7 +452,7 @@ def parse_exam(prova_pdf: Path, banca: str, year: str, gab_map: dict[int, str], 
         })
 
     q_by_num = {q["numero"]: q for q in questions}
-    active_subject_text: dict[str, str] = {}
+    active_subject_text = {}
 
     for q in questions:
         qn = q["numero"]
