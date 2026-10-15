@@ -796,11 +796,24 @@
               ${p?.timeSpent ? `<span class="font-mono-num text-xs text-[#71717A]">Tempo registrado: ${formatSeconds(p.timeSpent)}</span>` : ""}
             </div>
 
+            ${q.pulo_do_gato && !q.pulo_do_gato.includes("Copiar Prompt") ? `
+              <div class="bg-[#F0F4F8] border-l-2 border-[#1B365D] p-4 text-[15px] leading-relaxed text-[#18181B]">
+                <div class="font-ui text-[11px] font-semibold uppercase tracking-wider text-[#1B365D] mb-1">
+                  Síntese Conceitual / Ideia-Chave
+                </div>
+                ${q.pulo_do_gato}
+              </div>
+            ` : ""}
             <div class="bg-[#FAF8F5] border border-[#D6D3C9] p-5 text-[16px] leading-relaxed text-[#18181B] whitespace-pre-line">
-              <div class="font-ui text-[11px] font-semibold uppercase tracking-wider text-[#52525B] mb-2">
+              <div class="font-ui text-[11px] font-semibold uppercase tracking-wider text-[#52525B] mb-3">
                 Demonstração & Resolução Comentada
               </div>
-              ${resText}
+              ${resText ? `<div class="mb-4">${resText}</div>` : ""}
+              ${q.figura_resolucao ? `
+                <div class="mt-3 p-3 bg-white border border-[#E2DFD5] flex flex-col items-center">
+                  <img onerror="this.parentElement.style.display='none'" src="${q.figura_resolucao}" class="max-w-full object-contain" alt="Resolução Oficial ${q.id}" />
+                </div>
+              ` : ""}
             </div>
           </div>
         ` : ""}

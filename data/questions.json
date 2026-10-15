@@ -9,18 +9,19 @@
     "subtopico": "Questão Oficial 1ª Fase",
     "dificuldade": "Difícil",
     "texto_base": null,
-    "enunciado": "Seja z = a + 2i um número complexo, em que a ∈R é positivo. O valor de a para que as representações de 1; z e z2 no plano de Argand-Gauss formem um triângulo de área 200 é",
+    "enunciado": "Seja $z = a + 2i$ um número complexo, em que $a \\in \\mathbb{R}$ é positivo. O valor de $a$ para que as representações de $1$, $z$ e $z^2$ no plano de Argand-Gauss formem um triângulo de área $200$ é:",
     "figura": null,
     "alternativas": {
-      "A": "14.",
-      "B": "15.",
-      "C": "16.",
-      "D": "17.",
-      "E": "18."
+      "A": "$14$",
+      "B": "$15$",
+      "C": "$16$",
+      "D": "$17$",
+      "E": "$18$"
     },
     "gabarito": "B",
-    "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "pulo_do_gato": "Translade os vértices subtraindo $1$: os vetores que partem da origem passam a ser $w_1 = z - 1$ e $w_2 = z^2 - 1 = (z - 1)(z + 1)$. Assim, $w_2 = w_1(z + 1)$ e a área sai imediatamente de $\\frac{1}{2}|w_1|^2 \\cdot |\\text{Im}(z+1)|$.",
+    "resolucao": "Sejam $P_1(1)$, $P_2(z)$ e $P_3(z^2)$ os afixos no plano de Argand-Gauss. Transladando a origem para $P_1 = 1$, obtemos os números complexos:\n$$w_1 = z - 1 = (a - 1) + 2i$$\n$$w_2 = z^2 - 1 = (z - 1)(z + 1) = w_1 \\cdot (a + 1 + 2i)$$\nA área $S$ do triângulo determinado pelos vetores complexos $w_1$ e $w_2$ é dada por:\n$$S = \\frac{1}{2} |\\text{Im}(\\overline{w_1} \\cdot w_2)| = \\frac{1}{2} |w_1|^2 \\cdot |\\text{Im}(a + 1 + 2i)|$$\nComo $|w_1|^2 = (a - 1)^2 + 2^2 = (a - 1)^2 + 4$ e $\\text{Im}(a + 1 + 2i) = 2$, temos:\n$$S = \\frac{1}{2} \\cdot [(a - 1)^2 + 4] \\cdot 2 = (a - 1)^2 + 4$$\nIgualando à área $200$ fornecida no enunciado:\n$$(a - 1)^2 + 4 = 200 \\implies (a - 1)^2 = 196 \\implies a - 1 = 14 \\implies a = 15$$",
+    "figura_resolucao": "data/images/res_ita_2025_q01.png"
   },
   {
     "id": "ITA-2025-1F-Q02",
@@ -66,7 +67,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa C."
+    "resolucao": "1) O termo independente de 1        1\nx + ––\nx 2\né\n61  2\nk . x6 – k . x–k = 61  2\nk . x6 – 2k, onde k é um nú-\nmero natural.\né\n2) O termo independente de 1        2\nx – ––\nx 2\n51  2\np . x5 – p . 1     2\n– ––\nx2\np\n= (–2)p .\n51  2\np . x5 – p . x–p =\n= (–2)p .  51  2\np . x5 – 2p , onde p é um número natural.\n3) No produto dos termos independentes, temos:\n61  2\nk . x6 – 2k . (–2)p .  51  2\np . x5 – 2p =\n= (–2)p . 61  2\nk . 51  2\np . x11– 2k – 2p\n4)  Devemos ter 11 – 2k – 2p = 0 ⇔ 2k + 2p = 11 que\nrepresenta uma equação sem solução, logo o termo\nindependente da expansão de 1        1\nx + ––\nx 2\n. 1        2\nx – ––\nx 2\né igual a zero.",
+    "figura_resolucao": "data/images/res_ita_2025_q03.png"
   },
   {
     "id": "ITA-2025-1F-Q04",
@@ -135,7 +137,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "resolucao": "Para que a equação\n(3x)2 – (3a + 4) . 3x + 2a2 + 9a – 5 = 0 tenha duas\nsoluções reais distintas, devemos ter:\n(1) D > 0\n(3a + 4)2 – 4 . 1 . (2a2 + 9a – 5) > 0 ⇒\na2 – 12a + 36 > 0  ⇒  (a – 6)2 > 0 ⇒  a [ R – {6}\n(2)  Soma > 0  e  Produto > 0 (as duas raízes devem ser\npositivas)\n3a + 4 > 0 ⇒ a > –  4––\n3   e\n2a2 + 9a – 5 > 0  ⇒  a < –5  ou  a >  1––2\nDa intersecção, temos:\nPortanto, 1  1––, `\n2 2 – {6}",
+    "figura_resolucao": "data/images/res_ita_2025_q06.png"
   },
   {
     "id": "ITA-2025-1F-Q07",
@@ -158,7 +161,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa A."
+    "resolucao": "1) Escalonando os sistemas, temos:\nI:\nx + y + z = 1\ny – 2z = 1\n–y + 2z = –1\nx + y + z = 1\ny – 2z = 1 ⇒\n⇒ 4y – 8z = 4\n⇒\nx + y + z = 1\n(m – 1)y + (n – 1)z = 4\n(1 – k)y + (–1 – k)z = 3m + 2n – k\nII:\n2)  Como os dois sistemas são equivalentes, temos\nque:\nm – 1 = 4  ⇒  m = 5\nn – 1 = –8  ⇒  n = –7\n3) Substituindo na 3.a equação de II:\n(1 – k)y + (–1 – k)z = 1 – k\n4) Dividindo todos os termos por 1 – k, teremos\ny + (–1 – k) z\n––––––––\n1 – k\n= 1\n5) Por serem equivalentes, podemos dizer que:\n–1 – k\n––––––\n1 – k\n= –2  ⇔ –1 – k = –2 (1 – k)  ⇔\n⇔  –1 – k = –2 + 2k ⇔ k =  1––",
+    "figura_resolucao": "data/images/res_ita_2025_q07.png"
   },
   {
     "id": "ITA-2025-1F-Q08",
@@ -204,7 +208,8 @@
     },
     "gabarito": "ANULADA",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa ANULADA."
+    "resolucao": "(1)  As raízes comuns aos polinômios são o máximo\ndivisor comum (mdc) (p,q) = mdc (q,r), sendo r(x)\no resto da divisão de p(x) por q(x).\nFazendo a divisão de p(x) por q(x), temos:\nx5 + 0x4 – x3 + 0x2 + 12x – 18\nx4 – x3 + 5x – 3\n–x5 + x4          – 5x2 + 3x\nx + 1\n! –––––––––––––––––––––––––\nx4 – x3 – 5x2 + 15x – 18\n–x4 + x3              – 5x + 3\n! –––––––––––––––––––––––––\n– 5x2 + 10x – 15\n(2) Fazendo a divisão de q(x) por r(x), temos:\nx4 – x3 + 0x2 + 5x – 3\n–5x2 + 10x – 15x\n––\n––\n––\n–x4 + 2x3 –3x2\n–\nx2 –\nx +\n! ––––––––––––––––––––\nx3 – 3x2 + 5x – 3\n–x3 + 2x2 – 3x\n! –––––––––––––––––––––––––\n–x2 + 2x – 3\nx2 – 2x + 3\n! –––––––––––––––––––––––––\nComo o resto dá 0, as raízes de –5x2 + 10x – 15 = 0 são\ntambém raízes de q(x) e, consequentemente, de p(x).\n(3) – 5x2 + 10x – 15 = 0 ⇔ +x2 – 2x + 3 = 0 ⇔\n⇔ x = 2 6 Ïww\n–8\n–––––––––\n⇔\n⇔  x = 1 6 Ïw2 . i (raízes comuns a p(x) e q(x))",
+    "figura_resolucao": "data/images/res_ita_2025_q09.png"
   },
   {
     "id": "ITA-2025-1F-Q10",
@@ -250,7 +255,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa A."
+    "resolucao": "Como 231 = 3 . 7 . 11, 16m pode ser escrito como\n(considere em cada caso as letras usadas como núme-\nros primos distintos entre si):\n2230, a20 . b10 (a = 2  ou  b = 2), c32 . d6 (c = 2 ou d = 2),\n276 . e2  ou  f2 . g6 . h10 (g = 2 ou h = 2)\nPortanto a afirmação III é falsa.\nI é verdadeira, pois para todos os casos lis ta dos aci-\nma, se dividirmos 16m por 16 = 24, ainda sobra uma\npotência de 2. II é verdadeira, pois para todos os casos\nlistados acima, se dividirmos 16m por 16 = 24, todos\nos expoentes restantes são pares podendo então serem\nescritos como quadrados.",
+    "figura_resolucao": "data/images/res_ita_2025_q11.png"
   },
   {
     "id": "ITA-2025-1F-Q12",
@@ -318,8 +324,9 @@
       "E": "$\\sqrt{2a_0 \\ell + 2gR}$"
     },
     "gabarito": "A",
-    "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa A."
+    "pulo_do_gato": "Combine Torricelli no trecho horizontal ($v_B^2 = 2a_0\\ell$), conservação de energia mecânica na descida circular de raio $R$ ($v_C^2 = v_B^2 + 2gR$) e conservação da quantidade de movimento na colisão perfeitamente inelástica com massa igual ($v_f = v_C / 2$).",
+    "resolucao": "1. **Trecho horizontal acelerado (de $A$ até $B$):**\nPartindo do repouso com aceleração constante $a_0$ por uma distância $\\ell$:\n$$v_B^2 = 2 a_0 \\ell$$\n2. **Descida pelo quarto de circunferência vertical de raio $R$ (de $B$ até $C$):**\nPela conservação da energia mecânica:\n$$\\frac{1}{2}mv_C^2 = \\frac{1}{2}mv_B^2 + mgR \\implies v_C = \\sqrt{2a_0\\ell + 2gR}$$\n3. **Colisão perfeitamente inelástica em $D$ com outro carrinho de mesma massa $m$:**\nPela conservação do momento linear:\n$$m v_C = (m + m) v_f \\implies v_f = \\frac{v_C}{2} = \\frac{1}{2}\\sqrt{2a_0\\ell + 2gR}$$",
+    "figura_resolucao": "data/images/res_ita_2025_q14.png"
   },
   {
     "id": "ITA-2025-1F-Q15",
@@ -342,7 +349,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "resolucao": "De acordo com o texto:\nf2 = 2 f1   e   f3 = 3 f1\nPorém: k = m ω2 = m 4π2 f2\nComo as massas são iguais, então:\nk2 = 4 k1   e   k3 = 9 k1\nPara as três molas em série:\n–––\nk = 1\n–––\n+ 1\n–––\n+ 1\n–––\n= 1\n–––\n+\n––––\n4 k1\n+\n––––\nk1\nk2\nk3\nk1\n9 k1\n–––\nk = 36 + 9 + 4\n––––––––––\n36 k1\n= 49\n––––\n36 k1\nk = ––– k1\nComo a massa de associação vale 4m, temos:\nk = 4m ω2   e   k1 = m ω1\nk\n–––\n= 4 . ω2\n2 = 36\n––––\nk1\n––––\nω1\n9 ω1\n2 = 49 ω2 ⇒\nω1\n–––\n= 7––\nω\nComo  ω = 2πf, vem:\nf1\n–––\nf = 7––\nf1\n––– ≅ 2,3\nf2",
+    "figura_resolucao": "data/images/res_ita_2025_q15.png"
   },
   {
     "id": "ITA-2025-1F-Q16",
@@ -410,8 +418,8 @@
       "E": "$\\sqrt{\\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$"
     },
     "gabarito": "ANULADA",
-    "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa ANULADA."
+    "pulo_do_gato": "Como há vácuo no compartimento da mola e a expansão do gás ideal é isotérmica ($\\Delta U = 0$), todo o calor $Q$ fornecido converte-se integralmente em ganho de energia potencial elástica da mola.",
+    "resolucao": "1. **Deformação inicial de equilíbrio ($x_0$):**\nO gás à pressão $P_0$ atua sobre o êmbolo de área $A$ contra a mola no vácuo:\n$$k x_0 = P_0 A \\implies x_0 = \\frac{P_0 A}{k}$$\n2. **Balanço energético no processo reversível e isotérmico ($\\Delta U = 0$):**\n$$Q = W_{\\text{gás}} = \\Delta E_{\\text{elástica}} = \\frac{1}{2}k x_f^2 - \\frac{1}{2}k x_0^2$$\nSubstituindo $x_0$ e isolando $x_f$:\n$$x_f = \\sqrt{\\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$$"
   },
   {
     "id": "ITA-2025-1F-Q19",
@@ -433,8 +441,8 @@
       "E": "$20 \\log\\left(\\frac{R_2}{R_1}\\right)$"
     },
     "gabarito": "C",
-    "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa C."
+    "pulo_do_gato": "Como a potência sonora $P = I \\cdot A$ é integralmente transferida da área $\\pi R_1^2$ para $\\pi R_2^2$, a razão de intensidades vale $I_2 / I_1 = (R_1 / R_2)^2$. Aplicando a definição de nível sonoro em decibéis, o expoente $2$ multiplica o $10\\log$.",
+    "resolucao": "Sendo a energia sonora integralmente transferida do pistão maior (área $A_1 = \\pi R_1^2$) para o menor (área $A_2 = \\pi R_2^2$), a conservação da potência acústica fornece:\n$$I_1 A_1 = I_2 A_2 \\implies \\frac{I_2}{I_1} = \\frac{A_1}{A_2} = \\left(\\frac{R_1}{R_2}\\right)^2$$\nA amplificação sonora $\\Delta \\beta$, em $\\text{dB}$, é dada por:\n$$\\Delta \\beta = 10 \\log\\left(\\frac{I_2}{I_1}\\right) = 10 \\log\\left(\\frac{R_1}{R_2}\\right)^2 = 20 \\log\\left(\\frac{R_1}{R_2}\\right)$$"
   },
   {
     "id": "ITA-2025-1F-Q20",
@@ -526,7 +534,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa C."
+    "resolucao": "A energia do fóton é dada por:\nE = hf = hc\n–––\nλ\nNa temperatura ambiente o cristal cede energia:\nΔE = E1 – E0 = hc 1\n–––\n– 1\n–––\nλ0 2\nλ1\nPróximo ao zero absoluto o cristal recede energia:\nΔE´ = E0 – E2 = hc 1\n–––\n– 1\n–––\nλ2 2\nλ0\nComo ΔE = ΔE´ vem:\n–––\n– 1\n–––\n=\n–––\n– 1\n–––\n⇒ 1\n–––\n= 2\n–––\n– 1\n–––\nλ1\nλ0\nλ0\nλ2\nλ2\nλ0\nλ1\n–––\n=\n–––\n620 – 1\n–––\n590 = 1\n–––\n310 – 1\n–––\n590 = 590 – 310\n––––––––––\n590 . 310\nλ2\nλ2 ≅ 653nm",
+    "figura_resolucao": "data/images/res_ita_2025_q23.png"
   },
   {
     "id": "ITA-2025-1F-Q24",
@@ -549,7 +558,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa E."
+    "resolucao": "I.\nCorreta.\nVelocidade de propagação da chama é a\nvelocidade na qual a frente de chama se move\npelos reagentes (combustível/comburente); este\núltimo geralmente é o ar.\nII.\nIncorreta.\nUm combustível pode gerar uma chama azul ou\namarela dependendo da quantidade de O2.\nChama azul: combustão completa: maior\nenergia liberada.\nChama amarela: combustão incompleta: menor\nenergia liberada.\nIII.  Correta.\nA detonação é um tipo de combustão que ocorre\nà alta pressão (devido aos gases gerados) e\ntemperatura (devido ao calor liberado). Assim,\na onda de choque se propaga com velocidade\nelevada, chamada de velocidade supersônica.\nIV.\nIncorreta.\nOs catalisadores são colocados dentro do sistema\nexaustor de um veículo para reduzir as emissões\nde gases poluentes provenientes da queima do\ncombustível, portanto, reações de combustão\nsofrem efeitos catalíticos.",
+    "figura_resolucao": "data/images/res_ita_2025_q24.png"
   },
   {
     "id": "ITA-2025-1F-Q25",
@@ -618,7 +628,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "resolucao": "Condição ambiente: 1 atm, 25ºC (298K)\nUsando a equação geral dos gases:\nP1V1\n––––––\nT1\nP2V2\n––––––\nT2\n∴0,8 atm . 400mL\n–––––––––––––––\n303K\n=\n1 atm . V\n––––––––\n298K\n=\nV ≅ 314,7mL\nAproximadamente 315mL",
+    "figura_resolucao": "data/images/res_ita_2025_q27.png"
   },
   {
     "id": "ITA-2025-1F-Q28",
@@ -664,7 +675,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "resolucao": "Balanceando a equação dada:\n2Fe2O3(s) + 3C(s) → 4Fe(s) + 3CO2(g)\nΔHf: kJ  2 (–824,2)       0            0\n3 (–393,5)\nS: J\n2 (87,4)        3(5,7)\n4(27,3)     3(213,7)\nΔH0\nr = ∑ ΔH0\nfprodutos – ∑ ΔH0\nfreagentes\nΔH0\nr = (–1180,5 + 1648,4)kJ = 467,9kJ\nΔS0\nr = ∑ ΔS0\nprodutos – ∑ ΔS0\nreagentes\nΔS0\nr = (+109,2 + 641,1 – 174,8 – 17,1)J\nΔS0\nr = 558,4J/K\nΔG0  =  ΔH0\n– TΔS0\nCalculemos a temperatura em que ΔG0  = 0.\nAcima dessa temperatura, ΔG0  terá um valor negativo\n(reação espontânea).\n0 = 467,9kJ – T . 558,4 . 10–3kJ\nT ≅ 837,9K\nEm ºC, temos 837,9K – 273,1K\nT ≅  564,8ºC\nNota: erros de digitação\nΔH0\nf  e não  ΔfHϴ\nSm0 e não Smϴ",
+    "figura_resolucao": "data/images/res_ita_2025_q29.png"
   },
   {
     "id": "ITA-2025-1F-Q30",
@@ -687,7 +699,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa D."
+    "resolucao": "Usaremos a equação de Arrhenius\n–Ea\n––––\nRT\nk = A  e\nA = k0 = fator pré-exponencial\n227ºC → T = 500K\nR = 8,31\nJ\n––––––\nK . mol = 8,31 . 10–3\nkJ\n––––––\nK . mol\nEa(A) = 8,31kJ + Ea(B)\n–Ea(A)\n–––––––\nRT\nK(A) = k0 e\n–Ea(B)\n–––––––\nRT\nK(B) = k0 e\nEa(B) – Ea(A)\n––––––––––––\nRT\nK(A)\n––––––\nK(B) = e\nEa(B) – 8,31kJ – EaB\n––––––––––––––––––––\nkJ\n8,31 . 10–3 ––– . 500K\nK\nK(A)\n––––––\nK(B) = e\nK(A)\n––––––\nK(B) = e\n–1000\n––––––\n500\nK(A) = e–2 K(B)",
+    "figura_resolucao": "data/images/res_ita_2025_q30.png"
   },
   {
     "id": "ITA-2025-1F-Q31",
@@ -710,7 +723,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "resolucao": "PCl5\nGeometria: bipirâmide trigonal\nmolécula apolar (simetria elétrica, μ = 0)\n2 átomos de Cl substituídos por 2 átomos de F\n2 átomos de F nos polos (1 molécula)\nmolécula apolar (simetria elétrica,  μ = 0)\n1 átomo de F no triângulo e outro no polo\n(6 moléculas polares, sem simetria elétrica)\n2 átomos de F no triângulo\n(3 moléculas polares, sem simetria elétrica)\nTotal: 10 moléculas\napolar: 1\n–––\npolar: 9\n–––",
+    "figura_resolucao": "data/images/res_ita_2025_q31.png"
   },
   {
     "id": "ITA-2025-1F-Q32",
@@ -733,7 +747,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa A."
+    "resolucao": "a) Correta.\nA lavagem com água gelada retira as impurezas\nsolúveis.\nb) Correta.\nA curva de solubilidade vai indicar a temperatura\nem que o sal se dissolve totalmente em água quente.\nc) Errada.\nA filtração a quente tem a finalidade de reter as\nimpurezas insolúveis na água quente.\nd) Correta.\nO resfriamento controlado sob agitação vai\ndeterminar o formato e o tamanho dos cristais.\ne) Correta.\nSal com impurezas → sal dissolvido → sal puro\ncristalizado →  recristalização do sal",
+    "figura_resolucao": "data/images/res_ita_2025_q32.png"
   },
   {
     "id": "ITA-2025-1F-Q33",
@@ -779,7 +794,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa D."
+    "resolucao": "4–1+\na) Correto: –4 no metano: CH4\n4+2–\nb) Correto: +4 no dióxido de carbono: CO2\nc) Correto: +3 na propanonitrila:\nA tripla-ligação fica com N, pois é mais eletro-\nnegativo que o C.\nd) Correto: +2 na propanona\nA dupla-ligação fica com O, pois é mais eletrone-\ngativo que o C.\ne) Errado: +2 no ácido metanoico:",
+    "figura_resolucao": "data/images/res_ita_2025_q34.png"
   },
   {
     "id": "ITA-2025-1F-Q35",
@@ -802,7 +818,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa E."
+    "resolucao": "Usaremos as equações: E = h . f, c = λ . f\nSubstituindo f = c––λ em E = h . f, teremos E = h c––λ\nh = 6,63 . 10–34J . s, c = 3,0 . 108m/s, 1J = 6,24 . 1018eV\n6,24 . 1018 eV ––––––––– 1J\n2,3 eV ––––––––– E\n∴ E ≅ 0,37 . 10–18J\n0,37 . 10–18J = 6,63 . 10–34J . s 3,0 . 108\n––––––––\nλ\nm\n––s\nλ ≅ 53,7 . 10–8 m ∴ λ ≅ 537 . 10–9m\nPróximo da luz verde (532 . 10–9m).",
+    "figura_resolucao": "data/images/res_ita_2025_q35.png"
   },
   {
     "id": "ITA-2025-1F-Q36",
@@ -825,7 +842,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa C."
+    "resolucao": "“While media gatekeepers may have developed an\ninterest in the universe, this rise in coverage likely\ncomes from a genuine increase in the public’s appetite\nfor science.”",
+    "figura_resolucao": "data/images/res_ita_2025_q36.png"
   },
   {
     "id": "ITA-2025-1F-Q37",
@@ -848,7 +866,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa C."
+    "resolucao": "Contraste\nHá uma relação de oposição entre os ramos da ciência\nque estão progredindo nessa era e a astrofísica que se\nmantem em destaque no topo.\nwhile = whereas = embora (no contexto)",
+    "figura_resolucao": "data/images/res_ita_2025_q37.png"
   },
   {
     "id": "ITA-2025-1F-Q38",
@@ -871,7 +890,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "resolucao": "O filme de maior bilheteria\n“Grossing” refere-se ao valor bruto arrecadado nas\nvendas de ingressos.",
+    "figura_resolucao": "data/images/res_ita_2025_q38.png"
   },
   {
     "id": "ITA-2025-1F-Q39",
@@ -894,7 +914,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa D."
+    "resolucao": "Uma dificuldade em prever a maneira como os corpos\ncelestes se comportarão enquanto se movem no espaço\nno futuro.\nNo texto:\n“The answer is “the three-body problem”: a\nconundrum in astronomy and mathematics that\ndescribes why it’s often difficult to predict the long-\nterm trajectory of planets, moons and stars.”",
+    "figura_resolucao": "data/images/res_ita_2025_q39.png"
   },
   {
     "id": "ITA-2025-1F-Q40",
@@ -917,7 +938,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "resolucao": "Conta a história de um grupo de alienígenas que estão\ndeterminados a assumir o controle da Terra.\nNo texto:\n“The crux of the story is that an alien race – called\nthe Trisolarans or San-Ti Ren – is headed to Earth to\ncolonise it.”",
+    "figura_resolucao": "data/images/res_ita_2025_q40.png"
   },
   {
     "id": "ITA-2025-1F-Q41",
@@ -940,7 +962,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa D."
+    "resolucao": "And therefore\nHence = therefore . Significam “portanto” em\nportuguês e exercem função de consequência em\nambas as passagens do 5º parágrafo.",
+    "figura_resolucao": "data/images/res_ita_2025_q41.png"
   },
   {
     "id": "ITA-2025-1F-Q42",
@@ -963,7 +986,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa A."
+    "resolucao": "Grupos de aves\nNo texto:\n“It was no surprise that echoes were also received\nfrom terrain and from rainstorms, but the discovery,\nduring World War II, that birds were often detectable\nwas less expected.”",
+    "figura_resolucao": "data/images/res_ita_2025_q42.png"
   },
   {
     "id": "ITA-2025-1F-Q43",
@@ -986,7 +1010,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa C."
+    "resolucao": "Puzzlingly = de forma intrigante, misteriosa",
+    "figura_resolucao": "data/images/res_ita_2025_q43.png"
   },
   {
     "id": "ITA-2025-1F-Q44",
@@ -1009,7 +1034,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa E."
+    "resolucao": "Possibilidade de um aumento no número de artigos\ncontendo uma quantidade considerável de texto\nescrito por IA.\nNo texto:\n“Publishing experts worry such limited use could\nmorph into a spike of manuscripts containing\nsubstantial chunks of AI-written text.”",
+    "figura_resolucao": "data/images/res_ita_2025_q44.png"
   },
   {
     "id": "ITA-2025-1F-Q45",
@@ -1032,7 +1058,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa E."
+    "resolucao": "As = à medida que\nJournals = periódicos\nTo hammer out = definir, produzir, elaborar",
+    "figura_resolucao": "data/images/res_ita_2025_q45.png"
   },
   {
     "id": "ITA-2025-1F-Q46",
@@ -1055,7 +1082,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa B."
+    "resolucao": "A única correta é a asserção II\nNo texto:\n“For now, editors and peer reviewers have few\nalternatives, as they lack enforcement tools. No\nsoftware so far can consistently detect the synthetic\ntext the majority of the time.[. . . ]\nIn some cases, the resulting text is indistinguishable\nfrom what people would write.”",
+    "figura_resolucao": "data/images/res_ita_2025_q46.png"
   },
   {
     "id": "ITA-2025-1F-Q47",
@@ -1078,7 +1106,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2025: Alternativa C."
+    "resolucao": "ChatGPT\nNo texto:\n“So far, scientists report playing around with\nChatGPT to explore its capabilities, and a few have\nlisted ChatGPT as a co-author on manuscripts”.\nAté agora, cientistas relatam brincar com o ChatGPT\npara explorar suas capacidades, e alguns listaram o\nChatGPT como coautor em manuscritos.",
+    "figura_resolucao": "data/images/res_ita_2025_q47.png"
   },
   {
     "id": "ITA-2025-1F-Q48",
@@ -1354,7 +1383,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "O campo magnético no interior do solenoide é dado\npor:\nn\n–––\nL\nB = μ0\ni\nEm que, i =\n=\nt\nAssim: B = μ0\nU\n–––\nR\nU0\n––––\nt0R\nn\n–––\nL\nU0\n–––\nt0\nt\n–––\nR\nO fluxo magnético que atravessa as “m” espiras da\nsonda é:\nΦ = m.B.A\nΦ = m.μ0\n. πr2\nA magnitude da tensão elétrica (E) medida pelo\nvoltímetro, pode ser determinada pela Lei de Faraday.\nAssim, temos:\n\u0005E\u0005 = \u000e\nn\n–––\nL\nU0\n–––\nt0\nt\n–––\nR\ndΦ\n–––\ndt\n\u000e\n\u0005E\u0005 =\nmnμ0\n–––––\nL\nπr2\n–––\nR\nU0\n–––\nt0",
+    "figura_resolucao": "data/images/res_ita_2024_q11.png"
   },
   {
     "id": "ITA-2024-1F-Q12",
@@ -1377,7 +1407,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "1)\nCálculo do fator de dilatação do tempo γ.\n3,0 . 106\n––––––––\n–1\n–––\nγ =\n=\n\u00061 – \u0006\n\u0007\n–––––––––––\n3,0 . 108\nV\n1 – \u0006––\u0007\nC\n–1\n–––\nγ = (1 – 0,0001)\n––\nDado: (1 + x)n = 1 + nx onde n = –\ne x = –0,0001\n––\nγ = 1 –\n(–0,0001) = 1 + 0,00005\n2)\nTeoria da relatividade:\nγ = 1,00005\nΔt = γ \u0006Δt0 +\n. Δs\u0007 onde  Δt0 = 0\n(pulsos simultâneos)\nV\n–––\nC2\nΔt = 1,00005 \u0006\n. 700\u0007 (s)\n3,0 . 106\n–––––––––\n9,0 . 1016\nΔt =\n. 10–8 . 1,00005 (s)\nΔt \b 2,3 . 10–8s = 2,3 . 10–8 . 109ns\n––",
+    "figura_resolucao": "data/images/res_ita_2024_q12.png"
   },
   {
     "id": "ITA-2024-1F-Q13",
@@ -1400,7 +1431,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa E."
+    "resolucao": "O livro Nós matamos o cão tinhoso, de Luís Bernardo\nHonwana, é composto por contos, cujos enredos\ntematizam a estrutura de poder branco, português,\ncolonialista e agressivo e suas consequências\nenvolvendo a repressão, a violência, o racismo e a\ninjustiça dos quais os moçambicanos nativos são\nvítimas, acentuando-se, desse modo, o discurso\nanticolonialista de Luís Bernardo Howana.",
+    "figura_resolucao": "data/images/res_ita_2024_q13.png"
   },
   {
     "id": "ITA-2024-1F-Q14",
@@ -1423,7 +1455,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "A Língua Portuguesa é empregada pelo autor\nassociada a outros idiomas moçambicanos, como o\nronga falado em Maputo. Além disso, para dar maior\nveracidade às denúncias apresentadas no livro, o autor\nvale-se do coloquialismo, reproduzindo o falar\npopular de Moçambique, como fica evidente no conto\n“Rosita, até morrer,”, reforçando a identidade\ncultural e social africana.",
+    "figura_resolucao": "data/images/res_ita_2024_q14.png"
   },
   {
     "id": "ITA-2024-1F-Q15",
@@ -1446,7 +1479,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "Em “A Velhota”, Honwana denuncia o preconceito\nracial a partir da intensa violência da qual a\npersonagem principal é vítima, ao ser surrado por um\nrepresentante do colonizador português. Desse modo,\na raiva decorre da situação injusta e opressiva e não\ndas relações familiares.",
+    "figura_resolucao": "data/images/res_ita_2024_q15.png"
   },
   {
     "id": "ITA-2024-1F-Q16",
@@ -1469,7 +1503,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "Em “Dina”, a atitude do capataz é de extrema\nviolência contra a figura feminina, obrigada a manter\nrelações sexuais com ele por causa da estrutura de\npoder que o capataz representa. No entanto, a situação\ninaceitável supera a opressão à qual o moçambicano\nnativo é submetido, pois o capataz, embora não\nsoubesse incialmente que Maria era filha de Madala,\nultrapassa os limites de respeitabilidade humana.",
+    "figura_resolucao": "data/images/res_ita_2024_q16.png"
   },
   {
     "id": "ITA-2024-1F-Q17",
@@ -1492,7 +1527,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "A banca do ITA não considerou narrador em primeira\npessoa, como se nota nesta passagem: As pessoas que\nte mataram ainda estão soltas. E não sei por quanto\ntempo elas continuarão livres (...) Por isso sigo\nrecontando a tua vida, que também é um pouco da\nminha. Nota-se indubitavelmente, nesse excerto, o\nnarrador Pedro dialogando com a figura de Henrique,\no pai morto. O narrador é de primeira pessoa, é o filho\nde Henrique e Martha, ele reconstrói o passado dos\npais, num processo estilístico em que se nota a\npolifonia, empregando-se a segunda pessoa para se\ndirigir ao pai, e a terceira pessoa para se dirigir à mãe.\nHá focos narrativos múltiplos, controlados por um\nnarrador de primeira pessoa, que imagina o que foi a\nvida de seus progenitores. A alternativa c é a correta.",
+    "figura_resolucao": "data/images/res_ita_2024_q17.png"
   },
   {
     "id": "ITA-2024-1F-Q18",
@@ -1515,7 +1551,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "Martha afasta-se da polêmica sobre racismo, pois\npara ela esse tipo de discussão só intensifica o\npreconceito. Por mais que isso seja uma postura\npessoal, ela ignora a temática da discriminação racial.",
+    "figura_resolucao": "data/images/res_ita_2024_q18.png"
   },
   {
     "id": "ITA-2024-1F-Q19",
@@ -1538,7 +1575,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "Em III, é improcedente afirmar que “mulheres negras\nque se submetem às violentas imposições dos\ndominadores racistas são poupadas”. Além de esse\ntexto ser contraditório, a opressão sexual a que é\nsubmetida a filha de Mandala, no conto Dina, demole\nessa asserção.",
+    "figura_resolucao": "data/images/res_ita_2024_q19.png"
   },
   {
     "id": "ITA-2024-1F-Q20",
@@ -1561,7 +1599,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "Em I e II, há incorreção, pois Martha não combate o\nracismo, ela evita inclusive essa polêmica, embora viva\nnuma sociedade de racismo estrutural. O item III\ndesse teste opõe-se ao sentido dos itens anteriores.",
+    "figura_resolucao": "data/images/res_ita_2024_q20.png"
   },
   {
     "id": "ITA-2024-1F-Q21",
@@ -1584,7 +1623,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "Nelson Rodrigues, nas suas obras teatrais, incorporou\na linguagem coloquial e a vida do subúrbio carioca.\nNas tragédias cariocas, afastou-se do solene linguajar\nartificial, incorporou também assuntos do cotidiano,\ncomo o jogo do bicho e o futebol, temas recorrentes\nem suas peças, inclusive em A falecida.",
+    "figura_resolucao": "data/images/res_ita_2024_q21.png"
   },
   {
     "id": "ITA-2024-1F-Q22",
@@ -1607,7 +1647,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "Em A falecida, não há diálogos versificados, nem a\nrecusa de abordar a vida dos centros urbanos. Não há\ntambém qualquer vestígio da linguagem parnasiana e\nnem obediência à mimese clássica de Aristóteles.  A\nfalecida contém elementos de crônica jornalísitica,\nlinguagem usual, cortes rápidos nas cenas.",
+    "figura_resolucao": "data/images/res_ita_2024_q22.png"
   },
   {
     "id": "ITA-2024-1F-Q23",
@@ -1630,7 +1671,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "Em I,  é falso afirmar que Zulmira tinha “ apego ao\nracional e ao mundo real”. Essa personagem devaneia\ncom um enterro luxuoso. As afirmações I e III  e as I\ne IV são excludentes.",
+    "figura_resolucao": "data/images/res_ita_2024_q23.png"
   },
   {
     "id": "ITA-2024-1F-Q24",
@@ -1653,7 +1695,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "Tuninho, marido de Zulmira, não cumpre o desejo da\nesposa em relação ao enterro dela, que deveria ser\nluxuoso. O viúvo está desempregado e pede para\nPimentel, que, na verdade, teve relação sexual com\nZulmira, dinheiro para o enterro. Pimentel acaba\nsendo extorquido por Tuninho, que perde o dinheiro\nem aposta. O viúvo é mais um dos derrotados nessa\ntragédia carioca.",
+    "figura_resolucao": "data/images/res_ita_2024_q24.png"
   },
   {
     "id": "ITA-2024-1F-Q25",
@@ -1676,7 +1719,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "O texto pretende principalmente apresentar Salvador,\nBahia e parte do sertão por meio da literatura a um\nleitor estrangeiro.\nNo texto:\n“How was I able to discover more about my birthplace\nwhile traveling far from home? It might sound rather\nclichéd but, I assure you, literature made this possible:\nIt took me on a journey, long and profound, back\nhome, enveloping me in words and imagination.”",
+    "figura_resolucao": "data/images/res_ita_2024_q25.png"
   },
   {
     "id": "ITA-2024-1F-Q26",
@@ -1699,7 +1743,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa A."
+    "resolucao": "Segundo o texto, o autor recomenda o livro “A\nHistória de Rufino: Escravidão, Liberdade e Islã no\nAtlântico Negro” para o leitor estabelecer uma ligação\ndo livro com Salvador, que sintetiza a diáspora negra.\nNo texto:\n“‘The Story of Rufino’ is an epic tale, encapsulating\nthe life of one man in search of freedom as well as the\nhistory of the development of Salvador itself, a place\ninextricably linked with the diaspora across the Black\nAtlantic.”",
+    "figura_resolucao": "data/images/res_ita_2024_q26.png"
   },
   {
     "id": "ITA-2024-1F-Q27",
@@ -1722,7 +1767,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "Os dois livros que apresentam personagens principais\ndo mesmo gênero em torno dos quais os centros de\nação são: “Dona Flor e Seus Dois Maridos” e “A\nCidade das Mulheres”.\nNo texto:\n“‘Dona Flor and her Two Husbands’ is one of\nAmado’s most popular novels, translated into more\nthan 30 languages and adapted many times for\ntheater, cinema, and television. The book is a kind of\nmanifesto for a woman’s liberation. Dona Flor\npossesses great culinary talent, and oppressed by a\npatriarchal society, finds herself divided between two\nmen, one being her deceased husband.”\n“‘The\nCity\nof\nWomen,’\nby\nthe\nAmerican\nanthropologist Ruth Landes. It offers an intriguing\nperspective, focusing on matriarchal power in\ncandomblé, an Afro-Brazilian sacred practice, and\nrevealing how the social organization of its spiritual\ncommunities reverberates across the city.”",
+    "figura_resolucao": "data/images/res_ita_2024_q27.png"
   },
   {
     "id": "ITA-2024-1F-Q28",
@@ -1745,7 +1791,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "O único termo que não se utiliza de um prefixo de\nnegação é “impact”, que significa impacto na língua\nportuguesa.",
+    "figura_resolucao": "data/images/res_ita_2024_q28.png"
   },
   {
     "id": "ITA-2024-1F-Q29",
@@ -1768,7 +1815,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa E."
+    "resolucao": "No trecho do terceiro parágrafo “Embora o romance\ncapture a vida cotidiana da cidade na década de 1940,\né também um maravilhoso guia da culinária de\nSalvador, ” o termo sublinhado pode ser substituído,\nsem alteração de sentido, por:\nO termo while foi utilizado para introduzir uma ideia\nde contraste, dessa forma, poderia ser substituído por\nwhereas.",
+    "figura_resolucao": "data/images/res_ita_2024_q29.png"
   },
   {
     "id": "ITA-2024-1F-Q30",
@@ -1791,7 +1839,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "De acordo com as informações sobre os dois livros\napresentadas no quarto e quinto parágrafos, um dos\nlivros é mais criativo, enquanto o outro é mais baseado\nem fatos jornalísticos.\nNo texto:\n“ ‘Backlands’ is one of the most important works in\nthe history of Brazilian literature. It is a journalistic\ntelling that introduces us not only to the brutal War\nof Canudos’ ‘The War of the End of the World’ is an\nessential epic that amplifies the narrative of\n‘Backlands,’ bringing a more 11 imaginative, creative\naspect to the story of Antônio Conselheiro, the\nspiritual leader of a rebellion, and of the multitude\nthat followed him to their deaths.”",
+    "figura_resolucao": "data/images/res_ita_2024_q30.png"
   },
   {
     "id": "ITA-2024-1F-Q31",
@@ -1814,7 +1863,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa E."
+    "resolucao": "O Woolf Social Club é primordialmente um local onde\nmulheres podem ter voz própria.\nNo texto:\n“ ‘I wanted a space for like-minded women to meet\nand talk,’ says Kim Jina, a 47-year-old former\nadvertising executive and politician who founded the\ncafé six years ago.”",
+    "figura_resolucao": "data/images/res_ita_2024_q31.png"
   },
   {
     "id": "ITA-2024-1F-Q32",
@@ -1837,7 +1887,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "“Alongside” significa próximo de, dessa forma, está\nligado ao termo ‘Proximity’.",
+    "figura_resolucao": "data/images/res_ita_2024_q32.png"
   },
   {
     "id": "ITA-2024-1F-Q33",
@@ -1860,7 +1911,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "Kim Jina foi inspirada por Virginia Woolf para abrir\no Woolf Social Club porque: tanto Virginia Woolf\nquanto Kim Jina elogiaram a autonomia econômica e\na liberdade de pensamento.\nNo texto:\n“Kim was inspired by Woolf’s dictum that in order to\nwrite fiction, a woman needed ‘five hundred [pounds]\na year and a room with a lock on the door’. That is,\nfinancial independence and a place to think.”",
+    "figura_resolucao": "data/images/res_ita_2024_q33.png"
   },
   {
     "id": "ITA-2024-1F-Q34",
@@ -1883,7 +1935,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "No trecho do terceiro parágrafo “Eu queria um espaço\npara mulheres com ideias semelhantes para se\nencontrarem e conversarem”, o termo sublinhado\nexpressa uma ideia de:\nSemelhança.",
+    "figura_resolucao": "data/images/res_ita_2024_q34.png"
   },
   {
     "id": "ITA-2024-1F-Q35",
@@ -1906,7 +1959,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa A."
+    "resolucao": "Dentre as razões expostas no texto sobre as\ndificuldades encontradas pelas mulheres coreanas, são\ncorretas as afirmações, EXCETO: a Coreia foi a\núltima entre as nações mais ricas a garantir equidade\nsalarial entre os gêneros.\nNo texto:\n“South Korea, even its trendy capital, is a difficult\nplace to be a woman. The wage gap between the sexes\nis the highest in the rich world.”",
+    "figura_resolucao": "data/images/res_ita_2024_q35.png"
   },
   {
     "id": "ITA-2024-1F-Q36",
@@ -1929,7 +1983,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "De acordo com os parágrafos seis e sete, as\nmanifestações nas ruas contra o sexismo na Coreia\ntiveram como estopim: a prática de filmarem\nclandestinamente mulheres em banheiros e vestiários.\nNo texto:\n“In 2018 there was a series of protests against the\nwidespread practice of recording illegal footage of\nwomen by hiding small cameras in public toilets or\nchanging rooms.”",
+    "figura_resolucao": "data/images/res_ita_2024_q36.png"
   },
   {
     "id": "ITA-2024-1F-Q37",
@@ -1975,7 +2030,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa E."
+    "resolucao": "I)\nFalsa.\nConsidere A = B = D = 0n×n, onde 0 é matriz nula,\ncom n linhas e colunas.\nSubstituindo na equação, temos:\n\u000f\n0X = D\n0X + Y = C\nAX = B\nDX + Y = C\n⇒ \u000f\nEsse sistema admite infinitas soluções, ou seja, não\né impossível.\nII) Falsa.\nSe A = B = 0n×n, o sistema não possuirá única\nsolução, conforme exemplo anterior.\nIII)Falsa.\nSe A é inversível, a solução do sistema é:\n\u000f\nSubstituindo (I) em (II), temos:\nY = C – D . A–1 . B\nOu seja, se D não for inversível, o sistema ainda\nterá única solução.\nX = A–1 . B   (I)\nY = C – DX  (II)\nAX = B\nDX + Y = C\n⇒ \u000f",
+    "figura_resolucao": "data/images/res_ita_2024_q38.png"
   },
   {
     "id": "ITA-2024-1F-Q39",
@@ -1998,7 +2054,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa A."
+    "resolucao": "Seja \u0007 = arc tg \u0006\n\u0007, –\n< \u0007 <\n⇔\n⇔ tg \u0007 =\n⇔ sen \u0007 =\n. cos \u0007\nπ\n––\nπ\n––\n––\n––\n––\nI)\nsen2\u0007 + cos2\u0007 = 1 ⇔\n. cos2\u0007 + cos2\u0007 = 1 ⇔\n–––\n–––\n⇔ 25 . cos2\u0007 = 9 ⇔ cos2\u0007 =\nII) cos \u00062 arc tg \u0006\n\u0007\u0007 =\n= cos (2\u0007) + sen(2\u0007) =\n––\n––\n\u0007\u0007 + sen \u00062 arc tg \u0006\n= 2 cos2\u0007 – 1 + 2 sen \u0007 . cos \u0007 =\n= 2 cos2\u0007 – 1 + 2 .\ncos2 \u0007 =\n––\n–––\n–––\n––\n–––\n= 2 .\n– 1 +\n.\n=",
+    "figura_resolucao": "data/images/res_ita_2024_q39.png"
   },
   {
     "id": "ITA-2024-1F-Q40",
@@ -2021,7 +2078,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "Existem apenas 4 pares cujo produto é 256. São eles:\n1 × 256, 2 × 128, 4 × 64, 8 × 32.\nAssim sendo, se for escolhido um subconjunto de A\ncom apenas 5 números é possível que ele seja formado\npor um número de cada um dos 4 pares e pelo 16;\nneste caso não existeria nenhum par cujo produto é\n256.\nSe o subconjunto de A tiver 6 números sempre será\npossível obter “pelo menos um par cujo produto seja\n256”.",
+    "figura_resolucao": "data/images/res_ita_2024_q40.png"
   },
   {
     "id": "ITA-2024-1F-Q41",
@@ -2067,7 +2125,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "Se \u000f\n; a; a . q\u0010 for o conjunto solução da equação\nx3 + 3x2 – 6x + k = 0, então:\na\n––\nq\na\n––\nq\na2\n––\nq\na\n––\nq\n+ a + aq = –3\na .\n+ 1 + q = –3  (I)\n\u0006\n\u0007\n––\nq\n+ a2 + a2q = –6\n. a . aq = –k\n⇔\na2 .\n+ 1 + q = –6 (II)\n\u0007\n\u0006\n––\nq\na3 = –k  (III)\nDividindo (II) por (I), temos: a = 2\nSubstituindo em (III), temos:\n23 = –k ⇔ k = –8",
+    "figura_resolucao": "data/images/res_ita_2024_q42.png"
   },
   {
     "id": "ITA-2024-1F-Q43",
@@ -2090,7 +2149,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa E."
+    "resolucao": "Se R for o raio da base do cilindro e H a altura do\nmesmo, então:\nA1 = πR2; A2 = 2πRH; A3 = πR2H\nSe A1, A2, A3 formam nessa ordem uma progressão\ngeométrica então:\n(2π RH)2 = πR2 . πR2H ⇔ 4H = R2 ⇔ H =\nR2\n–––\nAssim sendo a PG será \u0006πR2;\n;\n\u0007 e a razão\nπR4\n––––\nπR3\n––––\ndessa progressão é q =\nPelo enunciado, a PG é crescente e, portanto,\nq =\n> 1 ⇒ R > 2\nA medida do raio R da base pode, pois, “estar no\nintervalo \u00062;\n\u0007\nR\n––\nR\n––\n”",
+    "figura_resolucao": "data/images/res_ita_2024_q43.png"
   },
   {
     "id": "ITA-2024-1F-Q44",
@@ -2113,7 +2173,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "Segundo a relação de Euler, temos:\n24 + F = 36 + 2 ⇔ F = 14\nSendo x o número de faces com m arestas, é possível\nque m = 3 e n = 8, pois:\nx . 3 + (14 – x) . 8\n–––––––––––––––\n= 36 ⇔ x = 8\nObservação: seguem os valores de x para as outras\nalternativas:\nm\nn\nx\n–16\n–1\n6,5\n–2",
+    "figura_resolucao": "data/images/res_ita_2024_q44.png"
   },
   {
     "id": "ITA-2024-1F-Q45",
@@ -2159,7 +2220,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa D."
+    "resolucao": "1)\n=\n.\n=\na\n––\n1 + 3\u0002\t\t3i\n–––––––––\n2\u0002\t\t3 – 4i\n–––––––––\nb\n2\u0002\t\t3 + 4i\n2\u0002\t\t3 – 4i\n2\u0002\t\t3 – 4i + 18i + 12\u0002\t\t3\n––––––––––––––––––––\n=\n=\n12 + 16\n=\n=\n14\u0002\t\t3 +14i\n––––––––––\n\u0002\t\t3 + i\n––––––\n\u0002\t\t3\n–––\n+\ni =\n––\n=\n= cos 30° + i . sen 30°\nm\n= 1 ⇒\n⇒ (cos 30° + i . sen 30°)m = 1 ⇒\n2)\nam = bm ⇔ \u0006\n\u0007\na\n––\nb\n⇒ cos(30°m) + i . sen(30°m) = 1 ⇔\n⇔ 30°m = 360° . k, com k, m ∈ \u0004 ⇔\n⇔ m = 12k, com k, m ∈ \u0004\n3)\nOs possíveis valores de m, supondo m ≠ 0, são\n12; 24; 36; … e o menor valor de m é 12.",
+    "figura_resolucao": "data/images/res_ita_2024_q46.png"
   },
   {
     "id": "ITA-2024-1F-Q47",
@@ -2228,7 +2290,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa C."
+    "resolucao": "I.\nCorreta.\nH2(g) +\nO2(g)  → H2O(l)\n\u0003         \u0003\n2g\n16g\nTotal = 18g\n––\ncombustível\n18g –––––––– 100%\n2g   –––––––– x\n∴ x\n11%\nII. Incorreta.\nC8H18  +\nO2 → 8CO2  +  9H2O\n\u0003           \u0003\n114g\n400g\nTotal = 514g\n––\ncombustível\n514g –––––––– 100%\n114g   –––––––– x\n∴ x\n22%\nIII. Incorreta.\nO calor liberado é o mesmo (vide IV), pois temos\n1 mol de combustível. A variação de temperatura\nserá diferente, pois as misturas finais têm\ncomposições diferentes.\nO2: C8H18 +\nO2 →\n→ 8CO2 + 9H2O   ΔHC, Δt1\n––\nmenor massa (mc)1\n: C8H18 +\nO2 + 50N2 →\n→ 8CO2 + 9H2O + 50N2  ΔHC, Δt2\n––\n80% N2\n20% O2\n\u0007\nar \u0006\nmaior massa (mc)2\n= Δt\nmc1 < mc2 ∴ Δt1 > Δt2\nQ\n–––\nmc\nIV. Correta.\nO calor de combustão em ambos os casos é o\nmesmo, pois estamos utilizando 1 mol de\ncombustível.",
+    "figura_resolucao": "data/images/res_ita_2024_q49.png"
   },
   {
     "id": "ITA-2024-1F-Q50",
@@ -2274,7 +2337,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa E."
+    "resolucao": "A: exotérmica\nNaCl(l)  →  NaCl(s)\nΔH < 0\nB: exotérmica\n2Fe(s) +\nO2(g) + x H2O(l) → Fe2O3 . x H2O(s)\n––\nΔH < 0\nA corrosão do ferro é uma reação de combustão\nmuito lenta, portanto, é uma reação exotérmica.\nC: exotérmica\nÁcido forte + base fraca → sal + água ΔH < 0\nReação de neutralização\nD: exotérmica\nO H2O2 concentrado (40 volumes) é uma substân -\ncia perigosamente reativa porque sua decom -\nposição para formar H2O e O2 é muito exo tér mica.\nH2O2 → H2O +\nO2     ΔH < 0\nE: endotérmica\nΔ\nCaCO3(s) ⎯→ CaO(s) + CO2(g)    ΔH > 0\ncalcário\ncal virgem\n––",
+    "figura_resolucao": "data/images/res_ita_2024_q51.png"
   },
   {
     "id": "ITA-2024-1F-Q52",
@@ -2366,7 +2430,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa A."
+    "resolucao": "I.\nCorreta.\nA reação de deslocamento ocorre, pois o cloro é\nmais reativo que o iodo.\nCl2(g) + 2NaI(aq) → 2NaCl(aq) + I2(s)\nII. Correta.\nA reação de deslocamento ocorre, pois o cloro é\nmais reativo que o bromo.\nCl2(g) + 2NaBr(aq) → 2NaCl(aq) + Br2(l)\nIII. Incorreta.\nA reação de dupla-troca entre os sais NaI e KCl\nnão ocorre, pois não se forma um produto\ninsolúvel (precipitado).\nIV. Incorreta.\nA reação de deslocamento não ocorre, pois o\nbromo é menos reativo que o flúor.\nV. Correta.\nA reação de deslocamento ocorre, pois o bromo é\nmais reativo que o iodo.\nBr2(l) + 2NaI(aq) → 2NaBr(aq) + I2(s)",
+    "figura_resolucao": "data/images/res_ita_2024_q55.png"
   },
   {
     "id": "ITA-2024-1F-Q56",
@@ -2389,7 +2454,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "Ácido monoprótico: HA\nBase conjugada: A–\nHA    →\n←   H+   +   A–\n1 mol                   1 mol\nAdição de OH–:\nHA       +        OH–   →        A–       +      H2O\n0,82\n–0,82\n–0,82\n+0,82\n0,18\n–––\n1,82\nKa =\n[H+] [A–]\n––––––––––\n[HA]\n10–4 =\n[H+]\n10–5 mol/L  ∴  pH  = 5\n[H+] 1,82\n––––––––––\n0,18",
+    "figura_resolucao": "data/images/res_ita_2024_q56.png"
   },
   {
     "id": "ITA-2024-1F-Q57",
@@ -2435,7 +2501,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "Δte = K W, W = mol/kg de solvente\nSolução A:\nW\nM (mol/L)\nA         →\n←       B          +        C\ninício\n––\n–\nreage e\nforma\n– x\nx\nx\nequilíbrio\n1 – x\nx\nx\nKC =\n[B] . [C]\n––––––––\n[A]\n2 =\nx2 + 2x – 2 = 0\nx . x\n–––––––\n1 – x\nx =\n–2 ±  \u0002\u0003\u0003\u0003\n4 + 8\n–––––––––––\n=\n–2 ± 2 \u0002\u0003\n–––––––––\nx = 0,73\nQuantidade em mols da mistura em equilíbrio:\n1 – x + x + x = 1 + 0,73 = 1,73\nΔteA =\n.\n= 1,73°C\n1,73 mol\n––––––––\n1kg\n1,0°C kg\n––––––––\nmol\nSolução D:\nΔte = K W ∴ ΔteB =\n.\n1 mol\n––––––\n1kg\n1,0°C kg\n––––––––\nmol\nΔteB = 1°C\nDiferença = 1,73°C – 1°C = 0,73°C",
+    "figura_resolucao": "data/images/res_ita_2024_q58.png"
   },
   {
     "id": "ITA-2024-1F-Q59",
@@ -2481,7 +2548,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2024: Alternativa B."
+    "resolucao": "Equação química de formação de 1 mol de HCl(g):\n1                    1\n–– H2(g)  +   –– Cl2(g)    →     HCl(g)\n2                    2\n1                     1\n–– (+434)  +   –– (+243)   →    –431\n2                     2\nkJ:\nΔHf = (+217 + 121,5 – 431)kJ\nΔHf = –92,5kJ",
+    "figura_resolucao": "data/images/res_ita_2024_q60.png"
   },
   {
     "id": "ITA-2023-1F-Q01",
@@ -2688,7 +2756,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "Estudos neurofisiológicos modelam a membrana de\num neurônio a circuito RC (Resistor–Capacitor)\nassociados em paralelo.\nA membrana neuronal que é formada por duas\ncamadas de lipídeos e uma fina camada isolante entre\nelas, fará o papel de um capacitor.\nOs canais iônicos, por onde passa a corrente iônica,\natua como um resistor em paralelo com o capacitor\nrepresentado pela membrana.",
+    "figura_resolucao": "data/images/res_ita_2023_q09.png"
   },
   {
     "id": "ITA-2023-1F-Q10",
@@ -2711,7 +2780,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "Para que a partícula tenha sua energia cinética\nconservada, o módulo de sua velocidade deve\npermanecer constante, assim:\n→Fmag| = |\n→P|\n|\nLembremos que \u0002 pode ser escolhido, então:\nq . v B = m g\nm g\nv = –––––\nq B\nA energia cinética da partícula será dada por:\nm v2\n––––––\nEcin =\nmg   2\nm \u0002––––\u0003\nqB\n––––––––––\nEcin =\nm3g2\nEcin = –––––––\n2q2B2",
+    "figura_resolucao": "data/images/res_ita_2023_q10.png"
   },
   {
     "id": "ITA-2023-1F-Q11",
@@ -2757,7 +2827,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "I)\nEm solo, mede-se um intervalo de tempo dilatado,\nΔt, devido aos efeitos relativísticas.\nΔt’\nΔt = –––––––––––––\n1 –\u0002\n\u0003\nV\n–––\nC\nΔt’ = 2,2 \u0007s é o intervalo de tempo medido no local\ndos eventos (múon), logo:\n2,2                                 2,2\nΔt = ––––––––––––––––– (\u0007s) = ––––––––– (\u0007s)\n1 –\u0002\n\u0003\n0,01414\n0,9999C\n–––––––\nC\nΔt ≅156 \u0007s\nII) Distância Δx percorrida pelo múon em Δt ≅156\u0007s:\nΔx = V Δt ⇒Δx = 0,9999 . 3,0 . 108 . 156 . 10–6 (m)\nΔx ≅46795 m ≅47 km\nIII)A mínima altitude atingida pelo múon é h, dada\npor:\nh = H – Δx ⇒h = 100 – 47 (km)\nh = 53 km",
+    "figura_resolucao": "data/images/res_ita_2023_q12.png"
   },
   {
     "id": "ITA-2023-1F-Q13",
@@ -2780,7 +2851,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "No segundo capítulo, Naziazeno, durante a viagem de\nbonde, mergulha em suas inúmeras reflexões, uma\ndelas referindo-se a sua esposa, Adelaide. Se por um\nlado o “ar de ingenuidade, de fraqueza” que ela possui\natraiu o interesse  dele,  levando-o ao casamento, por\noutro, na lógica do protagonista, tornou-se um mal na\nvida prática. Exemplo desse defeito acabara de\nacontecer naquela manhã, diante da cobrança\nconstrangedora do leiteiro, quando vira “a mulher\natarantar-se, perder-se, empalidecer”, em vez de\nenfrentar o entregador. O protagonista utiliza esse fato\npara justificar o seu próprio fracasso, pois, no seu\nentender, ter ao seu lado uma mulher tão fraca faz\ncom que toda a determinação dele para resolver seus\nproblemas, principalmente os ligados à penúria\neconômica, seja diluída.",
+    "figura_resolucao": "data/images/res_ita_2023_q13.png"
   },
   {
     "id": "ITA-2023-1F-Q14",
@@ -2803,7 +2875,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "Um dos aspectos que mais chamaram a atenção em Os\nRatos, já a partir de sua publicação, foi o grafismo,\nisto é, a utilização de elementos gráficos (aspas, itálico,\nparênteses) para separar a perspectiva (inclusive\nlinguística) do narrador da perspectiva do perso -\nnagem. É o que ocorre no trecho apresentado na\nalternativa d, em que as aspas tornam indubitável que\na expressão “hora dele” pertence não ao narrador,\nmas ao discurso de  Naziazeno",
+    "figura_resolucao": "data/images/res_ita_2023_q14.png"
   },
   {
     "id": "ITA-2023-1F-Q15",
@@ -2826,7 +2899,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "Os versos extraídos do poema “Canto ao homem do\npovo Charlie Chaplin” não apresentam métrica\nregular, são  versos livres, têm um estilo e ritmo  que\nos  aproximam da  oralidade, da fluidez do discurso\noral. Essa característica  mais simples vai ao encontro\ndo léxico,   como se pode perceber na prosopopeia em\nque se atribui  a fala às flores, aos tocos de vela, à\nmesa, aos objetos.",
+    "figura_resolucao": "data/images/res_ita_2023_q15.png"
   },
   {
     "id": "ITA-2023-1F-Q16",
@@ -2849,7 +2923,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "Nesse conto memorialista, o narrador-personagem\nlembra a época da infância e uma situação que viveu\nna praia de Santos. Nesse evento, os pescadores, ho -\nmens pobres, davam muita importância ao prota -\ngonista, por esse menino ser de condição mais\nabastada. O tratamento “seu dotô” evidencia a\ndiferença de classe social entre os pescadores e o\nmenino que não tinha o pai doutor, não era tão supe -\nrior assim.",
+    "figura_resolucao": "data/images/res_ita_2023_q16.png"
   },
   {
     "id": "ITA-2023-1F-Q17",
@@ -2872,7 +2947,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa A."
+    "resolucao": "A linguagem empregada por Carlos Drummond de\nAndrade, em sua obra poética, tanto obedece à norma\nculta, como também se afasta da norma linguística,\ncomo é possível observar nos neologismos criados pelo\nautor (“camabel”, “plkx”), os quais remetem à ideia\nde marcas de produtos industrializados (“ondalit”  é\nmarca de telhas e indústria de asfalto) e\ncomercializados a partir de anúncios que ecoam pelo\nvale.",
+    "figura_resolucao": "data/images/res_ita_2023_q17.png"
   },
   {
     "id": "ITA-2023-1F-Q18",
@@ -2895,7 +2971,8 @@
     },
     "gabarito": "ANULADA",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa ANULADA."
+    "resolucao": "Nesse fragmento curtíssimo, só não se depreende\nmedo da família de Juca em relação à loucura dele,\nisto é,  o desejo   de comemorar o natal no ano em que\no pai faleceu, fazendo, pela primeira vez,  naquele lar,\numa ceia em que houvesse peru. Por mais que a\nfamília o tachasse de louco, devido às atitudes\ninusuais, ela  desejava inconscientemente essa\ncomemoração.",
+    "figura_resolucao": "data/images/res_ita_2023_q18.png"
   },
   {
     "id": "ITA-2023-1F-Q19",
@@ -2918,7 +2995,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "Embora a narrativa se passe em um único dia, ela não\né apenas  factual, existem muitas passagens que são\ninteriorizadas, ocorrem apenas na mente do\nprotagonista que às vezes  lembra de sua infância\n(como se nota na passagem em que  Naziazeno faz\nreferência ao dia em que ele foi vestido pela mãe de\nSanto Antônio, por causa de uma promessa que ela\nhavia feito); outras vezes, surgem impressões psicoló -\ngicas mais próximas do momento   tenso em que vive,\nprocurando   uma maneira de arranjar o dinheiro\npara pagar a dívida com o leiteiro.",
+    "figura_resolucao": "data/images/res_ita_2023_q19.png"
   },
   {
     "id": "ITA-2023-1F-Q20",
@@ -2941,7 +3019,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "A protagonista de “Atrás da Catedral de Ruão\",\nMademoiselle, é uma professora de francês que ao\nlongo da narrativa tem devaneios libidinosos em di -\nversas situações. Ao final da narrativa, Mademoiselle\ntem um delírio, crê  que   dois homens, que na verdade\nsimplesmente andavam na rua, perseguem-na tentan -\ndo violentá-la.  Ao final dessa situação, ela chega à\npensão e percebe que, após esse delírio erótico,  ela\ncontinua sozinha, daí o fato de a protagonista subir as\nescadas correndo e chorar.",
+    "figura_resolucao": "data/images/res_ita_2023_q20.png"
   },
   {
     "id": "ITA-2023-1F-Q21",
@@ -2964,7 +3043,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "Em “Cantiga de enganar”, as esperanças e as  certezas\ndo eu  lírico se desmancham, impera o mal-estar e o\ndesconcerto. A possível felicidade e a plenitude exis -\nten cial devem transformar-se, ironicamente,  numa\nilusão de bem-estar, num fazer de conta,  ainda que o\nmundo em que se vive seja  repleto de enganos.",
+    "figura_resolucao": "data/images/res_ita_2023_q21.png"
   },
   {
     "id": "ITA-2023-1F-Q22",
@@ -2987,7 +3067,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "Os Ratos são um romance que apresenta como pro -\ntagonista o homem urbano da década de 1930, mais\nprecisamente um membro da classe pobre, oprimido\nsocioeconomicamente na luta diária pela sobrevi vência.\nComo consequência de tal situação, esse  indi víduo\nperde a capacidade para desenvolver a autono- mia\nintelectual e existencial, o que o empurra a uma\ncondição precária que traz  a “animalização ou rebaixa -\nmento do humano” presente tanto no título da obra\ncomo no trecho apresentado na alternativa e, em que a\ndescrição feita pelos homens associa-os a roedores: são\nfugitivos que se esgueiram e somem com pés de ratos.",
+    "figura_resolucao": "data/images/res_ita_2023_q22.png"
   },
   {
     "id": "ITA-2023-1F-Q23",
@@ -3010,7 +3091,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa A."
+    "resolucao": "Contos Novos, de Mário de Andrade, aborda diversos\nassuntos em que coexistem a repressão psicológica e a\nsocial.  A repressão do desejo  homossexual aparece\nem “Frederico Paciência” e da vida sexual  feminina\nem “Atrás da Catedral de Ruão\", dois contos, entre\nos vários, em que se nota a convergência da interdição\ninterior e exterior ao ser.",
+    "figura_resolucao": "data/images/res_ita_2023_q23.png"
   },
   {
     "id": "ITA-2023-1F-Q24",
@@ -3033,7 +3115,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa C."
+    "resolucao": "Um dos temas da poética de Carlos Drummond de\nAndrade é o choque social ou “na praça dos convites”,\ncomo exemplificam os versos de “Nosso tempo”, os\nquais captam a inquietação e o inconformismo do eu\nlírico diante dos problemas sociais da época do Estado\nNovo e da Segunda Guerra Mundial.",
+    "figura_resolucao": "data/images/res_ita_2023_q24.png"
   },
   {
     "id": "ITA-2023-1F-Q25",
@@ -3056,7 +3139,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa A."
+    "resolucao": "No texto: “The benefits of recognised statehood are\nnumerous and often taken for granted”.\nTo take for granted = tomar como certo.",
+    "figura_resolucao": "data/images/res_ita_2023_q25.png"
   },
   {
     "id": "ITA-2023-1F-Q26",
@@ -3079,7 +3163,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "No texto: “Because their de facto nationality is not\nrecognised\ninternationally,\ntheir\nlocally-issued\npassports or travel documents are not considered\nvalid for travel or entry into another country.”",
+    "figura_resolucao": "data/images/res_ita_2023_q26.png"
   },
   {
     "id": "ITA-2023-1F-Q27",
@@ -3102,7 +3187,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "Although = embora. O termo em itálico sublinhado\nexerce função de constraste, oposição, concessão.",
+    "figura_resolucao": "data/images/res_ita_2023_q27.png"
   },
   {
     "id": "ITA-2023-1F-Q28",
@@ -3125,7 +3211,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "Whereas = While = enquanto ou enquanto que.\nNeste contexto, o termo em itálico sublinhado exerce\nfunção de simultaneidade.",
+    "figura_resolucao": "data/images/res_ita_2023_q28.png"
   },
   {
     "id": "ITA-2023-1F-Q29",
@@ -3148,7 +3235,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "Allegiance = loyalty. O termo em itálico sublinhado\nsignifica lealdade",
+    "figura_resolucao": "data/images/res_ita_2023_q29.png"
   },
   {
     "id": "ITA-2023-1F-Q30",
@@ -3171,7 +3259,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "O termo em itálico, sublinhado  no excerto, O verbo\nauxiliar “Do”, exerce a função de ênfase.",
+    "figura_resolucao": "data/images/res_ita_2023_q30.png"
   },
   {
     "id": "ITA-2023-1F-Q31",
@@ -3194,7 +3283,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "As obras cujos enredos ocorreram no Séc. XX são:\n•\nThe Feast of the Coat “from 1930 until his\nassassination in1961”.\n•\nNews of a Kidnapping “in the late 1980s and early\n1990s.”",
+    "figura_resolucao": "data/images/res_ita_2023_q31.png"
   },
   {
     "id": "ITA-2023-1F-Q32",
@@ -3217,7 +3307,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "No texto: “The behaviour of Hernán Cortés and the\nrest was nurtured by a late-medieval religious culture,\nnot purely by the lure of gold and still less by modern\nnotions of statehood, he argues.”",
+    "figura_resolucao": "data/images/res_ita_2023_q32.png"
   },
   {
     "id": "ITA-2023-1F-Q33",
@@ -3240,7 +3331,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "Na passagem do texto “A ditadura de Rafael Leônidas\nTrujillo, o autodenominado\nGeneralissimo\nque\ngovernou a República Dominicana” a expressão\ngrifada significa que ele deu a si mesmo um título\nespecífico.",
+    "figura_resolucao": "data/images/res_ita_2023_q33.png"
   },
   {
     "id": "ITA-2023-1F-Q34",
@@ -3263,7 +3355,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "No texto: “The would-be revolutionaries were also\ndandies, the scions of the coffee-growing aristocracy,\nand they were close to the political oligarchy that ran\nSão Paulo and Brazil. Even so, they were disrupters.”",
+    "figura_resolucao": "data/images/res_ita_2023_q34.png"
   },
   {
     "id": "ITA-2023-1F-Q35",
@@ -3286,7 +3379,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "No texto: “Brazilians would not simply reproduce\nother models but digest them and turn them into\nsomething that was their own.”",
+    "figura_resolucao": "data/images/res_ita_2023_q35.png"
   },
   {
     "id": "ITA-2023-1F-Q36",
@@ -3309,7 +3403,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa C."
+    "resolucao": "O pronome demonstrativo “that” destacado em itálico\nsublinhado refere-se ao período anterior mencionado\nno texto.",
+    "figura_resolucao": "data/images/res_ita_2023_q36.png"
   },
   {
     "id": "ITA-2023-1F-Q37",
@@ -3332,7 +3427,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa C."
+    "resolucao": "1)\nSejam A matrizes quadradas de ordem 3 e\ndet A ≠ 0.\n2)\ndet (xA) = x3 . det A\n3)\ndet An = det A . det A . … . det A\n144424443\nn vezes\n4)\ndet\u0002\n\b\t\t2x2 A\u0003 + det(x A3) = det A2 ⇔\n⇔\u0002\n\b\t\t2 . x2\u0003\n. det A + x3 . det A3 – det A2 = 0 ⇔\n⇔2x6 . det A + x3 . det A3 – det A2 = 0 ⇔\n⇔2det A . (x3)2 + det A3 . (x3) – det A2 = 0\n5)\nComo existe um único x real que satisfaz a\nequação, temos:\n(det A3)2 + 4 . 2 . det A . det A2 = 0 ⇔\n⇔ det A6 + 8 det A3 = 0 ⇔\n⇔ det A3 . (det A3 + 8) = 0 ⇔det A = –2\n6)\n2x6 (–2) – 8x3 – 4 = 0 ⇔\n⇔–4[(x3)2 + 2(x3) + 1] = 0 ⇔x = –1\n7)\nAssim, x + det A = –1 –2 = –3",
+    "figura_resolucao": "data/images/res_ita_2023_q37.png"
   },
   {
     "id": "ITA-2023-1F-Q38",
@@ -3355,7 +3451,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "f1(0) = f(0) = 02 + i = i\nf2(0) = f(i) = i2 + i = –1 + i\nf3(0) = f(–1 + i) = (–1 +i)2 + i = 1 – 2i + i2 + i = –i\nf4(0) = f(–i) = (–i)2 + i = – 1 + i\nLogo f3(0) = f5(0) = f7(0) = … = f2023(0) = –i",
+    "figura_resolucao": "data/images/res_ita_2023_q38.png"
   },
   {
     "id": "ITA-2023-1F-Q39",
@@ -3378,7 +3475,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "I)\nFalsa.\nO losango não é um polígono regular.\nII) Verdadeira.\nSendo x e r o primeiro termo e a razão da pro -\ngressão aritmética respectivamente, temos:\nx + (x + r) + (x + 2r) + (x + 3r) + (x + 4r) + (x + 5r) =\n= (6 – 2) . 180° ⇒\n⇒ 6x + 15r = 720° ⇒2x + 5r = 240° ⇒\n⇒x + (x + 5r) = 240°\nIII. Falsa.\na) A soma dos ângulos internos de um polígono\nconvexo de 100 lados é (100 – 2) . 180° = 17640°\nb) Sendo a1 e a100, respectivamente, o primeiro e o\ncentésimo termos da progressão aritmética,\ntemos:\n(a1 + a100) . 100\n––––––––––––––\n= 17640° ⇒a1 + a100 = 352,8°\nc) Como a1 + a100 = 352,8° e a100 deve ser menor\nque 180° para o polígono ser convexo, devemos\nter a1 > 170,8°.\nAssim, para existir o polígono, a razão deve ser\nmenor que 1°.",
+    "figura_resolucao": "data/images/res_ita_2023_q39.png"
   },
   {
     "id": "ITA-2023-1F-Q40",
@@ -3401,7 +3499,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa C."
+    "resolucao": "Sendo x1, x2 e x3 as raízes de p(x), temos:\n–(–113)      113\nx1 + x2 + x3 = ––––––– = ––––\n30           30\n108     18\nx1x3 + x1x3 + x2x3 = –––– = –––\n–(–30)\nx1x2x3 = ––––––– = 1\nLogo, a média harmônica H será dada por:\n––––––––––––––\n–––––––––––––––––––\nH =\n=\n=\n1     1      1\n–– + –– + ––\nx1\nx2\nx3\nx2x3 + x1x3 + x1x3\n––––––––––––––––\nx1x2x3\n3 . x1x2x3\n––––––––––––––––\nx2x3 + x1x3 + x1x3\n5––6\n3 . 1\n–––––\n=\n=\n=\n–––",
+    "figura_resolucao": "data/images/res_ita_2023_q40.png"
   },
   {
     "id": "ITA-2023-1F-Q41",
@@ -3424,7 +3523,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "I.\nFalsa.\nNem sempre 3x ≥ 2x, pois para x = –1, temos\n3x ≤ 2x.\nII. Verdadeira.\n1) f(x) > 0, ∀x ∈\u0003\n2) Para x ≤ 0 ⇒g(x) ≤ 0, logo f(x) ≥ g(x).\n3) Para x > 0 e h(x) = 3x.\n2x ≥ 0 ⇔–2x ≤ 0 ⇔3x – 2x ≤ 3x ⇔\n⇔g(x) ≤ h(x) ⇔h(x) ≥ g(x)\n4) 3x > 30 (pois x > 0) ⇔\n⇔\n≥ 1 ⇔9x ≥ 3x ⇔\n9\u0002––\u0003\nx\n⇔ 32x ≥ 3x ⇔f(x) ≥ h(x) ⇔\n⇔ f(x) ≥ h(x) ≥ g(x) ⇔f(x) ≥ g(x)\nIII. Falsa.\nPara x = –1, temos:\n1––2\n1––3\n1––9\n1) f(–1) = 32(–1) =\ne g(–1) = 3–1 – 2–1 =\n–\n–––\n1––2\n1––3\n1––9\n2) f(–1) + g(–1) =\n+\n–\n= –\n< 0",
+    "figura_resolucao": "data/images/res_ita_2023_q41.png"
   },
   {
     "id": "ITA-2023-1F-Q42",
@@ -3447,7 +3547,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "^AC = 30°, temos:\n1)\nComo BC = 1 e B\n1––2\n––––\nAC\n1––2\nsen 30° =\n⇒\n=\n⇒AC = 2\ncos 30° =\n⇒\n=\n⇒AB = \b\t\t3\n\b\t\t3\n––––\n\b\t\t3\n––––\nAB\n––––\n2)\nBEDF é retângulo e, portanto, EF tem a mesma\nmedida de BD.\nBD terá o menor valor possível quando for\nperpendicular à hipotenusa AC. Pelas relações\nmétricas no triângulo retângulo ABC, temos:\nBD . AC = AB . BC ⇔\n⇔ BD . 2 = \b\t\t3 . 1 ⇔\n\b\t\t3\n––––\n⇔ BD =",
+    "figura_resolucao": "data/images/res_ita_2023_q42.png"
   },
   {
     "id": "ITA-2023-1F-Q43",
@@ -3470,7 +3571,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "1)\nz = 5 – 5i = 5\b\t\t2 \u0002cos\n+ i sen\n\u0003\n7π\n–––\n7π\n–––\n2)\nz2n+1 + –z2n+1 = (5\b\t\t2)2n+1 . \u0006cos \u0006(2n + 1) .\n\u0007\u0007 +\n7π\n–––\n+ i sen \u0006(2n + 1) .\n\u0007\u0007 +\n7π\n–––\n+ (5\b\t\t2)2n+1 . \u0006cos \u0006(2n + 1) .\n\u0007 –\n7π\n–––\n– i sen \u0006(2n + 1) . \u0007\u0007 =\n7π\n–––\n= (5\b\t\t2)2n+1 . 2 . cos \u0006(2n + 1) .\n\u0007 =\n7π\n–––\n= 52n+1 . (\b\t\t2)2n+1 . 2 . cos \u0006(2n + 1) .\n\u0007\n7π\n–––\n3)\nComo f(n) =\nz(2n+1) + –z(2n+1)\n, para cada n ∈\u0005,\ntemos:\nf(1) + f(2) + f(3) + … + f(20) =\n= 52n + 1 . (\b\t\t2)2n+2 = 52n+1 . 2n+1 =\n= 10 . (52 . 2)n = 10 . 50n\n4)\nf(1) + f(2) + f(3) + … + f(20) =\n= 10(501 + 502 + 503 + … + 5020) =\n50(5020 – 1)\n–––––––––––\n500(5020 – 1)\n–––––––––––\n= 10 .\n=\n50 – 1",
+    "figura_resolucao": "data/images/res_ita_2023_q43.png"
   },
   {
     "id": "ITA-2023-1F-Q44",
@@ -3516,7 +3618,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa B."
+    "resolucao": "Para que uma moeda esteja na quarta rodada, ela não\npode ser retirada em nenhuma das três primeiras e a\nprobabilidade desse evento é:\n1––\n1––\n1––\n1––\n.\n.\n=\n.\nLogo, a probabilidade de cada moeda ser retirada até\n7––\na terceira rodada é\n.\nPara que haja a quarta rodada, é necessário que pelo\nmenos uma moeda não seja retirada e essa\nprobabilidade é dada pelo total menos a probabilidade\nde todas serem retiradas\n4096\n7\u0002––\u0003\n4096\n2401\n–––––\n1695\n–––––\nP = 1 –\n= 1 –\n=",
+    "figura_resolucao": "data/images/res_ita_2023_q45.png"
   },
   {
     "id": "ITA-2023-1F-Q46",
@@ -3539,7 +3642,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "B\na\n10 - h\nr\nC\nh\nb\nA\n1)\nComo o volume do sólido gerado é 30π cm3,\ntemos:\n1––\n1––\nπ r2 . (10 – h) +\nπ r2 . h = 30π ⇒\n⇒\nπ r2 . 10 = 30π ⇒r2 = 9 ⇒r = 3cm\n1––\n2)\nDas relações métricas do triângulo retângulo\nABC, sendo a e b as medidas dos catetos BC e AC,\nrespectivamente, temos:\n⇔\na2 + b2 = 102\na2 + b2 =  100\na . b = 10 . 3\n2ab  =  60\n––––––\n–––– \u0006\na2 + 2ab + b2 = 160\n⇒(a + b)2 = 160 ⇒a + b = \b\n160 = 4\b\n3)\nO perímetro do triângulo ABC, em cm, é igual a\n10 + 4\b",
+    "figura_resolucao": "data/images/res_ita_2023_q46.png"
   },
   {
     "id": "ITA-2023-1F-Q47",
@@ -3562,7 +3666,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa A."
+    "resolucao": "Sendo f(x) = 0, temos:\nx––3\nx––3\ncos(x). \u0006cos \u0002 \u0003 + 2.sen (x)\u0007 – sen (x) sen \u0002 \u0003 – 2 = 0 ⇔\n⇔ cos(x). cos\u0002 \u0003 + 2.sen (x).cos (x) – sen (x).sen\u0002 \u0003 = 2 ⇔\nx––3\nx––3\n⇔ cos\u0002x + \u0003 + 2 . sen (x).cos (x) = 2 ⇔\nx––3\n⇔ cos\u0002\n\u0003 + sen (2x) = 2\n4x\n–––\nComo –1 ≤ cos \u0002\n\u0003 ≤ 1 e –1 ≤ sen(2x) ≤ 1, ∀x ∈\u0003,\n4x\n–––\ndevemos ter:\n4x\ncos \u0002–––\u0003 = 1\n4x\n\u0002–––\u0003 = n . 2π, n ∈\u0007\n⇔\n⇔\nπ\n(2x) = –– + n . 2π, n ∈\u0007\nsen (2x) = 1\n3π\nx = n . –––, n ∈\u0007\nπ\nx = –– + nπ, n ∈\u0007\n⇔\nNo intervalo I = ]–4π, 4π[, os valores de x são:\n3π\n3π\nx = –3π ou x = – ––– ou x = 0 ou x = ––– ou x = 3π\n15π\n11π                 7π                3π\nx = – –––– ou x = – –––– ou x = – ––– ou x = – ––– ou\n4                   4                   4\nπ\n5π             9π            13π\nx = –– ou x = ––– ou x = ––– ou x = ––––\n4                 4                 4\nLogo, a equação f(x) = 0 não admite soluções em I.",
+    "figura_resolucao": "data/images/res_ita_2023_q47.png"
   },
   {
     "id": "ITA-2023-1F-Q48",
@@ -3608,7 +3713,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa E."
+    "resolucao": "Ácido monoprótico fraco: HA\nEquação química da reação entre um ácido fraco e a\nbase forte:\nHA   +   Na+ +   OH– →Na+ +   A– +   H2O\nnHA\nnOH–\nnA–\nPonto de equivalência: nHA = nOH– = nA–\nTitulação de ácido fraco com base forte: o pH no\nponto de equivalência é maior que 7, devido à\nhidrólise do ânion (A–) proveniente de ácido fraco.\nnOH– = M . V ∴ nOH– = 0,5 mol/L . 0,025L\nnOH– = 0,0125 mol ∴ nA– = 0,0125mol\nA– +  HOH  →\n←HA   +  OH– Kh\nKh =\n∴ Kh =\n∴ Kh =  1,0 . 10–5\n1,0 . 10–14\n–––––––––\n1,0 . 10–9\nKw\n––––\nKa\n0,0125 mol\n––––––––––\n0,125L\nn\n––––\nV\n[A–] =\n∴ [A–]  =\n∴ [A–]  = 0,1 mol/L\nA–\n+  HOH    →\n←HA      +   OH–\ninício\n0,1\n–\n–\nreage e\nforma\nx\nx\nx\nequilíbrio\n0,1 – x\nx\nx\n0,1 – x\n0,1\nKh =\n∴ 1,0 . 10–5 =\nx . x\n–––––\n10–1\n[HA] [OH–]\n––––––––––\n[A–]\nx2 = 1,0 . 10–6\nx = [OH–] = 1,0 . 10–3 mol/L\npOH = –log [OH–] ∴pOH = 3\npH + pOH = 14∴pH = 11",
+    "figura_resolucao": "data/images/res_ita_2023_q49.png"
   },
   {
     "id": "ITA-2023-1F-Q50",
@@ -3631,7 +3737,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa C."
+    "resolucao": "–Ea\n\u0002––––\u0003\nRT\nk = Ae\nAdmitindo-se que A (fator de frequência) e Ea (energia\nde ativação) praticamente não se alteram com a\ntemperatura, temos, para duas temperaturas\ndiferentes:\n\u0002n\n=\n\u0002\n–\n\u0003 equação\nEa\n–––\nR\nk2\n–––\nk1\n–––\nT1\n–––\nT2\nk2\n–––\nk1\n= 1000\n\u0002n x = 2,3 log x\n\u0002n 1000 = 2,3 log 103\nT1 = 400K; T2 = 500K\nkcal\n––––––\nmol . K\ncal\n––––––\nmol . K\nR = 1,98\n∴R = 1,98 . 10–3\nSubstituindo-se na equação:\n2,3 . log 103 =\n\u0002\n–\n\u0003\n––––\n500\n––––\n400\nEa\n––––––––––\n1,98 . 10–3\n2,3 . 3 =\n\u0002\n\u0003\n5 – 4\n–––––\n2000\nEa\n––––––––––\n1,98 . 10–3\nEa = 27,32 kcal/mol",
+    "figura_resolucao": "data/images/res_ita_2023_q50.png"
   },
   {
     "id": "ITA-2023-1F-Q51",
@@ -3700,7 +3807,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa D."
+    "resolucao": "Para ocorrer a polimerização por condensação, os\nmonômeros devem apresentar duas funções orgânicas,\nproduzindo uma molécula pequena geralmente água.",
+    "figura_resolucao": "data/images/res_ita_2023_q53.png"
   },
   {
     "id": "ITA-2023-1F-Q54",
@@ -3746,7 +3854,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa A."
+    "resolucao": "Isótopo estável mais abundante do oxigênio: 16O\nDois isótopos mais estáveis do hidrogênio: 1H e 2H\nH2O (18g/mol): X\nH e O\nH2O2 (34g/mol): Y\nmH\n–––––\nmO\n–––\n–––\n1H1H16O:\n=\n=\n1H2H16O:\n=\nmH\n–––––\nmO\n–––\nX\n2H2H16O:\n=\n=\nmH\n–––––\nmO\n–––\n–––\nX: 1/8, 3/16 e 1/4\nmH\n–––––\nmO\n–––\n–––\n1H1H16O16O:\n=\n=\n1H2H16O16O:\n=\nmH\n–––––\nmO\n–––\nY\nmH\n–––––\nmO\n–––\n–––\n2H2H16O16O:\n=\n=\nY: 1/16, 3/32 e 1/8",
+    "figura_resolucao": "data/images/res_ita_2023_q55.png"
   },
   {
     "id": "ITA-2023-1F-Q56",
@@ -3769,7 +3878,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa C."
+    "resolucao": "X2 + Y2 →\n←2XY       KC = 16\nQ = quociente reacional\n(0,8)2\n––––––––\n0,4 . 0,4\n[XY]2\n––––––––\n[X2] [Y2]\nQ =\n∴ Q =\n= 4\nComo KC é maior que Q, a concen tração de XY\ndeverá aumentar, e diminuirão as concentrações de\nX2 e Y2.\nX2\n+        Y2\n→\n←\n2XY\ninício\n0,4\n0,4\n0,8\nreage  e\nforma\n–z\n–z\n+2z\nequilíbrio\n0,4 – z\n0,4 – z\n0,8 + 2z\n(0,8 + 2z)2\n–––––––––\n(0,4 – z)2\n[XY]2\n––––––––\n[X2] [Y2]\nKC =\n∴ 16 =\nTirando-se a raiz quadrada dos dois termos:\nz1 = 0,13\nz2 = 1,2\n0,8 + 2z\n––––––––\n0,4 – z\n± 4 =\n[XY] = 0,8 + 2z = 0,8 + 0,26 = 1,06\nAproximadamente 1,1 mol/L",
+    "figura_resolucao": "data/images/res_ita_2023_q56.png"
   },
   {
     "id": "ITA-2023-1F-Q57",
@@ -3838,7 +3948,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2023: Alternativa A."
+    "resolucao": "I)\nCorreta.\nOs ácidos orgânicos ou inorgânicos reagem com\nálcoois, produzindo ésteres e água (reação de\nesterificação), devido à substituição de um ou mais\nhidrogênios ionizáveis por grupos orgânicos.\nII) Correta.\nH3PO4: ácido triprótico\nH3PO4 + 3H2O →3H3O+ + PO4\n3–\nIII)Correta.\nO HCl é um ácido forte e,  ao ser dissolvido em\nágua, ioniza liberando íons H+ e Cl–, portanto,\naumenta-se a condutividade elétrica da solução.\nHCl(aq) →H+(aq) + Cl–(aq)\níons livres\nIV) Incorreta.\nα: grau de ionização\nnúmero de moléculas ionizadas\n––––––––––––––––––––––––––––––––\nnúmero total de moléculas dissolvidas\nα =",
+    "figura_resolucao": "data/images/res_ita_2023_q59.png"
   },
   {
     "id": "ITA-2023-1F-Q60",
@@ -5517,7 +5628,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "1)\nCálculo da distância percorrida pelo trem:\nV2 = V2\n0 + 2\u0004 \u0005s\n400 = 0 + 2 . 0,50 . D  ⇒D = 400m\n2)\nAplicação do TEC:\nτtotal = Δ Ecin\nm V2\n–––––\nτL + τR =\nm V2\n–––––\nτL – 0,05 τL =\nm V2\n–––––\n0,95 τL =\nm V2\n–––––\n0,95 . Fm . D =\n1,0 . 103\n–––––––\n0,95 . Fm . 400 =\n. 400\n1,0 . 103\n–––––––\nFm =\n(N)\n1,9\nFm \u0002 526N\nFm \u0002 5,3 . 102N",
+    "figura_resolucao": "data/images/res_ita_2021_q02.png"
   },
   {
     "id": "ITA-2021-1F-Q03",
@@ -5747,7 +5859,8 @@
     },
     "gabarito": "ANULADA",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa ANULADA."
+    "resolucao": "Estimemos que o diâmetro de uma maçã pode variar\nde 5,0 cm até 10 cm. Assim, adotaremos um valor\nmédio de 7,5 cm.\nO intervalo de tempo (Δt) para a travessia da maçã\nserá dado por:\n500\nd\n–––\n7,5 . 10–2\n–––––––––\nΔt =\n=\n(s)\nV\nΔt = 1,5 . 10–4 s\nUm valor razoável para a capacitância pode ser deter -\nminado igualando esse intervalo de tempo à con tante\nde tempo do circuito resistor/capacitor, assim:\nΔt = R C\n1,5 . 10–4 = 10 C\nC = 1,5 . 10–5 F\nC = 15 \u0003F",
+    "figura_resolucao": "data/images/res_ita_2021_q12.png"
   },
   {
     "id": "ITA-2021-1F-Q13",
@@ -5793,7 +5906,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa A."
+    "resolucao": "Na situação inicial, o fluxo magnético é nulo, pois a\nespira está paralela ao campo magnético.\nΦi = 0\nApós um quarto de volta, o fluxo magnético é máximo,\npois a espira está perpendicular ao campo magnético,\nassim:\nΦf = BA\nDa Lei da Faraday, em módulo, para uma bobina com\nN voltas, temos:\nN . ΔΦ\n–––––––\nN (BA – 0)\n––––––––––\n|EIND| =\n=\nΔt\nΔt\nN B A\n–––––––\nN BπR2\n–––––––\n|EIND| =\n=\nΔt\nΔt\n200 . 1,25 . 3,14 . (5,0 . 10–2)2\n––––––––––––––––––––––––––\n|EIND| =\n(V)\n15 . 10–3\n|EIND| \u0002 131 V",
+    "figura_resolucao": "data/images/res_ita_2021_q14.png"
   },
   {
     "id": "ITA-2021-1F-Q15",
@@ -5816,7 +5930,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa E."
+    "resolucao": "O foco narrativo de Memórias de um Sargento de\nMilícias é de terceira pessoa e  o narrador é  onisciente.\nEmbora ele não se identifique para os leitores, tece\nopiniões a respeito das personagens e revela o interior\ndelas a partir do emprego do discurso indireto livre e\nda onisciência.",
+    "figura_resolucao": "data/images/res_ita_2021_q15.png"
   },
   {
     "id": "ITA-2021-1F-Q16",
@@ -5839,7 +5954,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "O  pai primeiramente aconselha o filho  Janjão a ser\nfuturamente  um ser “ilustre”, “acima da obscuridade\ncomum” e logo depois preconiza que o filho chegue a\nconclusões que “sejam as já achadas por outros”.\nNesse caso, o que o pai propõe não é contraditório,\npois  ser ilustre numa sociedade tacanha do século\nXIX no Brasil  significa justamente ser medíocre, ter\na opinião que não afronte o senso comum. A\ninsignificância intelectual dessa sociedade  considera\nsuperior um ser que reflita essa  pequenez mental.",
+    "figura_resolucao": "data/images/res_ita_2021_q16.png"
   },
   {
     "id": "ITA-2021-1F-Q17",
@@ -5862,7 +5978,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa B."
+    "resolucao": "A obra de Manuel Antônio de Almeida caracteriza-se\ncomo um romance urbano de costumes,  abordando\ncom humor e ironia o estrato das camadas pobres e\nlivres no começo do século XIX.  A sociedade retratada\nnesse romance  vale-se  de artifícios muitas vezes\nilícitos e moralmente questionáveis para alcançar a\nrealização de seus desejos. Assim, a malandragem,  a\natitude protecionista e desonesta e os desmandos  são\ncomportamentos comuns a grupos e camadas sociais\nde toda ordem, como ocorre, por exemplo, com a\npersonagem principal, Leonardinho, o padre, a\ncomadre e até mesmo com o representante da lei e da\nordem, o Major Vidigal. Em célebre ensaio, o\nprofessor Antrônio Cândido definiu  a característica\ncentral desse romance: A dialética da malandragem.",
+    "figura_resolucao": "data/images/res_ita_2021_q17.png"
   },
   {
     "id": "ITA-2021-1F-Q18",
@@ -5885,7 +6002,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "Publicado em folhetins entre 1852 e 1853, Memórias\nde um Sargento de Milícias retrata o “tempo do Rei”,\nisto é, época da estada de D. João VI no Brasil, o\nperíodo joanino de que fala a questão. No tempo do\nrei  (1808-1821), e , segundo o narrador, no tempo em\nque o folhetim foi escrito ( 1852-1853), os compadrios,\nas trocas de influências, os pactos de interesse, os\nfavorecimentos e o “jeitinho brasileiro” eram o\nmecanismo que imperava no relacionamento social,\ntanto nos estratos  populares, como também nos mais\nelevados socioeconomicamente, embora o livro não\nfocalize a elite.",
+    "figura_resolucao": "data/images/res_ita_2021_q18.png"
   },
   {
     "id": "ITA-2021-1F-Q19",
@@ -5908,7 +6026,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa C."
+    "resolucao": "A narradora  protagonista do conto “Senhor Diretor”\né  Maria Emília, personagem recalcada sexualmente,\nressentida, virgem, sexagenária. A tensão psíquica\ndecorrente da repressão sexual percorre o conto, como\nse nota nessa passagem: “Cheguei  um dia  a ter uma\nmiragem  quando  em lugar da garrafinha escorrendo\nágua no anúncio, vi um fálus no fundo vermelho. Em\nereção, espumejando no céu de fogo-horror, horror,\nnunca vi  nenhum fálus mas a gente não acaba mesmo\nfazendo associações desse tipo?”",
+    "figura_resolucao": "data/images/res_ita_2021_q19.png"
   },
   {
     "id": "ITA-2021-1F-Q20",
@@ -5931,7 +6050,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa E."
+    "resolucao": "A fala dessa alternativa  é da senhora proprietária  da\ncasa no momento em  que ela  recebe as duas novas\nhóspedes do quarto para alugar. Esse discurso  não\ntem relação com a tensão desenvolvida no conto a qual\nse relaciona com  o fato de o esqueleto do anão, numa\ncaixa nesse quarto, ser misteriosamente remexido\ndurante a noite. Essa situação insólita e sobrenatural\nfaz com que as moças abandonem apavoradamente\nessa pensão.",
+    "figura_resolucao": "data/images/res_ita_2021_q20.png"
   },
   {
     "id": "ITA-2021-1F-Q21",
@@ -5954,7 +6074,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa C."
+    "resolucao": "Em “Teoria do medalhão”, o pai recomenda ao filho\nque empregue a chalaça, em vez da ironia, pois a\nironia exige reflexão, inteligência e originalidade, ao\ncontrário da chalaça,  que é  zombaria, piada comum\ne superficial que prescinde do intelecto e da origina -\nlidade.",
+    "figura_resolucao": "data/images/res_ita_2021_q21.png"
   },
   {
     "id": "ITA-2021-1F-Q22",
@@ -5977,7 +6098,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa A."
+    "resolucao": "Nesse conto, há uma ambiguidade insolúvel entre as\ncaracterísticas próprias de um animal e as de um ser\nhumano no tigre que vive na cobertura do\napartamento de Romana. Na alternativa e, há\nreferências apenas às características animais, não\nocorre o dualismo bicho/ser humano recorrente na\nnarrativa e indicado no título, Tigrela (Tigre mais ela).",
+    "figura_resolucao": "data/images/res_ita_2021_q22.png"
   },
   {
     "id": "ITA-2021-1F-Q23",
@@ -6000,7 +6122,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa E."
+    "resolucao": "O emprego que a Comadre consegue para\nLeonardinho na ucharia real, mesmo sendo de\nimportância pequena, ganha destaque por ser uma\ntarefa a ser executada no Paço Real, o que daria\nnotoriedade à personagem por estar próxima à Coroa\nPortuguesa, e daí o “verniz de respeitabilidade”.",
+    "figura_resolucao": "data/images/res_ita_2021_q23.png"
   },
   {
     "id": "ITA-2021-1F-Q24",
@@ -6023,7 +6146,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "Cada um dos adjetivos associados à Rosa (“Retra -\ntada”, “Anêmica”, “Laboriosa”, “Homeopata”,\n“Frágil”, “Manhosa”, “Leguminosa”, “Mística”,\n“Preconceituosa”,\n“Encadeada”,\n“Adocicada”,\n“Louca”, “Obesa”, “Obscura”, “Risonha”, “Parti -\ncular”, “Generosa”, “Rejeitada”, “Tranquila”, “Desa -\nparecida”) compõe considerações que o narrador de\n“A Sauna” faz a respeito das atitudes da mulher com\nquem se relacionou. Trata-se de opiniões tão genuínas\nque servem para que o narrador revele a sordidez do\npróprio caráter, como ocorre com o uso de “precon -\nceituosa” e “encadeada”, que verbalizam sua\ncondenação por ela ter-se mantido, durante algum\ntempo, virgem em nome de ideais tachados de\npequenos-burgueses; e “generosa”, “rejeitada” e\n“desaparecida”, que revelam a consciência que ele tem\nde ter se aproveitado do amor de Rosa para iniciar a\nascensão de sua carreira como pintor.",
+    "figura_resolucao": "data/images/res_ita_2021_q24.png"
   },
   {
     "id": "ITA-2021-1F-Q25",
@@ -6046,7 +6170,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa A."
+    "resolucao": "A única afirmação falsa é a II, já que não há elementos\nno trecho apresentado que revelem dubiedade,\nambiguidade, incerteza de sentido, pois o que a\npersonagem tem diante de si é a ossada de um anão, o\nque de fato é raro. Além disso, ela, como estudante de\nmedicina, teria acesso a ligaduras, material necessário\npara a montagem do esqueleto.",
+    "figura_resolucao": "data/images/res_ita_2021_q25.png"
   },
   {
     "id": "ITA-2021-1F-Q26",
@@ -6069,7 +6194,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa C."
+    "resolucao": "No conto \"Teoria do medalhão,\" o esforço que precisa\nser evitado, segundo o pai de Janjão, é o  de \"pensar\".\nSegundo o professor Alfredo Bosi, o significado de ser\num medalhão, nessa sociedade medíocre e anacrônica,\né alcançar a “plenitude do vazio interior”, ou seja, não\nhá a necessidade desse \"esforço inútil\", que é o de\nrefletir sobre algo ou ter ideias próprias, o importante\né apenas repetir o senso comum sem ferir pela\ninteligência a felicidade desse status quo alienante.",
+    "figura_resolucao": "data/images/res_ita_2021_q26.png"
   },
   {
     "id": "ITA-2021-1F-Q27",
@@ -6092,7 +6218,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa B."
+    "resolucao": "No conto “A presença”, um rapaz  de 25 anos decide\nficar em um hotel que é ocupado apenas por idosos  O\nporteiro, que também é idoso, aconselha o jovem a\ndesistir dessa intenção, pois não há nenhum atrativo\npara ele se hospedar lá, mas o moço segue  firme  e\nnão cede ao conselho do porteiro. O pronome\n“naquele” tem, portanto, a função de destacar a\nescolha ilógica  do jovem: hospedar-se num hotel em\nque só havia pessoas senis.",
+    "figura_resolucao": "data/images/res_ita_2021_q27.png"
   },
   {
     "id": "ITA-2021-1F-Q28",
@@ -6115,7 +6242,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa C."
+    "resolucao": "A afirmação II é falsa. Basta lembrar que, em “A\nSauna”, o banho a vapor funciona simbolicamente\ncomo uma tentativa de expurgo da má consciência,\nmas não do caráter sórdido do protagonista, como se\nele atingisse a redenção. Na verdade, o suor que expele\nseria uma metáfora da sua consciência pesada que ele\nquer racionalizar simplesmente apagando-a  ou pelo\nmenos diminuindo o impacto do relacionamento\nexplorador e oportunista que teve com Rosa\nA afirmação III é falsa, pois o leitor é plenamente\ncapaz de perceber, em “WM”, os atos praticados pelo\nprotagonista: não é a irmã que escreveu pela casa\n“WM”, mas ele; não é Wanda que ele conduz ao\nterapeuta, mas ele próprio que se trata nesse\nespecialista; ele é quem assassinou a chinesa Wing\ncom quem se relacionara.",
+    "figura_resolucao": "data/images/res_ita_2021_q28.png"
   },
   {
     "id": "ITA-2021-1F-Q29",
@@ -6138,7 +6266,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "Nesse conto, o narrador é o filho caçula, Wlado, que\nnão tem a consciência  da morte, que ocorreu há tanto\ntempo, da irmã,  Wanda. Esse fato trágico ocasionou\num bloqueio na percepção do narrador.",
+    "figura_resolucao": "data/images/res_ita_2021_q29.png"
   },
   {
     "id": "ITA-2021-1F-Q30",
@@ -6161,7 +6290,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa B."
+    "resolucao": "A diferença existente entre os anos de 1914 a 1918 e o\nmomento em que o texto foi escrito é que antes do\ntexto ser escrito, entre os anos citados, certos\nquestionamentos eram passíveis de punição.\nLê se no texto:\n“I, in my turn, began to cry: 'And what is civilization?'\nI did not cry aloud, be sure: at that time, for crying\nthings of that sort aloud, one was sent to prison”.",
+    "figura_resolucao": "data/images/res_ita_2021_q30.png"
   },
   {
     "id": "ITA-2021-1F-Q31",
@@ -6184,7 +6314,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa B."
+    "resolucao": "“Startled”, destacado no trecho mencionado pode ser\nentendido como atônito, estupefato, surpreso.",
+    "figura_resolucao": "data/images/res_ita_2021_q31.png"
   },
   {
     "id": "ITA-2021-1F-Q32",
@@ -6207,7 +6338,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa C."
+    "resolucao": "As declarações II e III estão corretas.\nSobre a afirmação II, lê-se no texto:\n“... when a man is so unfortunate as to exhibit\nuncommon abilities, he usually renders himself\nineligible for political honors or distinctions”.\nSobre a afirmação III, lê-se no texto:\n“Experience rather teaches the contrary.”",
+    "figura_resolucao": "data/images/res_ita_2021_q32.png"
   },
   {
     "id": "ITA-2021-1F-Q33",
@@ -6230,7 +6362,8 @@
     },
     "gabarito": "ANULADA",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa ANULADA."
+    "resolucao": "Há uma igualdade sentida entre demagogos e sua\naudiência, indicada por so successful as.\nNo trecho destacado, há uma estrutura tradicional de\nadjetivo no grau comparativo de igualdade – formada\npor so mais um adjetivo seguido de as –, a qual\ncorrobora com a mensagem principal que o texto\nobjetiva trazer. Para ser aceito pela sociedade é\nnecessário que se esteja na média.",
+    "figura_resolucao": "data/images/res_ita_2021_q33.png"
   },
   {
     "id": "ITA-2021-1F-Q34",
@@ -6253,7 +6386,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa E."
+    "resolucao": "Mentalidades medianas desaprovam tudo o que está\nalém do seu alcance\nNo texto: “ that minds of moderate calibre ordinarily\ncondemn everything which is beyond their range.”",
+    "figura_resolucao": "data/images/res_ita_2021_q34.png"
   },
   {
     "id": "ITA-2021-1F-Q35",
@@ -6276,7 +6410,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa E."
+    "resolucao": "Acreditar na TV é algo diferente de não se importar\ncom a TV.\nDevemos fazer uma ressalva sobre esta questão, pois,\no que o texto na verdade informa é que “dizer que\nvocê não acredita em televisão era diferente de dizer\nque você não se importava com ela”, diferentemente\ndo que consta na alternativa E.\nNo texto: “To say that you did not believe in television\nwas different from saying that you did not care for it.”",
+    "figura_resolucao": "data/images/res_ita_2021_q35.png"
   },
   {
     "id": "ITA-2021-1F-Q36",
@@ -6299,7 +6434,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa B."
+    "resolucao": "A ironia é encontrada na seguinte passagem: “Belief\nimplied that television had a master plan and that you\nwere against it. It also suggested that you thought too\nmuch.”\nO sarcasmo é retratado na seguinte passagem:\n\"That's exactly how I feel\", my mother said, and then\nmy parents watched the news, and whatever came on\nafter the news.”",
+    "figura_resolucao": "data/images/res_ita_2021_q36.png"
   },
   {
     "id": "ITA-2021-1F-Q37",
@@ -6322,7 +6458,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa E."
+    "resolucao": "O trecho destacado do segundo parágrafo poderia ser\nmais bem traduzido sem perda de sentido como:\nEu esperava que dar uma volta depois de escurecer eu\npudesse testemunhar um assassinato, mas meus\nvizinhos, na sua maioria, só ficavam sentados nas suas\nsalas de estar, vendo TV.\nTo hope:  esperar\nAfter dark: depois de escurecer\nTo witness: testemunhar\nMurder: assassinato\nNeighbors: vizinhos\nLiving rooms: salas de estar",
+    "figura_resolucao": "data/images/res_ita_2021_q37.png"
   },
   {
     "id": "ITA-2021-1F-Q38",
@@ -6345,7 +6482,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa A."
+    "resolucao": "O termo still, destacado no trecho do primeiro\nparágrafo. “It was more of a “see you later” situation,\nbut still I adopted my mother’s attitude (..)”, transmite\na ideia de concessão por parte do narrador.\nstill = ainda assim, mesmo assim",
+    "figura_resolucao": "data/images/res_ita_2021_q38.png"
   },
   {
     "id": "ITA-2021-1F-Q39",
@@ -6368,7 +6506,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "Sejam A e B matrizes quadradas de ordem ímpar,\nsendo A simétrica e B antissimétrica de mesma ordem.\nI)\nFalsa, pois (A + B)2 = A2 + AB + BA + B2\nII) Falsa, vide o exemplo a seguir\n\u0005\n\u0006\u0005\n\u0006 =\u0005\n\u0006\n–3\n–1\n–3\n–1\n–7\n–1\n–1\n–1\n–5\ne\n\u0005\n\u0006\u0005\n\u0006 =\u0005\n\u0006\n–3\n–1\n–3\n–1\n–7\n–1\n–1\n–1\n–5\nIII)Falsa, vide o exemplo a seguir\n\u0005\n\u0006\u0005\n\u0006 =\u0005\n\u0006\n–3\n–2\n–3\n–1\n–3\n–3\ne\n\u0005\n\u0006\u0005\n\u0006 =\u0005\n\u0006\n–1\n–3\n–2\n–3\n–3\n–3\nIV) Verdadeira\na) Sendo A e B matrizes quadradas de ordem\nímpar, temos que\nBt = – B ⇒det(Bt) = det(–B) ⇔\n⇔ det B = (– 1)2k + 1 . det B ⇔ det B = 0\nb) Supondo que A e B sejam matrizes quadradas\nde mesma ordem temos:\ndet(AB) = det A . det B = det A . 0 = 0",
+    "figura_resolucao": "data/images/res_ita_2021_q39.png"
   },
   {
     "id": "ITA-2021-1F-Q40",
@@ -6391,7 +6530,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa C."
+    "resolucao": "I)\nO gráfico da função f(x) = x2 + x + 1 é do tipo\ny\nx\ne portanto x2 + x + 1 > 0, ∀x ∈\u0003\nII) (x2 + x + 1)2x2 – x – 1 ≤ 1 ⇔\n⇔(x2 + x + 1)2x2 – x – 1 ≤ (x2 + x + 1)0 ⇔\nx2 + x + 1 ≥ 1\nx2 + x + 1 ≤ 1\n⇔\nou\n2x2 – x – 1 ≤ 0\n2x2 – x – 1 ≥ 0\nIII)\n⇔\nx2 + x + 1 ≥ 1\nx2 + x ≥ 0\n2x2 – x – 1 ≤ 0\n2x2 – x – 1 ≤ 0\nIV)\n⇔\nx2 + x + 1 ≤ 1\nx2 + x ≤ 0\n2x2 – x – 1 ≥ 0\n2x2 – x – 1 ≥ 0\nIV) S = \u0007–1; –\n\b \u0003 [0; 1]\n–––",
+    "figura_resolucao": "data/images/res_ita_2021_q40.png"
   },
   {
     "id": "ITA-2021-1F-Q41",
@@ -6414,7 +6554,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "Sendo P(4; 2\u0003\n2), Q(8; 0) e R, pertencente ao primeiro\nquadrante, vértices de um triângulo inscrito numa\ncircunferência de centro O(5; 0).\nTemos:\nI.\nO raio da circunferência é a distância  ⎯\nOQ = 3.\nII. Seja M o ponto médio do segmento ⎯\nPQ.\nLogo, M\u0005\n;\n\u0006 ⇒M (6, \u0003\n2).\n2\u0003\n2 + 0\n–––––––\n4 + 8\n–––––\nIII. Distância entre os pontos P e Q\n(4 – 8)2 + (2\u0003\n2 – 0)2\ndPQ =\n= 2\u0003\nIV. Distância entre os pontos O e M\ndOM =\n= \u0003\n(6 – 5)2 + (\u0003\n2 – 0)2\nComo o triângulo PQR é isóscele de base PQ, sua\naltura em relação à base PQ é RM = 3 – \u0003\n3.\nLogo, a área do triângulo PQR é igual a\nPQ . RM\n––––––––\n2\u0003\n6 . (3 – \u0003\n3)\n––––––––––––\n=\n= \u0003\n6 . (3 – \u0003\n3).",
+    "figura_resolucao": "data/images/res_ita_2021_q41.png"
   },
   {
     "id": "ITA-2021-1F-Q42",
@@ -6437,7 +6578,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "9x2 + 4y2 + 36x + 24y + 36 = 0\n(9x2 + 36x + 36) + (4y2 + 24y + 36) = 36\n9 . (x + 2)2 + 4 . (y + 3)2 = 36\n(y + 3)2\n–––––––\n(x + 2)2\n–––––––\n+\n= 1, que é equação de uma elipse\ncom centro C(– 2, – 3) em que a2 = 9 e b2 = 4 e,\nportanto, eixo maior vertical (2a = 6) e eixo menor\nhorizontal (2b = 4), conforme gráfico abaixo:\nO retângulo circunscrito à elipse tem vértices (0; 0),\n(– 4; 0), (– 4; – 6) e (0; – 6), e a circunferência\ncircunscrita ao retângulo tem centro C(– 2; – 3),\nraio R = dCP =\n= \u0003\n13  e\n(–2 – 0)2 + (–3 – 0)2\nequação (x + 2)2 + (y + 3)2 = 13.",
+    "figura_resolucao": "data/images/res_ita_2021_q42.png"
   },
   {
     "id": "ITA-2021-1F-Q43",
@@ -6483,7 +6625,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "Conforme o gráfico apresentado, as retas y = k1x,\ny = k2 . x e y = k3 . x intersectam S em 2 pontos.\nAssim, existem pelo menos 3 valores distintos de k\npara os quais n = 2.",
+    "figura_resolucao": "data/images/res_ita_2021_q44.png"
   },
   {
     "id": "ITA-2021-1F-Q45",
@@ -6506,7 +6649,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "I)\n7x = 59x – 1 ⇔x . log 7 = (x – 1) . log 59 ⇔\n⇔\n=\n⇔\n= log759\nx\n––––––\nx – 1\nlog 59\n––––––\nlog 7\nx\n–––––\nx – 1\nx\n–––––\nx – 1\nII) 2 < log759 < 3 ⇔ 2 <\n< 3\nx – 2x + 2\n––––––––––\nx – 1\nx\n–––––\nx – 1\nIII)\n> 2 ⇔\n> 0 ⇔\nx – 2\n–––––\nx – 1\n– x + 2\n––––––\nx – 1\n⇔\n> 0 ⇔\n< 0 ⇔\n⇔(x – 1)(x – 2) < 0 ⇔ 1 < x < 2\nIV) Sendo x > 1, temos:\n3––2\nx\n–––––\nx – 1\n< 3 ⇔x < 3x – 3 ⇔ 2x > 3 ⇔ x >\nV)\n⇔\n< x < 2 ⇒\n< x ≤\n1 < x < 2\nx > ––\n5––2\n4––3\n3––2",
+    "figura_resolucao": "data/images/res_ita_2021_q45.png"
   },
   {
     "id": "ITA-2021-1F-Q46",
@@ -6529,7 +6673,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa B."
+    "resolucao": "a\nc\nb\nd\n1)\nSeja A = \u0005\n\u0006\nx\ny\n2)\nA \u0005\n\u0006 = \u0005\n\u0006 ⇔\n⇔\u0005\n\u0006 \u0005\n\u0006 =\u0005\n\u0006 ⇔\nx\na\nc\nb\nd\ny\nx\n2a + 4b\n2c + 4d\na + 3b\nc + 3d\ny\n⇔\u0005\n\u0006 \u0005\n\u0006 ⇔\na + 3b = 1\n2a + 4b = x\nc + 3d = y\n2c + 4d = 0\n⇔\n3)\nA \u0005\n\u0006 = \u0005\n\u0006 ⇔\nx\ny + 1\n⇔\u0005\n\u0006 \u0005\n\u0006 = \u0005\n\u0006 ⇔\nx\ny + 1\na\nc\nb\nd\n⇔\u0005\n\u0006 = \u0005\n\u0006 ⇔\nx\ny + 1\n3a + 5b\n3c + 5d\n2a + 4b\n2c + 4d\n⇔\n2a + 4b = x\n3a + 5b = 3\n2c + 4d = y + 1\n3c + 5d = 1\n4)\nx –3\n\u0006\na + 3b = 1\n3a + 5b = 3\n––––––\n–– +\n– 4b = 0 ⇔b = 0 e a = 1\n5)\n⇔\n⇔\nc = – 2d\n3c + 5d = 1\n2c + 4d = 0\n3c + 5d = 1\n⇔ – 6d + 5d – 1 ⇔ d = – 1 e c = 2\n–1\na\nc\nb\nd\n6)\nA = \u0005\n\u0006 = \u0005\n\u0006\n7)\nAssim, o traço da matriz A é 1 + (–1) = 0",
+    "figura_resolucao": "data/images/res_ita_2021_q46.png"
   },
   {
     "id": "ITA-2021-1F-Q47",
@@ -6552,7 +6697,8 @@
     },
     "gabarito": "C",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa C."
+    "resolucao": "I)\nSendo a = x – r; b = x e c = x + r as medidas dos\nlados do triângulo, com r > 0, temos:\na + b + c = 87 ⇒x – r + x + x + r = 87 ⇒\n⇒3x = 87 ⇒x = 29 e, portanto, b = 29\nII) Como c é o maior lado e r ≠ 0, temos:\n–––\n–––\n< c <\n⇒29 < c < 43,5\nIII)Assim, como b = 29 e 29 < c < 43,5, podemos\nmontar a seguinte tabela.\nc\nb\na\nLogo, existem 14 triângulos que satisfazem as\ncondições do enunciado.",
+    "figura_resolucao": "data/images/res_ita_2021_q47.png"
   },
   {
     "id": "ITA-2021-1F-Q48",
@@ -6621,7 +6767,8 @@
     },
     "gabarito": "E",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa E."
+    "resolucao": "Como o dodecaedro regular possui 12 faces pen -\ntagonais, temos:\nI)\nA =\n⇒A = 30\n12 . 5\n––––––\nII) V – A + F = 2 ⇒V – 30 + 12 = 2 ⇒V = 20\nIII)Assim, a probabilidade p de escolhermos dois\nvértices distintos do dodecaedro e eles perten -\ncerem a uma mesma aresta, é dada por:\np =\n=\n=\n=\n=\nA\n––––––\nCV;2\n––––––\nC20;2\n–––\n––––\n190\n–––––––––\n20 . 19\n–––––––\n2!",
+    "figura_resolucao": "data/images/res_ita_2021_q50.png"
   },
   {
     "id": "ITA-2021-1F-Q51",
@@ -6644,7 +6791,8 @@
     },
     "gabarito": "A",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa A."
+    "resolucao": "Do total das 48 balas, reservando 3 para cada uma das\ntigelas, temos um total de 48 – 3 . 4 = 36 balas. Sejam\na, b, c, e d o número de balas excedentes das tigelas A,\nB, C e D, respectivamente.\nDo enunciado, tem-se:\na + b + c + d = 36\n⇒a + c = 36 – 2b\nb = d\nPara b = 0, tem-se: a + c = 36 – 0 = 36\nEssa equação admite 37 possibilidades naturais de\nsolução (0,36; 1,35; 2,34; …; 36,0)\nPara b = 1, tem-se: a + c = 36 – 2 = 34\nEssa equação admite 35 possibilidades naturais de\nsolução.\nPara b = 2, tem-se: a + c = 36 – 4 = 32\nEssa equação admite 33 possibilidades naturais de\nsolução.\nAumentando os valores de b em uma unidade, seu\núltimo valor inteiro será 18, pois: a + c = 36 – 36 = 0\nEssa equação admite 1 possibilidade natural de\nsolução (a = 0 e c = 0).\nOs números de possibilidades desses 19 casos formam\numa progressão aritmética de primeiro termo 37 e\núltimo termo 1. A soma da PA é dada por:\n38 . 19\n–––––––\n(37 + 1) . 19\n––––––––––––\nS =\n=\n= 361",
+    "figura_resolucao": "data/images/res_ita_2021_q51.png"
   },
   {
     "id": "ITA-2021-1F-Q52",
@@ -6667,7 +6815,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa B."
+    "resolucao": "I)\nSubtraindo 4 de cada um dos vértices do triângulo\nequilátero de lado \u0002 obtemos outro triângulo\nequilátero de lado \u0002 e vértices 0, z – 2 e z2 – 4.\nII)\nz2 – 4 = \u0002 . [cos (θ + 60°) + i . sen (θ + 60°)]\nz – 2 = \u0002 [cos θ + i . sen θ) ≠ 0\n⇒\n\u0002\nz2 – 4\n–––––––\n\u0002\n–––\n⇒\n=\n. [cos (θ + 60° – θ) +\nz – 2\n+ i . sen (θ + 60° – θ)] ⇔\n⇔\n= 1 . (cos 60° + i . sen 60°) ⇔\n(z + 2) (z – 2)\n––––––––––––\nz – 2\n⇔ z + 2 =\n+\ni\n–––\n\u0003\n–––––\n––– – 4\n+\n\u0003\n–––– – 0\nIII) \u0002 =\n=\n=\n=\n= \u0003\n49      3\n––– + –––\n––––\n4        4\nObs.: Caso os vértices z – 2 e z2 – 4 estivessem em\nposições contrárias, obteríamos o mesmo resultado.",
+    "figura_resolucao": "data/images/res_ita_2021_q52.png"
   },
   {
     "id": "ITA-2021-1F-Q53",
@@ -6690,7 +6839,8 @@
     },
     "gabarito": "B",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa B."
+    "resolucao": "Seja p(x) um polinômio de coeficientes inteiros tal que\np(51) = 391\np(x)\n391\nx – 51\nI)\np(51) = 391 ⇒\n⇔\nQ(x)\n⇔p(x) = (x – 51) . Q(x) + 391, sendo Q(x) um\npolinômio de coeficientes inteiros.\nII) Para x = 3, temos:\np(3) = – 48 . Q(3) + 391\nIII)0 ≤ p(3) < 12 ⇔0 ≤ – 48 . Q(3) + 391 < 12\n⇔ – 391 ≤ – 48 . Q(3) < – 379 ⇔\n⇔ –\n≥ Q(3) >\n⇔\n– 391\n––––––\n– 379\n––––––\n– 48\n– 48\n⇔ 7,89 < Q(3) ≤ 8,14… e Q(3) ∈\u0005 ⇔Q(3) = 8\nIV) Substituindo em (II), temos:\np(3) = – 48 . 8 + 391 ⇔p(3) = 7",
+    "figura_resolucao": "data/images/res_ita_2021_q53.png"
   },
   {
     "id": "ITA-2021-1F-Q54",
@@ -6805,7 +6955,8 @@
     },
     "gabarito": "D",
     "pulo_do_gato": "Use '✨ Copiar Prompt p/ Gemini Pro' para dissecar a questão em LaTeX.",
-    "resolucao": "Gabarito Oficial ITA 2021: Alternativa D."
+    "resolucao": "I)\nCorreta.\nA energia de ligação aumenta, quando aumenta a\nmultiplicidade das ligações, quando diminui o raio\natômico e quando se tem ressonância.\nO comprimento de ligação aumenta com o\naumento do raio atômico, diminui com a multipli -\ncidade e, no caso da ressonância, o valor é inter -\nmediário em relação à simples ou dupla-ligação.\nII) Correta.\nCarga formal de um átomo, em uma dada estru -\ntura de Lewis, é a carga que ele teria se as ligações\nfossem perfeitamente covalentes e o átomo tivesse\nexatamente a metade dos elétrons compartilhados\ndas ligações.\nIII)Errada.\nO poder de polarização de um cátion é maior\nquanto menor for o seu volume e maior for sua\ncarga. A interação deste cátion com um ânion\naltamente polarizável tende a apresentar um\nmaior caráter covalente.\nIV) Correta.\nA ressonância é uma fusão de estruturas que têm\no mesmo arranjo de átomos (geometria) e\narranjos diferentes de elétrons. Ela distribui o\ncaráter de ligação múltipla sobre uma molécula e\ndiminui sua energia.",
+    "figura_resolucao": "data/images/res_ita_2021_q58.png"
   },
   {
     "id": "ITA-2021-1F-Q59",
