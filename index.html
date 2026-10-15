@@ -224,7 +224,7 @@
 
             ${figSrc ? `
               <div class="my-4 bg-white p-3 rounded-xl inline-block shadow border border-slate-700">
-                <img src="${figSrc}" class="max-h-80 object-contain rounded" alt="Figura ${q.id}"/>
+                <img onerror="this.parentElement.style.display='none'" src="${figSrc}" class="max-h-80 object-contain rounded" alt="Figura ${q.id}"/>
               </div>
             ` : ""}
 
