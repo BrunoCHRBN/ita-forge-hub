@@ -4,16 +4,12 @@ import json
 import requests
 import pymupdf as fitz
 from pathlib import Path
-from collections import Counter
-
-EXAM_YEAR = os.getenv("EXAM_YEAR", "2025").strip()
-EXAM_BANCA = os.getenv("EXAM_BANCA", "ITA").strip().upper()
-INCLUDE_LANGUAGES = os.getenv("INCLUDE_LANGUAGES", "true").lower() == "true"
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 DATA_DIR = BASE_DIR / "data"
 IMG_DIR = DATA_DIR / "images"
 DB_FILE = DATA_DIR / "questions.json"
+D = "\x24"
 
 HEADERS = {
     "User-Agent": "Mozilla/5.0 (X11; Linux x86_64; rv:128.0) Gecko/20100101 Firefox/128.0"
@@ -21,36 +17,36 @@ HEADERS = {
 
 VERIFIED_LATEX_OVERRIDES = {
     "ITA-2025-1F-Q18": {
-        "enunciado": "Um recipiente de paredes diatérmicas é dividido ao meio por um êmbolo de área $A$. O lado esquerdo do êmbolo é conectado ao recipiente por uma mola ideal de constante elástica $k$, em uma região onde há vácuo. No lado direito do êmbolo, há um gás ideal a uma pressão inicial $P_0$. Então, uma quantidade $Q$ de calor é transferida a esse gás por um processo reversível e isotérmico.\n\nAssinale a alternativa que fornece a diferença entre o comprimento natural da mola e o seu comprimento ao final do processo descrito.",
+        "enunciado": f"Um recipiente de paredes diatérmicas é dividido ao meio por um êmbolo de área {D}A{D}. O lado esquerdo do êmbolo é conectado ao recipiente por uma mola ideal de constante elástica {D}k{D}, em uma região onde há vácuo. No lado direito do êmbolo, há um gás ideal a uma pressão inicial {D}P_0{D}. Então, uma quantidade {D}Q{D} de calor é transferida a esse gás por um processo reversível e isotérmico.\n\nAssinale a alternativa que fornece a diferença entre o comprimento natural da mola e o seu comprimento ao final do processo descrito.",
         "alternativas": {
-            "A": "$\\sqrt{\\frac{2Q}{k}}$",
-            "B": "$\\sqrt{\\frac{2Q}{k}} + \\frac{P_0 A}{k}$",
-            "C": "$\\sqrt{\\frac{Q}{2k}} + \\frac{P_0 A}{k}$",
-            "D": "$\\sqrt{\\frac{Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$",
-            "E": "$\\sqrt{\\frac{2Q}{k} + \\left(\\frac{P_0 A}{k}\\right)^2}$"
+            "A": f"{D}\\sqrt{{\\frac{{2Q}}{{k}}}}{D}",
+            "B": f"{D}\\sqrt{{\\frac{{2Q}}{{k}}}} + \\frac{{P_0 A}}{{k}}{D}",
+            "C": f"{D}\\sqrt{{\\frac{{Q}}{{2k}}}} + \\frac{{P_0 A}}{{k}}{D}",
+            "D": f"{D}\\sqrt{{\\frac{{Q}}{{k}} + \\left(\\frac{{P_0 A}}{{k}}\\right)^2}}{D}",
+            "E": f"{D}\\sqrt{{\\frac{{2Q}}{{k}} + \\left(\\frac{{P_0 A}}{{k}}\\right)^2}}{D}"
         }
     },
     "ITA-2025-1F-Q19": {
-        "enunciado": "O estetoscópio é um instrumento amplamente utilizado por profissionais de saúde para auscultar sons internos do corpo humano, como batimentos cardíacos e fluxo sanguíneo. Considere o modelo simplificado de um estetoscópio, ilustrado na figura, composto de um cone truncado de bases circulares, cuja base maior possui raio $R_1$, e a base menor, raio $R_2$. Nos cilindros, perfeitamente conectados em cada base, há pistões finos e rígidos de massa desprezível, que podem se mover para cima e para baixo sem atrito. Considere que a onda sonora atinge toda a superfície do pistão maior e que sua energia é transferida integralmente para o pistão menor.\n\nAssinale a alternativa que corresponde à amplificação, em $\\text{dB}$, em função dos raios das extremidades do estetoscópio.",
+        "enunciado": f"O estetoscópio é um instrumento amplamente utilizado por profissionais de saúde para auscultar sons internos do corpo humano, como batimentos cardíacos e fluxo sanguíneo. Considere o modelo simplificado de um estetoscópio, ilustrado na figura, composto de um cone truncado de bases circulares, cuja base maior possui raio {D}R_1{D}, e a base menor, raio {D}R_2{D}. Nos cilindros, perfeitamente conectados em cada base, há pistões finos e rígidos de massa desprezível, que podem se mover para cima e para baixo sem atrito. Considere que a onda sonora atinge toda a superfície do pistão maior e que sua energia é transferida integralmente para o pistão menor.\n\nAssinale a alternativa que corresponde à amplificação, em {D}\\text{{dB}}{D}, em função dos raios das extremidades do estetoscópio.",
         "alternativas": {
-            "A": "$10 \\log\\left(\\frac{R_1}{R_2}\\right)$",
-            "B": "$20 \\log\\left(\\frac{R_1}{R_2}\\right)$",
-            "C": "$20 \\log\\left(\\frac{R_1}{R_2}\\right)^2$",
-            "D": "$10 \\log\\left(\\frac{R_2}{R_1}\\right)^2$",
-            "E": "$20 \\log\\left(\\frac{R_2}{R_1}\\right)$"
+            "A": f"{D}10 \\log\\left(\\frac{{R_1}}{{R_2}}\\right){D}",
+            "B": f"{D}20 \\log\\left(\\frac{{R_1}}{{R_2}}\\right){D}",
+            "C": f"{D}20 \\log\\left(\\frac{{R_1}}{{R_2}}\\right)^2{D}",
+            "D": f"{D}10 \\log\\left(\\frac{{R_2}}{{R_1}}\\right)^2{D}",
+            "E": f"{D}20 \\log\\left(\\frac{{R_2}}{{R_1}}\\right){D}"
         }
     },
     "ITA-2025-1F-Q21": {
-        "enunciado": "Considere um tanque cúbico metálico de lado $L + a$ ($L \\gg a$), aberto no topo, preenchido com água e óleo. O tanque contém, no seu interior, um cubo metálico de lado $L$, com $5$ de seus lados totalmente submersos e o outro emerso na superfície, centralizado com a face aberta do tanque. Uma diferença de potencial de $V$ é estabelecida entre o cubo e o tanque, de forma que o sistema atue como um capacitor.\n\nA vista frontal do sistema encontra-se ilustrada na figura ao lado. Sabe-se que o óleo possui uma densidade de $d_o = 0{,}90\\text{ g/cm}^3$ e constante dielétrica $\\kappa_o$, que a água tem uma densidade igual a $d_a = 1{,}0\\text{ g/cm}^3$ e constante dielétrica $\\kappa_a$ e que a densidade do cubo é $d_c = 0{,}92\\text{ g/cm}^3$. Desconsiderando efeitos de borda, assinale a alternativa que fornece a capacitância do sistema."
+        "enunciado": f"Considere um tanque cúbico metálico de lado {D}L + a{D} ({D}L \\gg a{D}), aberto no topo, preenchido com água e óleo. O tanque contém, no seu interior, um cubo metálico de lado {D}L{D}, com {D}5{D} de seus lados totalmente submersos e o outro emerso na superfície, centralizado com a face aberta do tanque. Uma diferença de potencial de {D}V{D} é estabelecida entre o cubo e o tanque, de forma que o sistema atue como um capacitor.\n\nA vista frontal do sistema encontra-se ilustrada na figura ao lado. Sabe-se que o óleo possui uma densidade de {D}d_o = 0{{,}}90\\text{{ g/cm}}^3{D} e constante dielétrica {D}\\kappa_o{D}, que a água tem uma densidade igual a {D}d_a = 1{{,}}0\\text{{ g/cm}}^3{D} e constante dielétrica {D}\\kappa_a{D} e que a densidade do cubo é {D}d_c = 0{{,}}92\\text{{ g/cm}}^3{D}. Desconsiderando efeitos de borda, assinale a alternativa que fornece a capacitância do sistema."
     }
 }
 
 def fix_portuguese_accents_and_reflow(raw: str, is_alternative: bool = False) -> str:
     text = raw.replace("[[BLOCK_BREAK]]", "\n\n")
 
-    text = re.sub(r"(?<=\s)´\s*e(?=\s|[.,;:!?\)]|$)", "é", text)
-    text = re.sub(r"(?<=\s)`\s*a(?=\s|[.,;:!?\)]|$)", "à", text)
-    text = re.sub(r"(?<=\s)´\s*a(?=\s|[.,;:!?\)]|$)", "á", text)
+    text = re.sub(r"(?<=\s)´\s*e(?=\s|[.,;:!?\)]|\Z)", "é", text)
+    text = re.sub(r"(?<=\s)`\s*a(?=\s|[.,;:!?\)]|\Z)", "à", text)
+    text = re.sub(r"(?<=\s)´\s*a(?=\s|[.,;:!?\)]|\Z)", "á", text)
 
     accent_map = [
         (r"[˜~]\s*a", "ã"), (r"[˜~]\s*o", "õ"),
@@ -105,17 +101,17 @@ def fix_portuguese_accents_and_reflow(raw: str, is_alternative: bool = False) ->
 
     text = "\n\n".join(cleaned_paras)
 
-    if not is_alternative and "$" not in text:
-        text = re.sub(r"\b([RPVTdv])([012])\b", r"$\1_\2$", text)
-        text = re.sub(r"(\d+[,.]?\d*)\s*g/cm3\b", r"$\1\\text{ g/cm}^3$", text)
-        text = re.sub(r"(\d+[,.]?\d*)\s*m/s2\b", r"$\1\\text{ m/s}^2$", text)
-        text = text.replace("L >>a", "$L \\gg a$").replace("L >> a", "$L \\gg a$")
-        text = text.replace("κo", "$\\kappa_o$").replace("κa", "$\\kappa_a$")
+    if not is_alternative and D not in text:
+        text = re.sub(r"\b([RPVTdv])([012])\b", f"{D}\\1_\\2{D}", text)
+        text = re.sub(r"(\d+[,.]?\d*)\s*g/cm3\b", f"{D}\\1\\\\text{{ g/cm}}^3{D}", text)
+        text = re.sub(r"(\d+[,.]?\d*)\s*m/s2\b", f"{D}\\1\\\\text{{ m/s}}^2{D}", text)
+        text = text.replace("L >>a", f"{D}L \\gg a{D}").replace("L >> a", f"{D}L \\gg a{D}")
+        text = text.replace("κo", f"{D}\\kappa_o{D}").replace("κa", f"{D}\\kappa_a{D}")
 
     return re.sub(r"[ \t]{2,}", " ", text).strip()
 
-def get_subject(year: int, q_num: int) -> str:
-    if EXAM_BANCA == "IME":
+def get_subject(banca: str, year: int, q_num: int) -> str:
+    if banca == "IME":
         if 1 <= q_num <= 15: return "Matemática"
         if 16 <= q_num <= 30: return "Física"
         return "Química"
@@ -138,11 +134,6 @@ def get_subject(year: int, q_num: int) -> str:
         return "Química"
 
 def discover_and_fetch_pdfs(banca: str, year: str, prova_dest: Path, gab_dest: Path) -> tuple[bool, bool, bool]:
-    """
-    Busca automaticamente o PDF da prova (ou da resolução comentada completa)
-    testando URLs diretas e varrendo a página de índice se necessário.
-    Retorna: (baixou_prova, baixou_gabarito, eh_pdf_comentado)
-    """
     b = banca.lower()
     direct_prova_urls = [
         (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b}{year}_1fase_prova.pdf", False),
@@ -150,10 +141,10 @@ def discover_and_fetch_pdfs(banca: str, year: str, prova_dest: Path, gab_dest: P
         (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b}{year}_1fase.pdf", True),
         (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/1fase/{b.upper()}{year}_1fase.pdf", True),
         (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/{b}{year}_1fase.pdf", True),
+        (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/{b.upper()}{year}_1fase.pdf", True),
         (f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{year}/{b}{year}_prova.pdf", False),
     ]
 
-    # Também descobre links dinâmicos na página .aspx daquele ano se existir
     aspx_pages = [
         f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{b}{year}_1fase.aspx",
         f"https://www.curso-objetivo.br/vestibular/resolucao-comentada/{b}/{b}{year}.aspx",
@@ -165,7 +156,7 @@ def discover_and_fetch_pdfs(banca: str, year: str, prova_dest: Path, gab_dest: P
                 for href in re.findall(r'href=["\']([^"\']+\.pdf)["\']', r.text, re.IGNORECASE):
                     full_u = href if href.startswith("http") else f"https://www.curso-objetivo.br{href if href.startswith('/') else '/' + href}"
                     is_commented = "_prova" not in full_u.lower() and "_gabarito" not in full_u.lower()
-                    if "gabarito" not in full_u.lower():
+                    if "gabarito" not in full_u.lower() and ("1fase" in full_u.lower() or b in full_u.lower()):
                         direct_prova_urls.append((full_u, is_commented))
         except Exception:
             pass
@@ -216,8 +207,7 @@ def parse_gabarito_pdf(gab_pdf: Path) -> dict[int, str]:
             gab_map[q_num] = "ANULADA" if "*" in ans else ans
     return gab_map
 
-def safe_extract_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str], dict[int, list[tuple[int, fitz.Rect]]]]:
-    """Recorte blindado contra retângulos vazios ou invertidos (corrige o ITA 2022)."""
+def safe_extract_figures(doc: fitz.Document, banca: str, year: str) -> tuple[dict[int, str], dict[int, list[tuple[int, fitz.Rect]]]]:
     q_figures = {}
     q_fig_rects = {}
 
@@ -229,9 +219,11 @@ def safe_extract_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str],
         for b in blocks:
             x0, y0, x1, y1, text, *_ = b
             cleaned = fix_portuguese_accents_and_reflow(text)
-            m = re.search(r"(?:Quest(?:ão|ao)\s*(\d{1,2})\s*[\.\-]|^\s*(\d{1,2})\.\s+[A-ZÁÉÍÓÚÂÊÔÃÕ])", cleaned, re.IGNORECASE)
+            m = re.search(r"Quest(?:ão|ao)\s*(\d{1,2})\s*[\.\-]", cleaned, re.IGNORECASE)
+            if not m:
+                m = re.search(r"^\s*(\d{1,2})\.\s+[A-ZÁÉÍÓÚÂÊÔÃÕ]", cleaned)
             if m:
-                qn = int(m.group(1) or m.group(2))
+                qn = int(m.group(1))
                 if 1 <= qn <= 75:
                     q_anchors.append((qn, y0, x0))
             if len(cleaned) > 35:
@@ -281,7 +273,6 @@ def safe_extract_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str],
                 min(page.rect.width, union_r.x1 + 8),
                 min(page.rect.height, union_r.y1 + 8)
             )
-            # Interseção segura com os limites da página
             clip = clip & page.rect
             if clip.is_empty or clip.width < 22 or clip.height < 22:
                 continue
@@ -289,7 +280,7 @@ def safe_extract_figures(doc: fitz.Document, year: str) -> tuple[dict[int, str],
             try:
                 pix = page.get_pixmap(clip=clip, dpi=200)
                 if pix.width >= 20 and pix.height >= 20:
-                    fname = f"{EXAM_BANCA.lower()}_{year}_q{q_num:02d}.png"
+                    fname = f"{banca.lower()}_{year}_q{q_num:02d}.png"
                     pix.save(str(IMG_DIR / fname))
                     q_figures[q_num] = f"data/images/{fname}"
                     q_fig_rects.setdefault(q_num, []).append((p_idx, clip))
@@ -318,23 +309,16 @@ def extract_structured_blocks_text(doc: fitz.Document, q_fig_rects: dict[int, li
             if inside_fig and not re.search(r"Quest", text, re.IGNORECASE):
                 continue
             clean_b = text.strip()
-            if re.match(r"^\d{1,2}$", clean_b):
+            if re.match(r"^\d{1,2}\Z", clean_b):
                 continue
             blocks_out.append(clean_b)
     return "\n[[BLOCK_BREAK]]\n".join(blocks_out)
 
 def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None, str | None, str | None]:
-    """
-    Separa a Alternativa E de:
-    - Resolução Comentada (caso seja um PDF comentado como ITA 2020/2019 ou IME)
-    - Gabarito embutido na resolução ('Resposta: C')
-    - Texto Base da próxima questão
-    """
     res_extracted = None
     ans_extracted = None
 
-    # Se houver bloco 'Resolução' dentro do texto após a alternativa E (padrão Curso Objetivo comentado)
-    res_split = re.split(r"(?:^|\n|\[\[BLOCK_BREAK\]\])\s*Resolu[çc][ãa]o\b", raw_alt_e, maxsplit=1, flags=re.IGNORECASE)
+    res_split = re.split(r"\s*Resolu[çc][ãa]o\b", raw_alt_e, maxsplit=1, flags=re.IGNORECASE)
     if len(res_split) == 2:
         raw_alt_e = res_split[0]
         res_tail = res_split[1]
@@ -343,7 +327,6 @@ def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None, str
             ans_extracted = m_ans.group(1).upper()
         res_extracted = fix_portuguese_accents_and_reflow(res_tail)
 
-    section_pat = r"(?:^|\[\[BLOCK_BREAK\]\]|\n)\s*(?:L[ÍI]NGUA\s+PORTUGUESA|L[ÍI]NGUA\s+INGLESA|PORTUGU[ÊE]S|INGL[ÊE]S|MATEM[ÁA]TICA|F[ÍI]SICA|QU[ÍI]MICA|F\s*´\s*I\s*S\s*I\s*C\s*A|Q\s*U\s*´\s*I\s*M\s*I\s*C\s*A)\s*(?=\[\[BLOCK_BREAK\]\]|\n|$)"
     blocks = [b.strip() for b in raw_alt_e.split("[[BLOCK_BREAK]]") if b.strip()]
     if not blocks:
         return "", None, res_extracted, ans_extracted
@@ -351,54 +334,33 @@ def split_alt_e_and_next_base_text(raw_alt_e: str) -> tuple[str, str | None, str
     alt_e_blocks = [blocks[0]]
     remaining_blocks = blocks[1:]
 
-    inline_cue = re.split(
-        r"\n\s*(?=(?:As\s+quest[õo]es|Leia\s+o\s+texto|Considere\s+o\s+texto|O\s+texto\s+a\s+seguir|Read\s+the\s+text|Read\s+the\s+following|Texto\s+[I1V]|TEXTO\s+[I1V]|O\s+enunciado\s+a\s+seguir))",
-        alt_e_blocks[0],
-        maxsplit=1,
-        flags=re.IGNORECASE
-    )
-    if len(inline_cue) == 2:
-        alt_e_blocks = [inline_cue[0].strip()]
-        remaining_blocks.insert(0, inline_cue[1].strip())
-
     cleaned_remaining = []
     for rb in remaining_blocks:
-        rb_clean = re.sub(section_pat, "", rb, flags=re.IGNORECASE).strip()
-        if not rb_clean or re.match(r"^\d{1,2}$", rb_clean):
+        if re.match(r"^(?:L[ÍI]NGUA|PORTUGU[ÊE]S|INGL[ÊE]S|MATEM[ÁA]TICA|F[ÍI]SICA|QU[ÍI]MICA|\d{1,2})\Z", rb.strip(), re.IGNORECASE):
             continue
-        cleaned_remaining.append(rb_clean)
+        cleaned_remaining.append(rb.strip())
 
     alt_e_final = fix_portuguese_accents_and_reflow(" ".join(alt_e_blocks), is_alternative=True)
     if not cleaned_remaining:
         return alt_e_final, None, res_extracted, ans_extracted
 
     candidate_base = fix_portuguese_accents_and_reflow("\n\n".join(cleaned_remaining), is_alternative=False)
-    has_cue = bool(re.search(
-        r"(?:quest[õo]es|texto|leia|considere|fragmento|excerto|poema|passagem|enunciado|figura\s+a\s+seguir|read\s+the|following|passage|article|adapted\s+from|dispon[íi]vel\s+em|fonte:)",
-        candidate_base,
-        re.IGNORECASE
-    ))
-    if has_cue or len(candidate_base) > 95:
+    if len(candidate_base) > 90:
         return alt_e_final, candidate_base, res_extracted, ans_extracted
 
     return alt_e_final, None, res_extracted, ans_extracted
 
 def detect_explicit_question_range(base_text: str) -> tuple[int, int] | None:
-    patterns = [
-        r"(?:quest[õo]es|itens|questions?)\s*(?:de\s+|from\s+|n[úu]meros?\s+)?(\d{1,2})\s*(?:a|at[ée]|e|to|through|and|\-)\s*(\d{1,2})",
-        r"responder\s+[àa]s\s+quest[õo]es\s+(?:de\s+)?(\d{1,2})\s*(?:a|at[ée]|e)\s*(\d{1,2})"
-    ]
-    for pat in patterns:
-        m = re.search(pat, base_text, re.IGNORECASE)
-        if m:
-            start_q, end_q = int(m.group(1)), int(m.group(2))
-            if 1 <= start_q <= end_q <= 75:
-                return (start_q, end_q)
+    m = re.search(r"(?:quest[õo]es|questions?)\s*(?:de\s+|from\s+)?(\d{1,2})\s*(?:a|at[ée]|e|to|\-)\s*(\d{1,2})", base_text, re.IGNORECASE)
+    if m:
+        start_q, end_q = int(m.group(1)), int(m.group(2))
+        if 1 <= start_q <= end_q <= 75:
+            return (start_q, end_q)
     return None
 
-def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str], is_commented_pdf: bool = False) -> list[dict]:
+def parse_exam(prova_pdf: Path, banca: str, year: str, gab_map: dict[int, str], include_lang: bool) -> list[dict]:
     doc = fitz.open(prova_pdf)
-    q_figures, q_fig_rects = safe_extract_figures(doc, year)
+    q_figures, q_fig_rects = safe_extract_figures(doc, banca, year)
     structured_text = extract_structured_blocks_text(doc, q_fig_rects)
     doc.close()
 
@@ -411,10 +373,9 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str], is_commented
     )
     raw_matches = q_pattern.findall(normalized_full)
 
-    # Fallback para PDFs comentados (como ITA 2020/2019 e IME) onde as questões começam por "1. ", "2. "
     if len(raw_matches) < 10:
         q_pattern_num = re.compile(
-            r"(?:^|\[\[BLOCK_BREAK\]\]|\n)\s*(\d{1,2})\.\s+([A-ZÁÉÍÓÚÂÊÔÃÕ\(].*?)(?=(?:\[\[BLOCK_BREAK\]\]|\n)\s*\d{1,2}\.\s+[A-ZÁÉÍÓÚÂÊÔÃÕ\(]\vert{}\Z)", re.DOTALL ) raw_matches = [m for m in q_pattern_num.findall(normalized_full) if 1 <= int(m[0]) <= 75]      pending_base_by_qnum: dict[int, str] = {} questions = [] seen_qnums = set()      for idx, (num_str, raw_body) in enumerate(raw_matches): q_num = int(num_str) if q_num in seen_qnums: continue seen_qnums.add(q_num)          next_q_num = int(raw_matches[idx + 1][0]) if idx + 1 < len(raw_matches) else q_num + 1 materia = get_subject(year_int, q_num)          # Suporta tanto A( ) quanto a) ... e) parts = re.split(r"(?:^\vert{}\n\vert{}\s\vert{}\[\[BLOCK_BREAK\]\])([A-E])\s*\(\s*\)\s*", raw_body.strip()) if len(parts) < 11: parts = re.split(r"(?:^\vert{}\n\vert{}\s\vert{}\[\[BLOCK_BREAK\]\])([a-eA-E])\)\s+", raw_body.strip())
+            r"(?:^|\n)\s*(\d{1,2})\.\s+([A-ZÁÉÍÓÚÂÊÔÃÕ\(].*?)(?=\n\s*\d{1,2}\.\s+[A-ZÁÉÍÓÚÂÊÔÃÕ\(]\vert{}\Z)", re.DOTALL ) raw_matches = [m for m in q_pattern_num.findall(normalized_full) if 1 <= int(m[0]) <= 75]      pending_base_by_qnum: dict[int, str] = {} questions = [] seen_qnums = set()      for idx, (num_str, raw_body) in enumerate(raw_matches): q_num = int(num_str) if q_num in seen_qnums: continue seen_qnums.add(q_num)          next_q_num = int(raw_matches[idx + 1][0]) if idx + 1 < len(raw_matches) else q_num + 1 materia = get_subject(banca, year_int, q_num)          parts = re.split(r"\s([A-E])\s*\(\s*\)\s*", " " + raw_body.strip()) if len(parts) < 11: parts = re.split(r"\s([a-eA-E])\)\s+", " " + raw_body.strip())
 
         enunciado = fix_portuguese_accents_and_reflow(parts[0])
         alternativas = {k: "Consulte o enunciado / figura" for k in ("A", "B", "C", "D", "E")}
@@ -437,7 +398,7 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str], is_commented
                 elif letter in alternativas:
                     alternativas[letter] = fix_portuguese_accents_and_reflow(alt_text, is_alternative=True)
 
-        q_id = f"{EXAM_BANCA}-{year}-1F-Q{q_num:02d}"
+        q_id = f"{banca}-{year}-1F-Q{q_num:02d}"
         if q_id in VERIFIED_LATEX_OVERRIDES:
             ov = VERIFIED_LATEX_OVERRIDES[q_id]
             if "enunciado" in ov:
@@ -447,9 +408,9 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str], is_commented
 
         gabarito = gab_map.get(q_num) or embedded_ans or "A"
         resolucao_final = custom_res if custom_res else (
-            f"Gabarito Oficial {EXAM_BANCA} {year}: Alternativa {gabarito}."
+            f"Gabarito Oficial {banca} {year}: Alternativa {gabarito}."
             if gabarito != "ANULADA"
-            else f"Questão Oficialmente ANULADA pela banca do {EXAM_BANCA} {year}."
+            else f"Questão Oficialmente ANULADA pela banca do {banca} {year}."
         )
 
         questions.append({
@@ -458,7 +419,7 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str], is_commented
             "fase": "1ª Fase",
             "numero": q_num,
             "materia": materia,
-            "topico": f"{materia} - {EXAM_BANCA} {year}",
+            "topico": f"{materia} - {banca} {year}",
             "subtopico": "Questão Oficial 1ª Fase",
             "dificuldade": "Difícil",
             "texto_base": None,
@@ -488,16 +449,11 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str], is_commented
                 q["texto_base"] = new_base
 
         if not q["texto_base"] and mat in active_subject_text:
-            mentions_text = bool(re.search(
-                r"(?:texto|text|paragraph|par[áa]grafo|autor|author|poema|excerto|fragmento|passagem|passage|line\s+\d|linha\s+\d)",
-                q["enunciado"],
-                re.IGNORECASE
-            ))
-            if mat in ("Inglês", "Português") or mentions_text:
+            if mat in ("Inglês", "Português"):
                 q["texto_base"] = active_subject_text[mat]
 
         if not q["texto_base"] and (qn - 1) in q_by_num:
-            if re.search(r"(?:quest[ãa]o\s+anterior|enunciado\s+anterior|sistema\s+anterior|situa[çc][ãa]o\s+anterior)", q["enunciado"], re.IGNORECASE):
+            if re.search(r"(?:quest[ãa]o\s+anterior|enunciado\s+anterior|sistema\s+anterior)", q["enunciado"], re.IGNORECASE):
                 prev_q = q_by_num[qn - 1]
                 q["texto_base"] = f"[Contexto da Questão Anterior — {prev_q['id']}]:\n{prev_q['enunciado']}"
                 if not q["figura"] and prev_q.get("figura"):
@@ -508,10 +464,29 @@ def parse_exam(prova_pdf: Path, year: str, gab_map: dict[int, str], is_commented
         elif q.get("figura"):
             q["subtopico"] = "Com Figura Oficial"
 
-    if not INCLUDE_LANGUAGES:
+    if not include_lang:
         questions = [q for q in questions if q["materia"] not in ("Inglês", "Português")]
 
     return questions
+
+def run_for_target(by_id: dict, banca: str, year: str, include_lang: bool):
+    prova_path = DATA_DIR / f"{banca.lower()}_{year}_prova.pdf"
+    gab_path = DATA_DIR / f"{banca.lower()}_{year}_gabarito.pdf"
+
+    print(f"=== Extraindo {banca} {year} ===")
+    got_prova, got_gab, _ = discover_and_fetch_pdfs(banca, year, prova_path, gab_path)
+    if got_prova:
+        gab_map = parse_gabarito_pdf(gab_path) if got_gab else {}
+        extracted = parse_exam(prova_path, banca, year, gab_map, include_lang)
+        with_base = sum(1 for q in extracted if q.get("texto_base"))
+        with_fig = sum(1 for q in extracted if q.get("figura"))
+        print(f"  ✓ {len(extracted)} questões extraídas | {with_base} com Texto Base | {with_fig} com Figura")
+        for q in extracted:
+            by_id[q["id"]] = q
+        prova_path.unlink(missing_ok=True)
+        gab_path.unlink(missing_ok=True)
+    else:
+        print(f"  ✗ PDF não localizado para {banca} {year}.")
 
 def main():
     DATA_DIR.mkdir(parents=True, exist_ok=True)
@@ -526,29 +501,29 @@ def main():
 
     by_id = {item["id"]: item for item in existing if isinstance(item, dict) and "id" in item}
 
-    prova_path = DATA_DIR / f"{EXAM_BANCA.lower()}_{EXAM_YEAR}_prova.pdf"
-    gab_path = DATA_DIR / f"{EXAM_BANCA.lower()}_{EXAM_YEAR}_gabarito.pdf"
-
-    print(f"=== Extraindo {EXAM_BANCA} {EXAM_YEAR} ===")
-    got_prova, got_gab, is_commented = discover_and_fetch_pdfs(EXAM_BANCA, EXAM_YEAR, prova_path, gab_path)
-
-    if got_prova:
-        gab_map = parse_gabarito_pdf(gab_path) if got_gab else {}
-        extracted = parse_exam(prova_path, EXAM_YEAR, gab_map, is_commented_pdf=is_commented)
-        with_base = sum(1 for q in extracted if q.get("texto_base"))
-        with_fig = sum(1 for q in extracted if q.get("figura"))
-        print(f"  ✓ {len(extracted)} questões extraídas | {with_base} com Texto Base | {with_fig} com Figura")
-
-        for q in extracted:
-            by_id[q["id"]] = q
-        prova_path.unlink(missing_ok=True)
-        gab_path.unlink(missing_ok=True)
+    single_year = os.getenv("EXAM_YEAR")
+    if single_year:
+        banca = os.getenv("EXAM_BANCA", "ITA").strip().upper()
+        inc_l = os.getenv("INCLUDE_LANGUAGES", "true").lower() == "true"
+        run_for_target(by_id, banca, single_year.strip(), inc_l)
     else:
-        print(f"  ✗ PDF não localizado para {EXAM_BANCA} {EXAM_YEAR}.")
+        # Quando rodado sem variáveis, baixa automaticamente a coleção histórica ITA + IME!
+        targets = [
+            ("ITA", "2022", True),
+            ("ITA", "2020", True),
+            ("ITA", "2019", True),
+            ("IME", "2026", False),
+            ("IME", "2025", False),
+            ("IME", "2024", False),
+            ("IME", "2023", False),
+            ("IME", "2022", False),
+        ]
+        for banca, year, inc_l in targets:
+            run_for_target(by_id, banca, year, inc_l)
 
     final_questions = sorted(by_id.values(), key=lambda x: (-x["ano"], x["id"]))
     DB_FILE.write_text(json.dumps(final_questions, ensure_ascii=False, indent=2), encoding="utf-8")
-    print(f"  → Total acumulado no Banco: {len(final_questions)} questões.")
+    print(f"\n=== SUCESSO TOTAL! Banco atualizado com {len(final_questions)} questões oficiais! ===")
 
 if __name__ == "__main__":
     main()
